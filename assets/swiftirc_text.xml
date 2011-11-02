@@ -1,0 +1,13 @@
+﻿<textEntries>
+	<text name="ERR_CONNECT_DNS">Unable to resolve host name.  Make sure that you have typed the server address correctly.  If the address is correct, this error may indicate a problem with your Internet connection.</text>
+	<text name="ERR_CONNECT_TIMEOUT">No reply from server.  The server may be currently experiencing difficulties.  This error could also indicate a problem with your Internet connection.  If your connection is otherwise working, security software (firewalls, anti-virus etc.) may be blocking access to IRC.</text>
+	<text name="ERR_CONNECT_REFUSED">Connection was not accepted.  The IRC server may not be currently running.  This error can also be caused by security software (firewalls, anti-virus etc.)</text>
+	<text name="ERR_CONNECT_ABORTED">Connection was aborted.  This could indicate a temporary problem with the IRC server.  This error can also be caused by some security software, including anti-virus.</text>
+	<text name="ERR_CONNECT_BUFSPACE">No buffer space available.  This error indicates that your computer's networking may be overloaded.  Applications such as BitTorrent can contribute to this.</text>
+	<text name="ERR_CONNECT_RESET">Connection was reset by peer.  This error typically indicates a problem associated with either the IRC server, or your own connection.</text>
+	<text name="ERR_CONNECT_NETRESET"></text>
+	<text name="ERR_CONNECT_MEMORY">Out of memory.  Your computer may be too heavily loaded to process this request.  Consider restarting your computer if this error is repeated.</text>
+
+
+	<version>1.11</version>
+</textEntries>
