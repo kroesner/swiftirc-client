@@ -25,6 +25,8 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+Private m_firstUseDialog As frmFirstUseDisclaimer
+
 Private m_fontManager As New CFontManager
 Private m_activeIWindow As IWindow
 Private m_activeWindow As VBControlExtender
@@ -47,6 +49,28 @@ Attribute m_startPage.VB_VarHelpID = -1
 Private m_appHandlesUrls As Boolean
 
 Public Event visitUrl(url As String)
+
+Friend Sub showUserAgreement()
+    If Not m_firstUseDialog Is Nothing Then
+        m_firstUseDialog.Show vbModeless, Me
+        Exit Sub
+    End If
+
+    Set m_firstUseDialog = New frmFirstUseDisclaimer
+    m_firstUseDialog.init Me
+    m_firstUseDialog.Show vbModeless, Me
+End Sub
+
+Friend Sub agreementAccepted()
+    Unload m_firstUseDialog
+    Set m_firstUseDialog = Nothing
+    
+    Dim count As Long
+    
+    For count = 1 To m_sessions.count
+        m_sessions.item(count).agreementAccepted
+    Next count
+End Sub
 
 Friend Property Get fontManager() As CFontManager
     Set fontManager = m_fontManager

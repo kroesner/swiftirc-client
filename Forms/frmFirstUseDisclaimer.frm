@@ -103,6 +103,7 @@ Private Sub m_buttonOk_clicked()
     settings.saveSettings
     
     Me.Hide
+    m_client.agreementAccepted
 End Sub
 
 Private Sub m_buttonRules_clicked()

@@ -92,6 +92,8 @@ Private m_lastChannelTab As String
 Private m_lastChannelTabIndex As Long
 Private m_lastChannelTabMatch As String
 
+Private m_waitingOnUserAgreement As Boolean
+
 Public Property Get baseLogPath() As String
     baseLogPath = m_baseLogPath
 End Property
@@ -254,17 +256,18 @@ Public Property Get connected() As Boolean
     connected = m_connected
 End Property
 
+Public Sub agreementAccepted()
+    If m_waitingOnUserAgreement Then
+        m_waitingOnUserAgreement = False
+        connect
+    End If
+End Sub
+
 Public Sub connect()
     If Not settings.acceptedFirstUse Then
-        Dim firstUse As New frmFirstUseDisclaimer
-        firstUse.init m_client
-        firstUse.Show vbModal, m_client
-        
-        Unload firstUse
-        
-        If Not settings.acceptedFirstUse Then
-            Exit Sub
-        End If
+        m_waitingOnUserAgreement = True
+        m_client.showUserAgreement
+        Exit Sub
     End If
 
     m_reconnectTimer.Enabled = False
