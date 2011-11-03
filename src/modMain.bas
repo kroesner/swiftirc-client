@@ -248,11 +248,11 @@ Public Function timeString(time As Long)
     Dim seconds As Long
     Dim remaining As Long
     
-    days = time / 86400
+    days = time \ 86400
     remaining = time Mod 86400
-    hours = remaining / 3600
+    hours = remaining \ 3600
     remaining = remaining Mod 3600
-    minutes = remaining / 60
+    minutes = remaining \ 60
     remaining = remaining Mod 60
     seconds = remaining
     
