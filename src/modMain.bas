@@ -256,20 +256,23 @@ Public Function timeString(time As Long)
     remaining = remaining Mod 60
     seconds = remaining
     
-    If seconds > 0 Then
-        timeString = seconds & "secs"
+    
+    timeString = ""
+
+    If seconds > 0 Or time = 0 Then
+        timeString = seconds & "sec" & IIf(seconds = 1, "", "s")
     End If
     
     If minutes > 0 Then
-        timeString = minutes & "mins " & timeString
+        timeString = minutes & "min" & IIf(minutes = 1, "", "s") & IIf(timeString = "", "", " ") & timeString
     End If
     
     If hours > 0 Then
-        timeString = hours & "hours " & timeString
+        timeString = hours & "hour" & IIf(hours = 1, "", "s") & IIf(timeString = "", "", " ") & timeString
     End If
     
     If days > 0 Then
-        timeString = days & "days " & timeString
+        timeString = days & "day" & IIf(days = 1, "", "s") & IIf(timeString = "", "", " ") & timeString
     End If
 End Function
 
