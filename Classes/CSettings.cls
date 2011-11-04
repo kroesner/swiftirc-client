@@ -247,7 +247,13 @@ Public Sub saveSettings()
         xmlAddElement xml, xml.documentElement, setting.name, setting.value
     Next setting
     
+    On Error GoTo SettingsSave_Error
+    
     saveXml xml, g_userPath & "swiftirc_settings.xml"
+    
+Exit Sub
+SettingsSave_Error:
+    handleError "saveSettings", Err.Number, Err.Description, Erl, vbNullString
 End Sub
 
 Private Sub Class_Initialize()

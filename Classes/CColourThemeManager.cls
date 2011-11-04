@@ -182,8 +182,14 @@ Friend Sub saveThemes(file As String)
         xmlAddElement xml, themeNode, "switchbarMessage", CStr(theme.switchbarColourMessage)
         xmlAddElement xml, themeNode, "switchbarHighlight", CStr(theme.switchbarColourHighlight)
     Next theme
+
+    On Error GoTo ThemesSave_Error
     
     saveXml xml, file
+    
+Exit Sub
+ThemesSave_Error:
+    handleError "saveThemes", Err.Number, Err.Description, Erl, vbNullString
 End Sub
 
 Friend Property Get themeCount() As Long

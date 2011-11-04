@@ -200,8 +200,13 @@ Public Sub saveProfiles(fileName As String)
         End If
     Next profile
     
+    On Error GoTo ProfileSave_Error
+    
     saveXml xml, fileName
     RaiseEvent profilesChanged
+Exit Sub
+ProfileSave_Error:
+    handleError "saveProfile", Err.Number, Err.Description, Erl, vbNullString
 End Sub
 
 Private Sub Class_Initialize()

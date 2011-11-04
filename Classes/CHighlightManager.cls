@@ -54,8 +54,14 @@ Public Sub save()
     For count = 1 To m_highlights.count
         xmlAddElement xml, xml.documentElement, "highlight", m_highlights.item(count).text
     Next count
+
+    On Error GoTo HighlightsSave_Error
     
     saveXml xml, g_userPath & "swiftirc_highlights.xml"
+    
+Exit Sub
+HighlightsSave_Error:
+    handleError "saveHighlights", Err.Number, Err.Description, Erl, vbNullString
 End Sub
 
 Public Sub load()
