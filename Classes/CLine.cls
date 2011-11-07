@@ -608,6 +608,12 @@ Private Sub parseIrcFormatting(text As String, allowPlaceHolders As Boolean, ByR
                             isUrl = True
                         End If
                     End If
+                    
+                    If count < Len(text) Then
+                        If Mid$(LCase$(text), count, 8) = "https://" Then
+                            isUrl = True
+                        End If
+                    End If
                 ElseIf wChar = AscW("w") Or wChar = AscW("W") Then
                     If count < Len(text) Then
                         If Mid$(LCase$(text), count, 4) = "www." Then
