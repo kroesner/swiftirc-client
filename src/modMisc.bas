@@ -1,6 +1,27 @@
 Attribute VB_Name = "modMisc"
 Option Explicit
 
+Public Function sanitizeFilename(filename As String) As String
+    Dim count As Long
+    Dim char As String
+    Dim output As String
+    
+    Const DISALLOWED_FILENAME_CHARACTERS = "\/:*?""<>|"
+    Const DISALLOWED_CHARACTER_SUBSTITUTE = "_"
+    
+    For count = 1 To Len(filename)
+        char = Mid$(filename, count, 1)
+        
+        If InStr(DISALLOWED_FILENAME_CHARACTERS, char) <> 0 Then
+            output = output & DISALLOWED_CHARACTER_SUBSTITUTE
+        Else
+            output = output & char
+        End If
+    Next count
+    
+    sanitizeFilename = output
+End Function
+
 Public Function swiftFormatTime(timestamp As Date, theFormat As String) As String
     Dim count As Long
     Dim char As String

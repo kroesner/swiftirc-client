@@ -91,7 +91,7 @@ Public Sub init(session As CSession, name As String)
     m_name = name
     
     If settings.setting("enableLogging", estBoolean) And settings.setting("logGeneric", estBoolean) Then
-        m_textView.logName = m_session.baseLogPath & m_name
+        m_textView.logName = m_session.baseLogPath & sanitizeFilename(m_name)
         m_textView.enableLogging = True
     End If
 End Sub

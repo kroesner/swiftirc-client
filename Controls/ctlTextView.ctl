@@ -1412,7 +1412,7 @@ End Sub
 Private Sub openLog()
     m_logFilename = m_logBaseName & "." & getFileNameDate & ".log"
     m_logHandle = CreateFile(StrPtr(m_logFilename), GENERIC_WRITE, _
-        FILE_SHARE_READ, ByVal 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, ByVal 0)
+        FILE_SHARE_READ Or FILE_SHARE_WRITE, ByVal 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, ByVal 0)
 
     If m_logHandle = -1 Then
         Exit Sub
@@ -1471,6 +1471,8 @@ Private Sub logRealWrite(text As String)
             openLog
         End If
     End If
+
+    SetFilePointer m_logHandle, 0, ByVal 0, FILE_END
 
     Dim numberWritten As Long
     WriteFile m_logHandle, ByVal StrPtr(text), LenB(text), numberWritten, ByVal 0

@@ -144,7 +144,7 @@ Public Property Let serverProfile(newValue As CServerProfile)
             If settings.setting("logDirectoriesProfile", estBoolean) _
                 And Not m_serverProfile Is serverProfiles.quickConnectProfile Then
                 
-                m_baseLogPath = g_userPath & LOG_DIR & m_serverProfile.name & "\"
+                m_baseLogPath = g_userPath & LOG_DIR & sanitizeFilename(m_serverProfile.name) & "\"
             
                 If Dir(m_baseLogPath, vbDirectory) = vbNullString Then
                     MkDir m_baseLogPath
@@ -178,7 +178,7 @@ Public Property Let statusWindow(newValue As ctlWindowStatus)
     
     If settings.setting("enableLogging", estBoolean) Then
         If Not settings.setting("logDirectories", estBoolean) Then
-            m_statusWindowText.textview.logName = m_baseLogPath & "\status"
+            m_statusWindowText.textview.logName = m_baseLogPath & "status"
             m_statusWindowText.textview.enableLogging = True
         End If
     End If
@@ -760,7 +760,7 @@ Public Sub parserISupport(origin As COrigin, command As String, paramCount As By
                     If Not settings.setting("logDirectoriesProfile", estBoolean) Or _
                         m_serverProfile Is Nothing Or m_serverProfile Is serverProfiles.quickConnectProfile Then
                         
-                        m_baseLogPath = g_userPath & LOG_DIR & m_networkName & "\"
+                        m_baseLogPath = g_userPath & LOG_DIR & sanitizeFilename(m_networkName) & "\"
                         
                         If Dir(m_baseLogPath, vbDirectory) = vbNullString Then
                             MkDir m_baseLogPath

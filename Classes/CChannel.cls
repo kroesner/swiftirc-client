@@ -66,7 +66,7 @@ Public Sub init(name As String, window As ctlWindowChannel, session As CSession)
     Set m_rejoinTimer = m_session.client.getTimer
     
     If settings.setting("enableLogging", estBoolean) And settings.setting("logChannel", estBoolean) Then
-        m_windowText.textview.logName = m_session.baseLogPath & m_name
+        m_windowText.textview.logName = m_session.baseLogPath & sanitizeFilename(m_name)
         m_windowText.textview.enableLogging = True
     End If
 End Sub

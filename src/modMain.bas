@@ -120,6 +120,7 @@ Public g_userPath As String
 
 Public Const LOG_DIR = "logs\"
 
+
 Public g_errorShown As Boolean
 Public g_hideErrors As Boolean
 
@@ -256,7 +257,6 @@ Public Function timeString(time As Long)
     remaining = remaining Mod 60
     seconds = remaining
     
-    
     timeString = ""
 
     If seconds > 0 Or time = 0 Then
@@ -305,6 +305,9 @@ Public Function formatTime(ByVal time As Long) As String
     
     formatTime = format(aDate, "ddd, d MMM yyyy HH:mm:ss ") & timeZone
 End Function
+
+
+
 
 Public Function getFileNameDate() As String
     getFileNameDate = format(Now, "yyyy-mm-dd")
