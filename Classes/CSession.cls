@@ -2096,19 +2096,36 @@ End Sub
 
 Public Sub commandJoin(Source As ITextWindow, command As String, paramCount As Byte, params() As _
     String)
+    
+    Dim channelName As String
+    Dim key As String
+    
+    channelName = params(0)
+    
+    If InStr(m_channelTypes, left$(channelName, 1)) = 0 Then
+        channelName = "#" & channelName
+    End If
+    
     If paramCount > 1 Then
-        sendLine "JOIN " & params(0) & " " & params(1)
+        key = params(1)
+    End If
+    
+    If LenB(key) <> 0 Then
+        'Key was provided, no need to see
+        'if we have a cached one for the channel.
+        
+        sendLine "JOIN " & channelName & " " & key
     Else
         Dim channel As CChannel
         
-        Set channel = findChannel(params(0))
+        Set channel = findChannel(channelName)
         
         If Not channel Is Nothing Then
             If Not channel.meIsIn Then
                 rejoinChannel channel
             End If
         Else
-            sendLine "JOIN " & params(0)
+            sendLine "JOIN " & channelName
         End If
     End If
 End Sub
