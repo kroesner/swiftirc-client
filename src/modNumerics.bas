@@ -66,4 +66,10 @@ Public Const RPL_HASFILTEROVER As Integer = 537
 Public Const RPL_WHOISSECURE As Integer = 671
 
 
+' 10/nov/2011
+Public Const RPL_WHOLIST As Integer = 352
+Public Const RPL_ENDOFWHOLIST As Integer = 315
 
+Public Const RPL_WHOWASHOST As Integer = 314
+Public Const RPL_WHOWASUNKNOWN As Integer = 406
+Public Const RPL_ENDOFWHOWAS As Integer = 369

@@ -675,6 +675,14 @@ Private Sub initParsers()
     
     addParser ERR_UNKNOWNCOMMAND, 3, 3, "parserUnknownCommand"
     addParser ERR_ERRONEUSNICKNAME, 3, 3, "parserErroneusNickname"
+    
+    ' 10 Nov 2011
+    addParser RPL_WHOLIST, 8, 8, "parserWhoList"
+    addParser RPL_ENDOFWHOLIST, 3, 3, "parserEndOfWhoList"
+    
+    addParser RPL_WHOWASHOST, 6, 6, "parserWhowasHost"
+    addParser RPL_WHOWASUNKNOWN, 3, 3, "parserWhowasUnknown"
+    addParser RPL_ENDOFWHOWAS, 3, 3, "parserEndOfWhowas"
 End Sub
 
 Public Sub parserPing(origin As COrigin, command As String, paramCount As Byte, params() As String)
@@ -1314,6 +1322,72 @@ Public Sub parserQList(origin As COrigin, command As String, paramCount As Byte,
     
     If Not channel Is Nothing Then
         channel.modeListEntry "q", params(2)
+    End If
+End Sub
+
+Public Sub parserWhoList(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    Set m_whoisText = m_client.activeTextWindow
+    
+    If Not m_whoisText.session Is Me Then
+        Set m_whoisText = m_statusWindow
+    End If
+    
+    If Not m_whoisText Is Nothing Then
+        m_whoisText.addEvent "WHO_LIST", makeStringArray(params(1), params(5), params(2), _
+            params(3), params(6), params(7))
+    End If
+End Sub
+
+Public Sub parserEndOfWhoList(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    Set m_whoisText = m_client.activeTextWindow
+    
+    If Not m_whoisText.session Is Me Then
+        Set m_whoisText = m_statusWindow
+    End If
+    
+    If Not m_whoisText Is Nothing Then
+        m_whoisText.addEvent "WHO_END_OF_LIST", makeStringArray(params(2))
+    End If
+End Sub
+
+Public Sub parserWhowasHost(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    Set m_whoisText = m_client.activeTextWindow
+    
+    If Not m_whoisText.session Is Me Then
+        Set m_whoisText = m_statusWindow
+    End If
+    
+    If Not m_whoisText Is Nothing Then
+        m_whoisText.addEvent "WHOWAS_HOST", makeStringArray(params(1), params(2), params(3), params(5))
+    End If
+End Sub
+
+Public Sub parserWhowasUnknown(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    Set m_whoisText = m_client.activeTextWindow
+    
+    If Not m_whoisText.session Is Me Then
+        Set m_whoisText = m_statusWindow
+    End If
+    
+    If Not m_whoisText Is Nothing Then
+        m_whoisText.addEvent "WHOWAS_UNKNOWN", makeStringArray(params(1), params(2))
+    End If
+End Sub
+
+Public Sub parserEndOfWhowas(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    Set m_whoisText = m_client.activeTextWindow
+    
+    If Not m_whoisText.session Is Me Then
+        Set m_whoisText = m_statusWindow
+    End If
+    
+    If Not m_whoisText Is Nothing Then
+        m_whoisText.addEvent "WHOWAS_END", makeStringArray(params(2))
     End If
 End Sub
 

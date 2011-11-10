@@ -156,6 +156,14 @@ Private Sub initEvents()
     defEvent "CMD_PRIVMSG_SENT"
     defEvent "CMD_NOTICE_SENT"
     defEvent "CMD_CTCP_SENT"
+    
+    ' 10/nov/2011
+    defEvent "WHO_LIST"
+    defEvent "WHO_END_OF_LIST"
+    
+    defEvent "WHOWAS_HOST"
+    defEvent "WHOWAS_UNKNOWN"
+    defEvent "WHOWAS_END"
 End Sub
 
 Private Sub loadThemes()

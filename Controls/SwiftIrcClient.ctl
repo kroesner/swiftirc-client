@@ -620,6 +620,15 @@ Private Sub initEvents()
     
     classic.addEvent "ME_MODE_CHANGE", "$0 sets mode: $1", eventColours.modeChange, _
         TVE_STANDARD Or TVE_SEPERATE_BOTH
+        
+        
+    ' 10/nov/2011
+    classic.addEvent "WHO_LIST", "$0 $1!$2@$3 $4 $5", eventColours.otherText, TVE_VISIBLE
+    classic.addEvent "WHO_END_OF_LIST", "* $0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "WHOWAS_HOST", "$0 was $1!$2 * $3", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_EXPLICIT
+    classic.addEvent "WHOWAS_UNKNOWN", "$0: $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_EXPLICIT
+    classic.addEvent "WHOWAS_END", "* $0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
 
     modern.addEvent "PRIVMSG", "$0: $1", eventColours.normalText, TVE_NONE
     
