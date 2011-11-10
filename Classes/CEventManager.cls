@@ -164,6 +164,18 @@ Private Sub initEvents()
     defEvent "WHOWAS_HOST"
     defEvent "WHOWAS_UNKNOWN"
     defEvent "WHOWAS_END"
+    
+    defEvent "SILENCE_LIST"
+    defEvent "END_OF_SILENCE_LIST"
+    defEvent "ERR_CHGNICK_MODEN"
+    defEvent "ERR_CHGNICK_MODEB"
+    defEvent "HELPOP_TITLE"
+    defEvent "HELPOP_TEXT"
+    defEvent "MARKED_AWAY"
+    defEvent "NO_LONGER_MARKED_AWAY"
+    defEvent "INVITE_LIST"
+    defEvent "END_OF_INVITE_LIST"
+    defEvent "INVITE_USER"
 End Sub
 
 Private Sub loadThemes()

@@ -73,3 +73,20 @@ Public Const RPL_ENDOFWHOLIST As Integer = 315
 Public Const RPL_WHOWASHOST As Integer = 314
 Public Const RPL_WHOWASUNKNOWN As Integer = 406
 Public Const RPL_ENDOFWHOWAS As Integer = 369
+
+Public Const RPL_SILENCELIST As Integer = 271
+Public Const RPL_ENDOFSILENCELIST As Integer = 272
+
+Public Const ERR_CHGNICKMODEN As Integer = 447
+Public Const ERR_CHGNICKMODEB As Integer = 437
+
+Public Const RPL_HELPOPTITLE As Integer = 290
+Public Const RPL_HELPOPTEXT As Integer = 292
+
+Public Const RPL_MARKEDAWAY As Integer = 306
+Public Const RPL_UNMARKEDAWAY As Integer = 305
+
+Public Const RPL_INVITELIST As Integer = 336
+Public Const RPL_ENDOFINVITELIST As Integer = 337
+
+Public Const RPL_INVITEUSER As Integer = 341

@@ -629,6 +629,23 @@ Private Sub initEvents()
     classic.addEvent "WHOWAS_HOST", "$0 was $1!$2 * $3", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_EXPLICIT
     classic.addEvent "WHOWAS_UNKNOWN", "$0: $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_EXPLICIT
     classic.addEvent "WHOWAS_END", "* $0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "SILENCE_LIST", "$0", eventColours.otherText, TVE_VISIBLE
+    classic.addEvent "END_OF_SILENCE_LIST", "$0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "ERR_CHGNICK_MODEN", "$0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    classic.addEvent "ERR_CHGNICK_MODEB", "$1 ($0)", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "HELPOP_TITLE", "$0", eventColours.otherText, TVE_VISIBLE
+    classic.addEvent "HELPOP_TEXT", "$0", eventColours.otherText, TVE_VISIBLE
+    
+    classic.addEvent "MARKED_AWAY", "$0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    classic.addEvent "NO_LONGER_MARKED_AWAY", "$0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "INVITE_LIST", "$0", eventColours.otherText, TVE_VISIBLE
+    classic.addEvent "END_OF_INVITE_LIST", "$0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "INVITE_USER", "You've invited to $0 by $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
 
     modern.addEvent "PRIVMSG", "$0: $1", eventColours.normalText, TVE_NONE
     

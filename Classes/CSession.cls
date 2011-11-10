@@ -683,6 +683,23 @@ Private Sub initParsers()
     addParser RPL_WHOWASHOST, 6, 6, "parserWhowasHost"
     addParser RPL_WHOWASUNKNOWN, 3, 3, "parserWhowasUnknown"
     addParser RPL_ENDOFWHOWAS, 3, 3, "parserEndOfWhowas"
+    
+    addParser RPL_SILENCELIST, 3, 3, "parserSilenceList"
+    addParser RPL_ENDOFSILENCELIST, 2, 2, "parserEndOfSilenceList"
+    
+    addParser ERR_CHGNICKMODEN, 2, 2, "parserChgNickModeN"
+    addParser ERR_CHGNICKMODEB, 3, 3, "parserChgNickModeb"
+    
+    addParser RPL_HELPOPTITLE, 2, 2, "parserHelpopTitle"
+    addParser RPL_HELPOPTEXT, 2, 2, "parserHelpopText"
+    
+    addParser RPL_MARKEDAWAY, 2, 2, "parserMarkedAway"
+    addParser RPL_UNMARKEDAWAY, 2, 2, "parserUnmarkedAway"
+    
+    addParser RPL_INVITELIST, 2, 2, "parserInviteList"
+    addParser RPL_ENDOFINVITELIST, 2, 2, "parserEndOfInviteList"
+    
+    addParser RPL_INVITEUSER, 3, 3, "parserInviteUser"
 End Sub
 
 Public Sub parserPing(origin As COrigin, command As String, paramCount As Byte, params() As String)
@@ -1425,6 +1442,61 @@ Public Sub parserListEnd(origin As COrigin, command As String, paramCount As Byt
     String)
     m_listSynced = True
     m_statusWindowText.addEvent "NUMERIC", makeStringArray(params(1))
+End Sub
+
+Public Sub parserSilenceList(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "SILENCE_LIST", makeStringArray(params(2))
+End Sub
+
+Public Sub parserEndOfSilenceList(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "END_OF_SILENCE_LIST", makeStringArray(params(1))
+End Sub
+
+Public Sub parserChgNickModeN(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "ERR_CHGNICK_MODEN", makeStringArray(params(1))
+End Sub
+
+Public Sub parserChgNickModeB(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "ERR_CHGNICK_MODEB", makeStringArray(params(1), params(2))
+End Sub
+
+Public Sub parserHelpopTitle(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "HELPOP_TITLE", makeStringArray(params(1))
+End Sub
+
+Public Sub parserHelpopText(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "HELPOP_TEXT", makeStringArray(params(1))
+End Sub
+
+Public Sub parserMarkedAway(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "MARKED_AWAY", makeStringArray(params(1))
+End Sub
+
+Public Sub parserUnmarkedAway(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "NO_LONGER_MARKED_AWAY", makeStringArray(params(1))
+End Sub
+
+Public Sub parserInviteList(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "INVITE_LIST", makeStringArray(params(1))
+End Sub
+
+Public Sub parserEndOfInviteList(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "END_OF_INVITE_LIST", makeStringArray(params(1))
+End Sub
+
+Public Sub parserInviteUser(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    m_statusWindowText.addEvent "INVITE_USER", makeStringArray(params(1), params(2))
 End Sub
 
 Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As Byte, params() As _
