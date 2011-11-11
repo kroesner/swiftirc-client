@@ -677,11 +677,11 @@ Private Sub initParsers()
     addParser ERR_ERRONEUSNICKNAME, 3, 3, "parserErroneusNickname"
     
     ' 10 Nov 2011
-    addParser RPL_WHOLIST, 8, 8, "parserWhoList"
-    addParser RPL_ENDOFWHOLIST, 3, 3, "parserEndOfWhoList"
+    addParser RPL_WHOREPLY, 8, 8, "parserWhoList"
+    addParser RPL_ENDOFWHO, 3, 3, "parserEndOfWhoList"
     
-    addParser RPL_WHOWASHOST, 6, 6, "parserWhowasHost"
-    addParser RPL_WHOWASUNKNOWN, 3, 3, "parserWhowasUnknown"
+    addParser RPL_WHOWASUSER, 6, 6, "parserWhowasHost"
+    addParser ERR_WASNOSUCHNICK, 3, 3, "parserWhowasUnknown"
     addParser RPL_ENDOFWHOWAS, 3, 3, "parserEndOfWhowas"
     
     addParser RPL_SILENCELIST, 3, 3, "parserSilenceList"
@@ -693,13 +693,16 @@ Private Sub initParsers()
     addParser RPL_HELPOPTITLE, 2, 2, "parserHelpopTitle"
     addParser RPL_HELPOPTEXT, 2, 2, "parserHelpopText"
     
-    addParser RPL_MARKEDAWAY, 2, 2, "parserMarkedAway"
-    addParser RPL_UNMARKEDAWAY, 2, 2, "parserUnmarkedAway"
+    addParser RPL_NOWAWAY, 2, 2, "parserMarkedAway"
+    addParser RPL_UNAWAY, 2, 2, "parserUnmarkedAway"
     
     addParser RPL_INVITELIST, 2, 2, "parserInviteList"
     addParser RPL_ENDOFINVITELIST, 2, 2, "parserEndOfInviteList"
     
-    addParser RPL_INVITEUSER, 3, 3, "parserInviteUser"
+    addParser "SILENCE", 1, 1, "parserSilenceModify"
+    addParser "INVITE", 2, 2, "parserInvitationReceived"
+    
+    addParser RPL_INVITING, 3, 3, "parserInviteUser"
 End Sub
 
 Public Sub parserPing(origin As COrigin, command As String, paramCount As Byte, params() As String)
@@ -1247,12 +1250,18 @@ End Sub
 
 Public Sub parserBanList(origin As COrigin, command As String, paramCount As Byte, params() As _
     String)
+    
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
     
     If Not channel Is Nothing Then
         channel.modeListEntry "b", params(2)
+    End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "BAN_LIST", makeStringArray(params(1), params(2), params(3), _
+            formatTime(params(4)))
     End If
 End Sub
 
@@ -1265,6 +1274,10 @@ Public Sub parserEndOfBanList(origin As COrigin, command As String, paramCount A
     If Not channel Is Nothing Then
         channel.endOfModeList "b"
     End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "END_OF_BAN_LIST", makeStringArray(params(1), params(2))
+    End If
 End Sub
 
 Public Sub parserExList(origin As COrigin, command As String, paramCount As Byte, params() As _
@@ -1275,6 +1288,11 @@ Public Sub parserExList(origin As COrigin, command As String, paramCount As Byte
     
     If Not channel Is Nothing Then
         channel.modeListEntry "e", params(2)
+    End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "EX_LIST", makeStringArray(params(1), params(2), params(3), _
+            formatTime(params(4)))
     End If
 End Sub
 
@@ -1287,6 +1305,10 @@ Public Sub parserEndOfExList(origin As COrigin, command As String, paramCount As
     If Not channel Is Nothing Then
         channel.endOfModeList "e"
     End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "END_OF_EX_LIST", makeStringArray(params(1), params(2))
+    End If
 End Sub
 
 Public Sub parserInvexList(origin As COrigin, command As String, paramCount As Byte, params() As _
@@ -1297,6 +1319,11 @@ Public Sub parserInvexList(origin As COrigin, command As String, paramCount As B
     
     If Not channel Is Nothing Then
         channel.modeListEntry "I", params(2)
+    End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "INVEX_LIST", makeStringArray(params(1), params(2), params(3), _
+            formatTime(params(4)))
     End If
 End Sub
 
@@ -1309,6 +1336,10 @@ Public Sub parserEndOfInvexList(origin As COrigin, command As String, paramCount
     If Not channel Is Nothing Then
         channel.endOfModeList "I"
     End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "END_OF_INVEX_LIST", makeStringArray(params(1), params(2))
+    End If
 End Sub
 
 Public Sub parserAList(origin As COrigin, command As String, paramCount As Byte, params() As String)
@@ -1318,6 +1349,10 @@ Public Sub parserAList(origin As COrigin, command As String, paramCount As Byte,
     
     If Not channel Is Nothing Then
         channel.modeListEntry "a", params(2)
+    End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "A_LIST", makeStringArray(params(1), params(2))
     End If
 End Sub
 
@@ -1330,6 +1365,10 @@ Public Sub parserEndOfAList(origin As COrigin, command As String, paramCount As 
     If Not channel Is Nothing Then
         channel.endOfModeList "a"
     End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "END_OF_A_LIST", makeStringArray(params(1), params(2))
+    End If
 End Sub
 
 Public Sub parserQList(origin As COrigin, command As String, paramCount As Byte, params() As String)
@@ -1339,6 +1378,25 @@ Public Sub parserQList(origin As COrigin, command As String, paramCount As Byte,
     
     If Not channel Is Nothing Then
         channel.modeListEntry "q", params(2)
+    End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "Q_LIST", makeStringArray(params(1), params(2))
+    End If
+End Sub
+
+Public Sub parserEndOfQList(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+    Dim channel As CChannel
+    
+    Set channel = findChannel(params(1))
+    
+    If Not channel Is Nothing Then
+        channel.endOfModeList "q"
+    End If
+    
+    If Not CCOpen() Then
+        m_statusWindowText.addEvent "END_OF_Q_LIST", makeStringArray(params(1), params(2))
     End If
 End Sub
 
@@ -1408,14 +1466,20 @@ Public Sub parserEndOfWhowas(origin As COrigin, command As String, paramCount As
     End If
 End Sub
 
-Public Sub parserEndOfQList(origin As COrigin, command As String, paramCount As Byte, params() As _
+Public Sub parserSilenceModify(origin As COrigin, command As String, paramCount As Byte, params() As _
     String)
-    Dim channel As CChannel
-    
-    Set channel = findChannel(params(1))
-    
-    If Not channel Is Nothing Then
-        channel.endOfModeList "q"
+    m_statusWindowText.addEvent "SILENCE_MODIFY", makeStringArray(params(0))
+End Sub
+
+Public Sub parserInvitationReceived(origin As COrigin, command As String, paramCount As Byte, params() As _
+    String)
+
+    If m_client.activeTextWindow.session Is Me Then
+        m_client.activeTextWindow.addEvent "INVITATION_RECEIVED", makeStringArray(params(1), _
+            origin.nickname, origin.username, origin.hostname)
+    Else
+        m_statusWindowText.addEvent "INVITATION_RECEIVED", makeStringArray(params(1), _
+            origin.nickname, origin.username, origin.hostname)
     End If
 End Sub
 
@@ -3235,5 +3299,22 @@ Public Function getIal(nickname As String, ialType As eIalType) As String
         Case Else
             getIal = ialEntry.nick & "!" & ialEntry.ident & "@" & ialEntry.host
     End Select
+End Function
+
+Public Function CCOpen() As Boolean
+    ' This function will return true if the Channel Central
+    ' is opened, false if not
+    
+    Dim frm As Form
+    Dim result As Boolean
+    result = False
+    
+    For Each frm In Forms
+        If frm.name = "frmChannelCentral" Then
+            result = True
+        End If
+    Next frm
+    
+    CCOpen = result
 End Function
 

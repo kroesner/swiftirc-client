@@ -67,11 +67,11 @@ Public Const RPL_WHOISSECURE As Integer = 671
 
 
 ' 10/nov/2011
-Public Const RPL_WHOLIST As Integer = 352
-Public Const RPL_ENDOFWHOLIST As Integer = 315
+Public Const RPL_WHOREPLY As Integer = 352
+Public Const RPL_ENDOFWHO As Integer = 315
 
-Public Const RPL_WHOWASHOST As Integer = 314
-Public Const RPL_WHOWASUNKNOWN As Integer = 406
+Public Const RPL_WHOWASUSER As Integer = 314
+Public Const ERR_WASNOSUCHNICK As Integer = 406
 Public Const RPL_ENDOFWHOWAS As Integer = 369
 
 Public Const RPL_SILENCELIST As Integer = 271
@@ -83,10 +83,10 @@ Public Const ERR_CHGNICKMODEB As Integer = 437
 Public Const RPL_HELPOPTITLE As Integer = 290
 Public Const RPL_HELPOPTEXT As Integer = 292
 
-Public Const RPL_MARKEDAWAY As Integer = 306
-Public Const RPL_UNMARKEDAWAY As Integer = 305
+Public Const RPL_NOWAWAY As Integer = 306
+Public Const RPL_UNAWAY As Integer = 305
 
 Public Const RPL_INVITELIST As Integer = 336
 Public Const RPL_ENDOFINVITELIST As Integer = 337
 
-Public Const RPL_INVITEUSER As Integer = 341
+Public Const RPL_INVITING As Integer = 341

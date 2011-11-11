@@ -645,7 +645,26 @@ Private Sub initEvents()
     classic.addEvent "INVITE_LIST", "$0", eventColours.otherText, TVE_VISIBLE
     classic.addEvent "END_OF_INVITE_LIST", "$0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
     
-    classic.addEvent "INVITE_USER", "You've invited to $0 by $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    classic.addEvent "INVITE_USER", "You've invited $0 to $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "BAN_LIST", "$0 $1 set by $2 on $3", eventColours.otherText, TVE_VISIBLE
+    classic.addEvent "END_OF_BAN_LIST", "$0 $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+
+    classic.addEvent "EX_LIST", "$0 $1 set by $2 on $3", eventColours.otherText, TVE_VISIBLE
+    classic.addEvent "END_OF_EX_LIST", "$0 $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+
+    classic.addEvent "INVEX_LIST", "$0 $1 set by $2 on $3", eventColours.otherText, TVE_VISIBLE
+    classic.addEvent "END_OF_INVEX_LIST", "$0 $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+
+    classic.addEvent "A_LIST", "$0 $1", eventColours.otherText, TVE_VISIBLE
+    classic.addEvent "END_OF_A_LIST", "$0 $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "Q_LIST", "$0 $1", eventColours.otherText, TVE_VISIBLE
+    classic.addEvent "END_OF_Q_LIST", "$0 $1", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "SILENCE_MODIFY", "SILENCE $0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    
+    classic.addEvent "INVITATION_RECEIVED", "You were invited to $0 by $1 ($2@$3)", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
 
     modern.addEvent "PRIVMSG", "$0: $1", eventColours.normalText, TVE_NONE
     

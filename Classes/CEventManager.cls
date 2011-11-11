@@ -176,6 +176,20 @@ Private Sub initEvents()
     defEvent "INVITE_LIST"
     defEvent "END_OF_INVITE_LIST"
     defEvent "INVITE_USER"
+    
+    defEvent "BAN_LIST"
+    defEvent "END_OF_BAN_LIST"
+    defEvent "EX_LIST"
+    defEvent "END_OF_EX_LIST"
+    defEvent "INVEX_LIST"
+    defEvent "END_OF_INVEX_LIST"
+    defEvent "A_LIST"
+    defEvent "END_OF_A_LIST"
+    defEvent "Q_LIST"
+    defEvent "END_OF_Q_LIST"
+    
+    defEvent "SILENCE_MODIFY"
+    defEvent "INVITATION_RECEIVED"
 End Sub
 
 Private Sub loadThemes()
