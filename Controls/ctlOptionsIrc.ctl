@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.UserControl ctlOptionsIrc 
    ClientHeight    =   4245
    ClientLeft      =   0
@@ -7,6 +8,13 @@ Begin VB.UserControl ctlOptionsIrc
    ScaleHeight     =   283
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   389
+   Begin MSComDlg.CommonDialog CommonDialog 
+      Left            =   240
+      Top             =   3240
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+   End
 End
 Attribute VB_Name = "ctlOptionsIrc"
 Attribute VB_GlobalNameSpace = False
@@ -32,6 +40,11 @@ Private WithEvents m_buttonHighlightDel As ctlButton
 Attribute m_buttonHighlightDel.VB_VarHelpID = -1
 Private WithEvents m_buttonHighlightClear As ctlButton
 Attribute m_buttonHighlightClear.VB_VarHelpID = -1
+Private m_checkEnableHighlightSound As VB.CheckBox
+Attribute m_checkEnableHighlightSound.VB_VarHelpID = -1
+Private m_fieldHighlightSoundPath As swiftIrc.ctlField
+Private WithEvents m_buttonHighlightCustom As ctlButton
+Attribute m_buttonHighlightCustom.VB_VarHelpID = -1
 
 Private WithEvents m_checkEnableLogging As VB.CheckBox
 Attribute m_checkEnableLogging.VB_VarHelpID = -1
@@ -81,11 +94,19 @@ Private Sub initControls()
     m_fieldTimestampFormat.setFieldWidth 130, 80
     
     Set m_buttonHighlightAdd = addButton(Controls, "Add", 165, 80, 70, 20)
-    Set m_buttonHighlightDel = addButton(Controls, "Remove", 165, 105, 70, 20)
+    Set m_buttonHighlightDel = addButton(Controls, "Remove", 165, 104, 70, 20)
     
-    Set m_buttonHighlightClear = addButton(Controls, "Clear", 165, 130, 70, 20)
+    Set m_buttonHighlightClear = addButton(Controls, "Clear", 165, 128, 70, 19)
     
     Set m_listHighlights = createControl(Controls, "VB.ListBox", "highlights")
+    
+    Set m_checkEnableHighlightSound = addCheckBox(Controls, "Custom highlight sound", 10, 155, 200, 20)
+    Set m_fieldHighlightSoundPath = addField(Controls, "", 10, 177, 150, 20)
+    m_fieldHighlightSoundPath.setFieldWidth 1, 149
+    
+    Set m_buttonHighlightCustom = addButton(Controls, "Browse", 165, 177, 70, 20)
+    
+    
     Set m_checkEnableLogging = addCheckBox(Controls, "Enable logging", 260, 30, 200, 20)
     
     Set m_checkLogStatus = addCheckBox(Controls, "Log status window", 260, 60, 140, 20)
@@ -101,7 +122,22 @@ Private Sub initControls()
     
     Set m_buttonViewLogs = addButton(Controls, "View logs", 490, 30, 70, 20)
     
-    m_listHighlights.Move 10, 80, 150, 125
+    m_listHighlights.Move 10, 80, 150, 73
+    
+    'm_fieldHighlightSoundPath.enabled = False
+End Sub
+
+Private Sub m_buttonHighlightCustom_clicked()
+    Dim highlightFilename As String
+    
+    CommonDialog.Filter = "Sound file (*.wav;*.mp3)|*.wav;*.mp3"
+    CommonDialog.DefaultExt = "txt"
+    CommonDialog.DialogTitle = "Select File"
+    CommonDialog.ShowOpen
+    
+    If Not CommonDialog.CancelError Then
+        m_fieldHighlightSoundPath.value = CommonDialog.fileName
+    End If
 End Sub
 
 Private Sub m_buttonHighlightAdd_clicked()
@@ -153,23 +189,23 @@ End Sub
 
 Private Sub m_checkEnableLogging_Click()
     If m_checkEnableLogging.value = 0 Then
-        m_checkLogStatus.Enabled = False
-        m_checkLogChannel.Enabled = False
-        m_checkLogQuery.Enabled = False
-        m_checkLogGeneric.Enabled = False
-        m_checkLogDirectories.Enabled = False
-        m_checkLogDirectoriesProfile.Enabled = False
-        m_checkLogIncludeCodes.Enabled = False
-        m_checkLogIncludeTimeStamp.Enabled = False
+        m_checkLogStatus.enabled = False
+        m_checkLogChannel.enabled = False
+        m_checkLogQuery.enabled = False
+        m_checkLogGeneric.enabled = False
+        m_checkLogDirectories.enabled = False
+        m_checkLogDirectoriesProfile.enabled = False
+        m_checkLogIncludeCodes.enabled = False
+        m_checkLogIncludeTimeStamp.enabled = False
     Else
-        m_checkLogStatus.Enabled = True
-        m_checkLogChannel.Enabled = True
-        m_checkLogQuery.Enabled = True
-        m_checkLogGeneric.Enabled = True
-        m_checkLogDirectories.Enabled = True
-        m_checkLogDirectoriesProfile.Enabled = True
-        m_checkLogIncludeCodes.Enabled = True
-        m_checkLogIncludeTimeStamp.Enabled = True
+        m_checkLogStatus.enabled = True
+        m_checkLogChannel.enabled = True
+        m_checkLogQuery.enabled = True
+        m_checkLogGeneric.enabled = True
+        m_checkLogDirectories.enabled = True
+        m_checkLogDirectoriesProfile.enabled = True
+        m_checkLogIncludeCodes.enabled = True
+        m_checkLogIncludeTimeStamp.enabled = True
     End If
 End Sub
 
@@ -205,25 +241,27 @@ Private Sub UserControl_Initialize()
     m_checkLogDirectoriesProfile.value = -settings.setting("logDirectoriesProfile", estBoolean)
     m_checkLogIncludeCodes.value = -settings.setting("logIncludeCodes", estBoolean)
     m_checkLogIncludeTimeStamp.value = -settings.setting("logIncludeTimestamP", estBoolean)
+    m_checkEnableHighlightSound.value = -settings.setting("highlightCustomSound", estBoolean)
+    m_fieldHighlightSoundPath.value = settings.setting("highlightSoundPath", estString)
     
     If m_checkEnableLogging.value = 0 Then
-        m_checkLogStatus.Enabled = False
-        m_checkLogChannel.Enabled = False
-        m_checkLogQuery.Enabled = False
-        m_checkLogGeneric.Enabled = False
-        m_checkLogDirectories.Enabled = False
-        m_checkLogDirectoriesProfile.Enabled = False
-        m_checkLogIncludeCodes.Enabled = False
-        m_checkLogIncludeTimeStamp.Enabled = False
+        m_checkLogStatus.enabled = False
+        m_checkLogChannel.enabled = False
+        m_checkLogQuery.enabled = False
+        m_checkLogGeneric.enabled = False
+        m_checkLogDirectories.enabled = False
+        m_checkLogDirectoriesProfile.enabled = False
+        m_checkLogIncludeCodes.enabled = False
+        m_checkLogIncludeTimeStamp.enabled = False
     Else
-        m_checkLogStatus.Enabled = True
-        m_checkLogChannel.Enabled = True
-        m_checkLogQuery.Enabled = True
-        m_checkLogGeneric.Enabled = True
-        m_checkLogDirectories.Enabled = True
-        m_checkLogDirectoriesProfile.Enabled = True
-        m_checkLogIncludeCodes.Enabled = True
-        m_checkLogIncludeTimeStamp.Enabled = True
+        m_checkLogStatus.enabled = True
+        m_checkLogChannel.enabled = True
+        m_checkLogQuery.enabled = True
+        m_checkLogGeneric.enabled = True
+        m_checkLogDirectories.enabled = True
+        m_checkLogDirectoriesProfile.enabled = True
+        m_checkLogIncludeCodes.enabled = True
+        m_checkLogIncludeTimeStamp.enabled = True
     End If
 End Sub
 
@@ -256,6 +294,8 @@ Friend Sub saveSettings()
     settings.setting("logDirectoriesProfile", estBoolean) = -m_checkLogDirectoriesProfile.value
     settings.setting("logIncludeCodes", estBoolean) = -m_checkLogIncludeCodes.value
     settings.setting("logIncludeTimestamP", estBoolean) = -m_checkLogIncludeTimeStamp.value
+    settings.setting("highlightCustomSound", estBoolean) = -m_checkEnableHighlightSound.value
+    settings.setting("highlightSoundPath", estString) = m_fieldHighlightSoundPath.value
     
     highlights.save
 End Sub

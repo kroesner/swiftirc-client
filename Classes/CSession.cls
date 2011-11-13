@@ -94,6 +94,14 @@ Private m_lastChannelTabMatch As String
 
 Private m_waitingOnUserAgreement As Boolean
 
+Private Declare Function mciSendString Lib "winmm.dll" _
+  Alias "mciSendStringA" ( _
+  ByVal lpszCommand As String, _
+  ByVal lpszReturnString As String, _
+  ByVal cchReturnLength As Long, _
+  ByVal hwndCallback As Long) As Long
+  
+
 Public Property Get baseLogPath() As String
     baseLogPath = m_baseLogPath
 End Property
@@ -1604,7 +1612,6 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
     If settings.enableHighlighting Then
         If settings.highlightNickname Then
             If InStr(1, text, m_currentNickname, vbTextCompare) Then
-                Beep
                 highlight = True
             End If
         End If
@@ -1614,12 +1621,15 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
             
             For count = 1 To highlights.highlightCount
                 If InStr(1, text, highlights.highlightItem(count).text, vbTextCompare) Then
-                    Beep
                     highlight = True
                     Exit For
                 End If
             Next count
         End If
+    End If
+    
+    If highlight Then
+        highlighted
     End If
     
     If left$(text, 1) = Chr$(1) Then
@@ -1684,6 +1694,48 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
 
 processMessage_Error:
     handleError "processMessage", Err.Number, Err.Description, Erl, vbNullString
+End Sub
+
+Private Sub highlighted()
+    If settings.setting("highlightCustomSound", estBoolean) Then
+        PlaySound settings.setting("highlightSoundPath", estString)
+    Else
+        Beep
+    End If
+End Sub
+
+Private Sub PlaySound(soundPath As String)
+    Dim command As String
+    Dim alias As String
+    Dim path As String
+    Dim ext As String
+    Dim audioType As String
+    
+    Randomize
+    alias = "MySound" & Rnd
+    path = soundPath
+    ext = right$(path, 4)
+    
+    If ext = ".mp3" Then
+        audioType = "mpegvideo"
+    ElseIf ext = ".wav" Then
+        audioType = "waveaudio"
+    Else
+        audioType = vbNullString
+        Beep
+    End If
+    
+    If audioType <> vbNullString Then
+        command = "open " & path & _
+            " type " & audioType & _
+            " alias " & alias
+            
+        If mciSendString(command, 0, 0, 0) = 0 Then
+            command = "play " & alias & _
+                " from 0"
+            mciSendString command, 0, 0, 0
+        End If
+    End If
 End Sub
 
 Private Sub extractCtcp(text As String, ByRef command As String, ByRef param As String)

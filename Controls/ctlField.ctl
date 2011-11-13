@@ -49,6 +49,14 @@ Private m_password As Boolean
 Private m_captionWidth As Integer
 Private m_BoxWidth As Integer
 
+Public Property Get enabled() As Boolean
+    enabled = m_realWindow.enabled
+End Property
+
+Public Property Let enabled(newEnabled As Boolean)
+    m_realWindow.enabled = False
+End Property
+
 Public Property Get password() As Boolean
     password = m_password
 End Property
