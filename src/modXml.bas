@@ -5,11 +5,30 @@ Public Function xmlAddElement(xml As DOMDocument30, parent As IXMLDOMNode, name 
     String) As IXMLDOMNode
     Dim newNode As IXMLDOMNode
     
-    Set newNode = xml.createNode(NODE_ELEMENT, name, "")
-    newNode.text = text
+    Set newNode = xml.createNode(NODE_ELEMENT, prepareXmlString(name), "")
+    newNode.text = prepareXmlString(text)
     parent.appendChild newNode
     
     Set xmlAddElement = newNode
+End Function
+
+Public Function prepareXmlString(text As String) As String
+    Dim count As Long
+    Dim char As String
+    Dim output As String
+    
+    Dim disallowedChars As String
+    disallowedChars = Chr$(3)
+    
+    For count = 1 To Len(text)
+        char = Mid$(text, count, 1)
+        
+        If InStr(disallowedChars, char) = 0 Then
+            output = output & char
+        End If
+    Next count
+    
+    prepareXmlString = output
 End Function
 
 Public Function xmlGetAttributeText(node As IXMLDOMNode, name As String, attributeName As String) As String
