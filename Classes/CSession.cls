@@ -1748,8 +1748,8 @@ Private Sub PlaySound(soundPath As String)
     End If
     
     If audioType <> vbNullString Then
-        command = "open " & path & _
-            " type " & audioType & _
+        command = "open """ & path & _
+            """ type " & audioType & _
             " alias " & alias
             
         If mciSendString(command, 0, 0, 0) = 0 Then
