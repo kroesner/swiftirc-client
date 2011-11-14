@@ -39,15 +39,15 @@ Public Property Let channel(newValue As CChannel)
     Set m_channel = newValue
     
     If m_channel.session.getChannelModeType("c") <> cmtNormal Then
-        m_checkNoColours.Enabled = False
+        m_checkNoColours.enabled = False
     End If
     
     If m_channel.session.getChannelModeType("N") <> cmtNormal Then
-        m_checkNoNickChanges.Enabled = False
+        m_checkNoNickChanges.enabled = False
     End If
     
     If m_channel.session.getChannelModeType("E") <> cmtNormal Then
-        m_checkNoEmotes.Enabled = False
+        m_checkNoEmotes.enabled = False
     End If
     
     m_checkOnlyOpsSetTopic.value = -m_channel.hasMode("t")

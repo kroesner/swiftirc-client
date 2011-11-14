@@ -9,6 +9,8 @@ Public textManager As CTextManager
 Public settings As CSettings
 Public highlights As CHighlightManager
 
+Public ignoreManager As CIgnoreManager
+
 Public prefixStyles As cArrayList
 Public styleNormal As CUserStyle
 Public styleMe As CUserStyle

@@ -136,7 +136,7 @@ Private Sub m_buttonHighlightCustom_clicked()
     CommonDialog.ShowOpen
     
     If Not CommonDialog.CancelError Then
-        m_fieldHighlightSoundPath.value = CommonDialog.fileName
+        m_fieldHighlightSoundPath.value = CommonDialog.filename
     End If
 End Sub
 

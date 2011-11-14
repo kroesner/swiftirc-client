@@ -278,7 +278,7 @@ Public Sub connect()
         Exit Sub
     End If
 
-    m_reconnectTimer.Enabled = False
+    m_reconnectTimer.enabled = False
 
     If m_connected Then
         disconnect
@@ -365,7 +365,7 @@ Private Sub disconnected()
             If m_serverProfile.enableReconnect Then
                 m_statusWindowText.addEvent "RECONNECTING_IN", makeStringArray(RECONNECT_DELAY / _
                     1000)
-                m_reconnectTimer.Enabled = True
+                m_reconnectTimer.enabled = True
             End If
         End If
     End If
@@ -386,7 +386,7 @@ Private Sub connectFailed()
             End If
             
             m_statusWindowText.addEvent "RECONNECTING_IN", makeStringArray(RECONNECT_DELAY / 1000)
-            m_reconnectTimer.Enabled = True
+            m_reconnectTimer.enabled = True
         End If
     End If
 End Sub
@@ -397,7 +397,7 @@ End Sub
 
 Private Sub m_channelJoinTimer_Timer()
     joinChannels
-    m_channelJoinTimer.Enabled = False
+    m_channelJoinTimer.enabled = False
 End Sub
 
 Private Sub m_channelListWindow_joinChannel(name As String)
@@ -1481,7 +1481,11 @@ End Sub
 
 Public Sub parserInvitationReceived(origin As COrigin, command As String, paramCount As Byte, params() As _
     String)
-
+    
+    If ignoreManager.isIgnored(origin.nickname & "!" & origin.username & "@" & origin.hostname, IGNORE_INVITE) Then
+        Exit Sub
+    End If
+    
     If m_client.activeTextWindow.session Is Me Then
         m_client.activeTextWindow.addEvent "INVITATION_RECEIVED", makeStringArray(params(1), _
             origin.nickname, origin.username, origin.hostname)
@@ -1579,7 +1583,7 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
     Dim channelName As String
     Dim activeText As ITextWindow
     
-   On Error GoTo processMessage_Error
+    On Error GoTo processMessage_Error
 
     Set activeText = m_client.activeTextWindow
     
@@ -1601,7 +1605,15 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
     Set channel = findChannel(channelName)
     
     If channel Is Nothing Then
+        If ignoreManager.isIgnored(origin.nickname & "!" & origin.username & "@" & origin.hostname, IGNORE_PRIVATE) Then
+            Exit Sub
+        End If
+    
         Set query = findQuery(origin.nickname)
+    Else
+        If ignoreManager.isIgnored(origin.nickname & "!" & origin.username & "@" & origin.hostname, IGNORE_CHANNEL) Then
+            Exit Sub
+        End If
     End If
     
     Dim text As String
@@ -1653,6 +1665,10 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
                 query.userEmote origin, ctcpParam, highlight
             End If
         Else
+            If ignoreManager.isIgnored(origin.nickname & "!" & origin.username & "@" & origin.hostname, IGNORE_CTCP) Then
+                Exit Sub
+            End If
+        
             If notice Then
                 processCtcpReply origin, ctcpCommand, ctcpParam
             Else
@@ -1660,6 +1676,12 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
             End If
         End If
     Else
+        'Handled after ctcp processing to avoid unintentionally
+        'blocking ctcp replies (which are really just notices)
+        If notice And ignoreManager.isIgnored(origin.nickname & "!" & origin.username & "@" & origin.hostname, IGNORE_NOTICE) Then
+            Exit Sub
+        End If
+    
         If Not channel Is Nothing Then
             channel.userMessage origin, text, notice, prefix, highlight
         Else
@@ -1732,7 +1754,7 @@ Private Sub PlaySound(soundPath As String)
             
         If mciSendString(command, 0, 0, 0) = 0 Then
             command = "play " & alias & _
-                " from 0"
+            " from 0"
             mciSendString command, 0, 0, 0
         End If
     End If
@@ -2691,6 +2713,115 @@ Public Sub commandQuit(Source As ITextWindow, command As String, paramCount As B
     End If
 End Sub
 
+Public Sub commandIgnore(Source As ITextWindow, command As String, paramCount As Byte, params() _
+    As String)
+    
+    Dim commandFlags As String
+    Dim ignoreFlags As String
+    Dim mask As String
+    
+    If paramCount = 0 Then
+        m_client.showIgnoreList Me
+        Exit Sub
+    ElseIf paramCount > 0 Then
+        If left$(params(0), 1) = "-" Then
+            commandFlags = Mid$(params(0), 2)
+            
+            If paramCount > 1 Then
+                mask = params(1)
+                
+                If paramCount > 2 Then
+                    ignoreFlags = params(2)
+                End If
+            End If
+        Else
+            mask = params(0)
+            
+            If paramCount > 1 Then
+                ignoreFlags = params(1)
+            End If
+        End If
+    End If
+    
+    processIgnoreCommand Source, commandFlags, mask, ignoreFlags
+End Sub
+
+Private Sub processIgnoreCommand(Source As ITextWindow, commandFlags As String, mask As String, ignoreFlags As String)
+    Dim ignore As CIgnoreItem
+    Dim removed As Boolean
+
+    commandFlags = LCase$(commandFlags)
+
+    If commandFlags = "a" Or commandFlags = "add" Or LenB(commandFlags) = 0 Then
+        If LenB(mask) <> 0 Then
+            Set ignore = New CIgnoreItem
+            
+            If swiftMatch("*!*@*", mask) Then
+                ignore.mask = mask
+            Else
+                ignore.mask = getIal(mask, ialHost)
+            End If
+            
+            If LenB(ignoreFlags) <> 0 Then
+                If Not ignore.parseFlagChars(ignoreFlags) Then
+                    Source.addEvent "IGNORE_INVALID_FLAGS", makeStringArray(ignoreFlags)
+                    Exit Sub
+                End If
+            Else
+                ignore.flags = IGNORE_ALL
+            End If
+            
+            removed = ignoreManager.removeIgnoreByMask(ignore.mask)
+            ignoreManager.addIgnore ignore
+            
+            If removed Then
+                Source.addEvent "IGNORE_UPDATED", makeStringArray(ignore.mask, ignore.flagChars)
+            Else
+                Source.addEvent "IGNORE_ADDED", makeStringArray(ignore.mask, ignore.flagChars)
+            End If
+            
+            saveIgnoreFile
+        End If
+    ElseIf commandFlags = "l" Or commandFlags = "list" Then
+        listIgnores Source
+    ElseIf commandFlags = "r" Or commandFlags = "remove" Then
+        If LenB(mask) <> 0 Then
+            If swiftMatch("*!*@*", mask) Then
+                removed = ignoreManager.removeIgnoreByMask(mask)
+            Else
+                removed = ignoreManager.removeIgnoreByMask(getIal(mask, ialHost))
+            End If
+            
+            If removed Then
+                Source.addEvent "IGNORE_REMOVED", makeStringArray(mask)
+                saveIgnoreFile
+            Else
+                Source.addEvent "IGNORE_REMOVE_NOTFOUND", makeStringArray(mask)
+            End If
+        End If
+    ElseIf commandFlags = "c" Or commandFlags = "clear" Then
+        ignoreManager.clearIgnores
+        Source.addEvent "IGNORE_LIST_CLEARED", makeStringArray("")
+        saveIgnoreFile
+    Else
+        Source.addEvent "IGNORE_INVALID_COMMAND", makeStringArray(commandFlags)
+    End If
+End Sub
+
+Private Sub listIgnores(window As ITextWindow)
+    Dim count As Long
+
+    window.addEvent "IGNORE_LIST_START", makeStringArray("")
+    
+    For count = 1 To ignoreManager.ignoreCount
+        window.addEvent "IGNORE_LIST_ENTRY", _
+            makeStringArray(ignoreManager.ignore(count).mask, ignoreManager.ignore(count).flagChars)
+    Next count
+    
+    window.addEvent "IGNORE_LIST_END", makeStringArray("")
+End Sub
+
+
 Public Sub commandServer(Source As ITextWindow, command As String, paramCount As Byte, params() As _
     String)
     Dim flags As String
@@ -2953,6 +3084,8 @@ Private Sub initInputParsers()
     addInputParser "QUIT", 0, 1, "commandQuit"
     
     addInputParser "UNICODE", 0, 0, "commandUnicode"
+    
+    addInputParser "IGNORE", 0, 3, "commandIgnore"
 End Sub
 
 Private Sub addInputParser(command As String, minParams As Byte, maxParams As Byte, func As String)
@@ -2980,10 +3113,10 @@ Public Sub init()
     Set m_reconnectTimer = m_client.getTimer
     Set m_channelJoinTimer = m_client.getTimer
     
-    m_reconnectTimer.Enabled = False
+    m_reconnectTimer.enabled = False
     m_reconnectTimer.Interval = RECONNECT_DELAY
     
-    m_channelJoinTimer.Enabled = False
+    m_channelJoinTimer.enabled = False
     m_channelJoinTimer.Interval = CHANNEL_JOIN_DELAY
     
     Set m_socket = New CSwiftSocket
@@ -3123,7 +3256,7 @@ Public Sub registered()
         End If
     End If
     
-    m_channelJoinTimer.Enabled = True
+    m_channelJoinTimer.enabled = True
 End Sub
 
 Private Sub runCommands(commands As String)

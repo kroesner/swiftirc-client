@@ -228,11 +228,7 @@ End Sub
 
 Friend Function addSwitchbarTab(parentTab As CTab, window As IWindow, order As eSwitchbarOrder) As CTab
     Dim insertPos As Long
-    
-    
 End Function
-
-
 
 Friend Sub removeTab(aTab As CTab)
     m_switchBar.removeTab aTab
@@ -493,7 +489,6 @@ Private Sub initEvents()
     classic.addEvent "NO_SUCH_NICK", "* No such nickname/channel ($0)", eventColours.infoText, _
         TVE_STANDARD
         
-  
     classic.addEvent "WELCOME", "Logged onto $0 as $1", eventColours.infoText, TVE_STANDARD
     classic.addEvent "NUMERIC", "$0", eventColours.otherText, TVE_STANDARD
     
@@ -614,13 +609,24 @@ Private Sub initEvents()
         
     classic.addEvent "CMD_CTCP_SENT", "-> [$0] $1", eventColours.ctcpText, TVE_VISIBLE Or TVE_SEPERATE_BOTH Or TVE_TIMESTAMP
       
-    
     classic.addEvent "CHANNEL_CTCP", "[$s:$0 $1] $2", eventColours.ctcpText, TVE_USERTEXT
     classic.addEvent "WALLCHOP_CTCP", "[$s:$0$1 $2] $3", eventColours.ctcpText, TVE_USERTEXT
     
     classic.addEvent "ME_MODE_CHANGE", "$0 sets mode: $1", eventColours.modeChange, _
         TVE_STANDARD Or TVE_SEPERATE_BOTH
         
+    classic.addEvent "IGNORE_LIST_START", "- Ignore list -", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "IGNORE_LIST_ENTRY", "* $0 ($1)", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "IGNORE_LIST_END", " - End of ignore list -", eventColours.infoText, TVE_STANDARD
+    
+    classic.addEvent "IGNORE_ADDED", "* Added $0 ($1) to ignore list", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "IGNORE_UPDATED", "* Updated ignore list item: $0 ($1)", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "IGNORE_REMOVED", "* Removed $0 from ignore list", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "IGNORE_REMOVE_NOTFOUND", "* $0 not found on ignore list", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "IGNORE_LIST_CLEARED", "* Cleared ignore list", eventColours.infoText, TVE_STANDARD
+    
+    classic.addEvent "IGNORE_INVALID_FLAGS", "* Invalid ignore flags ($0)", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "IGNORE_INVALID_COMMAND", "* Invalid ignore operation ($0)", eventColours.infoText, TVE_STANDARD
         
     ' 10/nov/2011
     classic.addEvent "WHO_LIST", "$0 $1!$2@$3 $4 $5", eventColours.otherText, TVE_VISIBLE
@@ -666,7 +672,6 @@ Private Sub initEvents()
     
     classic.addEvent "INVITATION_RECEIVED", "You were invited to $0 by $1 ($2@$3)", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
 
-    modern.addEvent "PRIVMSG", "$0: $1", eventColours.normalText, TVE_NONE
     
     m_eventManager.loadTheme classic
 End Sub
@@ -834,6 +839,7 @@ Public Sub init()
         Set colourThemes = New CColourThemeManager
         debugLogEx "Init highlight manager object"
         Set highlights = New CHighlightManager
+        Set ignoreManager = New CIgnoreManager
         
         debugLogEx "Load colour themes"
         colourThemes.loadThemes g_userPath & "swiftirc_themes.xml"
@@ -844,6 +850,8 @@ Public Sub init()
         
         debugLogEx "Load current theme."
         eventColours.loadTheme colourThemes.currentTheme
+        
+        ignoreManager.loadIgnoreList g_userPath & "swiftirc_ignore_list.xml"
         
         debugLogEx "Set custom control colours."
         g_textViewBack = colourThemes.currentTheme.backgroundColour
@@ -980,5 +988,14 @@ Friend Sub visitUrl(url As String, Optional unSafe As Boolean = True)
     End If
     
     launchDefaultBrowser url
+End Sub
+
+Friend Sub showIgnoreList(session As CSession)
+    Dim ignoreList As New frmIgnoreList
+    
+    ignoreList.session = session
+    ignoreList.Show vbModal, Me
+    
+    Unload ignoreList
 End Sub
 

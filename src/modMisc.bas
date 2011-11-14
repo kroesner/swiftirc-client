@@ -1,6 +1,76 @@
 Attribute VB_Name = "modMisc"
 Option Explicit
 
+'Case insensitive wildcard matching
+Public Function swiftMatch(ByVal pattern As String, ByVal text As String) As Boolean
+    Dim char As Long
+    Dim tempText As String
+    Dim tempText2 As String
+    
+    If LenB(pattern) = 0 Then
+        Exit Function
+    End If
+    
+    pattern = LCase$(pattern)
+    tempText = LCase$(text)
+    
+    Do While LenB(pattern) <> 0
+        char = AscW(left$(pattern, 1))
+        pattern = Mid$(pattern, 2)
+        
+        If char = 92 Then '\
+            If left$(tempText, 1) <> left$(pattern, 1) Then
+                Exit Function
+            End If
+            
+            pattern = Mid$(pattern, 2)
+            tempText = Mid$(tempText, 2)
+        ElseIf char = 63 Then '?
+            If LenB(tempText) = 0 Then
+                Exit Function
+            End If
+            
+            tempText = Mid$(tempText, 2)
+        ElseIf char = 42 Then '*
+            If LenB(pattern) = 0 Then
+                swiftMatch = True
+                Exit Function
+            End If
+            
+            tempText2 = tempText
+            
+            Do While LenB(tempText2) <> 0
+                If left$(tempText2, 1) = left$(pattern, 1) Then
+                    If swiftMatch(pattern, tempText2) Then
+                        swiftMatch = True
+                        Exit Function
+                    End If
+                End If
+                
+                tempText2 = Mid$(tempText2, 2)
+            Loop
+        Else
+            If LenB(tempText) = 0 Then
+                Exit Function
+            End If
+            
+            If AscW(left$(tempText, 1)) <> char Then
+                Exit Function
+            End If
+            
+            tempText = Mid$(tempText, 2)
+        End If
+    Loop
+    
+    If LenB(tempText) = 0 Then
+        swiftMatch = True
+    End If
+End Function
+
+Public Sub saveIgnoreFile()
+    ignoreManager.saveIgnoreList g_userPath & "swiftirc_ignore_list.xml"
+End Sub
+
 Public Function sanitizeFilename(filename As String) As String
     Dim count As Long
     Dim char As String

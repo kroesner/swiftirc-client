@@ -73,6 +73,15 @@ Begin VB.UserControl ctlWindowChannel
             Caption         =   "Huggle"
          End
       End
+      Begin VB.Menu menuIgnore 
+         Caption         =   "Ignore"
+         Begin VB.Menu menuIgnorePublic 
+            Caption         =   "Public"
+         End
+         Begin VB.Menu menuIgnorePrivate 
+            Caption         =   "Private"
+         End
+      End
    End
 End
 Attribute VB_Name = "ctlWindowChannel"
@@ -276,6 +285,19 @@ End Sub
 
 Private Sub m_nicklist_rightClicked(item As CNicklistItem)
     Set m_selectedNick = item
+    
+    If ignoreManager.isIgnored(m_session.getIal(m_selectedNick.text, ialAll), IGNORE_CHANNEL) Then
+        menuIgnorePublic.Checked = True
+    Else
+        menuIgnorePublic.Checked = False
+    End If
+    
+    If ignoreManager.isIgnored(m_session.getIal(m_selectedNick.text, ialAll), IGNORE_PRIVATE) Then
+        menuIgnorePrivate.Checked = True
+    Else
+        menuIgnorePrivate.Checked = False
+    End If
+    
     PopupMenu menuNicklist
 End Sub
 
