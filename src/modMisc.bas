@@ -1,6 +1,72 @@
 Attribute VB_Name = "modMisc"
 Option Explicit
 
+Public Function stripFormattingCodes(ByRef text As String) As String
+    Dim wChar As Long
+    Dim count As Long
+    Dim output As String
+    
+    For count = 1 To Len(text)
+        wChar = AscW(Mid$(text, count, 1))
+        
+        Select Case wChar
+            Case 2
+            Case 4
+            Case 15
+            Case 22
+            Case 31
+            Case 3
+                If count = Len(text) Then
+                    Exit For
+                End If
+
+                count = findColourCodeEnd(text, count + 1) - 1
+            Case Else
+                output = output & ChrW$(wChar)
+        End Select
+    Next count
+    
+    stripFormattingCodes = output
+End Function
+
+Private Function findColourCodeEnd(ByRef text As String, start As Integer) As Long
+    Dim colourCount As Integer
+    Dim digits As Byte
+    Dim currentColour As Byte
+    Dim hasColour As Boolean
+    
+    Dim wChar As Integer
+
+    For colourCount = start To Len(text)
+        wChar = AscW(Mid$(text, colourCount, 1))
+        
+        If wChar > 47 And wChar < 58 Then
+            If digits = 0 Then
+                hasColour = True
+                digits = 1
+                start = start + 1
+            ElseIf digits = 1 Then
+                digits = 2
+                start = start + 1
+            Else
+                Exit For
+            End If
+        ElseIf wChar = AscW(",") Then
+            If Not hasColour Then
+                Exit For
+            End If
+            
+            hasColour = False
+            digits = 0
+            start = start + 1
+        Else
+            Exit For
+        End If
+    Next colourCount
+    
+    findColourCodeEnd = start
+End Function
+
 'Case insensitive wildcard matching
 Public Function swiftMatch(ByVal pattern As String, ByVal text As String) As Boolean
     Dim char As Long

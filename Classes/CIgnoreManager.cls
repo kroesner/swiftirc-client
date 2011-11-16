@@ -35,6 +35,17 @@ Public Sub clearIgnores()
     m_ignoreList.clear
 End Sub
 
+Public Function getIgnoreByMask(mask As String) As CIgnoreItem
+    Dim count As Long
+    
+    For count = 1 To m_ignoreList.count
+        If swiftMatch(m_ignoreList.item(count).mask, mask) Then
+            Set getIgnoreByMask = m_ignoreList.item(count)
+            Exit Function
+        End If
+    Next count
+End Function
+
 Public Function removeIgnoreByMask(mask As String) As Boolean
     Dim count As Long
     

@@ -1,6 +1,8 @@
 Attribute VB_Name = "modMain"
 Option Explicit
 
+Public Const ALL_BITS As Long = &H7FFFFFFF
+
 Public eventColours As CEventColours
 Public colourManager As CColourManager
 Public serverProfiles As CServerProfileManager

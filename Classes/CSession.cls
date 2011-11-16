@@ -1621,6 +1621,10 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
     
     text = params(1)
     
+    If ignoreManager.isIgnored(origin.nickname & "!" & origin.username & "@" & origin.hostname, IGNORE_CODES) Then
+        text = stripFormattingCodes(text)
+    End If
+    
     If settings.enableHighlighting Then
         If settings.highlightNickname Then
             If InStr(1, text, m_currentNickname, vbTextCompare) Then
@@ -2771,7 +2775,12 @@ Private Sub processIgnoreCommand(Source As ITextWindow, commandFlags As String, 
                 ignore.flags = IGNORE_ALL
             End If
             
-            removed = ignoreManager.removeIgnoreByMask(ignore.mask)
+            If swiftMatch("*!*@*", mask) Then
+                removed = ignoreManager.removeIgnoreByMask(mask)
+            Else
+                removed = ignoreManager.removeIgnoreByMask(getIal(mask, ialAll))
+            End If
+            
             ignoreManager.addIgnore ignore
             
             If removed Then
@@ -2787,13 +2796,15 @@ Private Sub processIgnoreCommand(Source As ITextWindow, commandFlags As String, 
     ElseIf commandFlags = "r" Or commandFlags = "remove" Then
         If LenB(mask) <> 0 Then
             If swiftMatch("*!*@*", mask) Then
+                Set ignore = ignoreManager.getIgnoreByMask(mask)
                 removed = ignoreManager.removeIgnoreByMask(mask)
             Else
-                removed = ignoreManager.removeIgnoreByMask(getIal(mask, ialHost))
+                Set ignore = ignoreManager.getIgnoreByMask(getIal(mask, ialAll))
+                removed = ignoreManager.removeIgnoreByMask(getIal(mask, ialAll))
             End If
             
             If removed Then
-                Source.addEvent "IGNORE_REMOVED", makeStringArray(mask)
+                Source.addEvent "IGNORE_REMOVED", makeStringArray(ignore.mask)
                 saveIgnoreFile
             Else
                 Source.addEvent "IGNORE_REMOVE_NOTFOUND", makeStringArray(mask)
