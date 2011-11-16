@@ -541,9 +541,9 @@ Private Sub initEvents()
     
     classic.addEvent "CHANNEL_MODE_CHANGE", "* $0 set mode: $2 $3", eventColours.modeChange, _
         TVE_STANDARD
-    classic.addEvent "CHANNEL_MODE_OP", "$0 made $1 a channel operator", eventColours.modeChange, _
+    'classic.addEvent "CHANNEL_MODE_OP", "$0 made $1 a channel operator", eventColours.modeChange, _
         TVE_STANDARD
-    classic.addEvent "CHANNEL_MODE_DEOP", "$0 took $1's operator status", eventColours.modeChange, _
+    'classic.addEvent "CHANNEL_MODE_DEOP", "$0 took $1's operator status", eventColours.modeChange, _
         TVE_STANDARD
     
     classic.addEvent "CHANNEL_TOPICIS", "* Topic is '$0$o'", eventColours.topicChange, TVE_USERTEXT
@@ -672,7 +672,6 @@ Private Sub initEvents()
     
     classic.addEvent "INVITATION_RECEIVED", "You were invited to $0 by $1 ($2@$3)", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
 
-    
     m_eventManager.loadTheme classic
 End Sub
 
