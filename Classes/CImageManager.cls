@@ -17,36 +17,36 @@ Private m_images As New cArrayList
 Private m_rootPath As String
 
 Public Property Get rootPath() As String
-    rootPath = m_rootPath
+10        rootPath = m_rootPath
 End Property
 
 Public Property Let rootPath(newValue As String)
-    m_rootPath = newValue
+10        m_rootPath = newValue
 End Property
 
 Public Function addImage(imagePath As String) As CImage
-    Dim newImage As New CImage
-    
-    If newImage.load(m_rootPath & imagePath) = False Then
-        Exit Function
-    End If
-    
-    m_images.Add newImage
-    Set addImage = newImage
+          Dim newImage As New CImage
+          
+10        If newImage.load(m_rootPath & imagePath) = False Then
+20            Exit Function
+30        End If
+          
+40        m_images.Add newImage
+50        Set addImage = newImage
 End Function
 
 Public Function getImage(index As Integer) As CImage
-    If index < 1 Or index > m_images.count Then
-        Exit Function
-    End If
-    
-    Set getImage = m_images.item(index)
+10        If index < 1 Or index > m_images.count Then
+20            Exit Function
+30        End If
+          
+40        Set getImage = m_images.item(index)
 End Function
 
 Public Sub clearImages()
-    m_images.clear
+10        m_images.clear
 End Sub
 
 Private Sub Class_Terminate()
-    m_images.clear
+10        m_images.clear
 End Sub

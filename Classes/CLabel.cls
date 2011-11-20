@@ -23,71 +23,71 @@ Private m_gotRect As Boolean
 Private m_rect As RECT
 
 Public Property Get font() As Long
-    font = m_font
+10        font = m_font
 End Property
 
 Public Property Let font(newValue As Long)
-    m_font = newValue
+10        m_font = newValue
 End Property
 
 Public Property Get visible() As Boolean
-    visible = m_visible
+10        visible = m_visible
 End Property
 
 Public Property Let visible(newValue As Boolean)
-    m_visible = newValue
+10        m_visible = newValue
 End Property
 
 Public Property Get caption() As String
-    caption = m_caption
+10        caption = m_caption
 End Property
 
 Public Property Let caption(newValue As String)
-    m_caption = newValue
+10        m_caption = newValue
 End Property
 
 Friend Sub setRect(newRect As RECT)
-    m_gotRect = True
-    m_rect = newRect
+10        m_gotRect = True
+20        m_rect = newRect
 End Sub
 
 Friend Sub init(caption As String, labelType As eLabelType, x As Long, y As Long)
-    m_caption = caption
-    m_labelType = labelType
-    m_x = x
-    m_y = y
-    m_visible = True
+10        m_caption = caption
+20        m_labelType = labelType
+30        m_x = x
+40        m_y = y
+50        m_visible = True
 End Sub
 
 Friend Sub render(hdc As Long)
-    Dim oldFont As Long
-    
-    oldFont = GetCurrentObject(hdc, OBJ_FONT)
-    
-    If m_font <> 0 Then
-        SelectObject hdc, m_font
-    ElseIf m_labelType = ltHeading Then
-        SelectObject hdc, g_fontHeading
-    ElseIf m_labelType = ltSubHeading Then
-        SelectObject hdc, g_fontSubHeading
-    Else
-        SelectObject hdc, g_fontUI
-    End If
-    
-    SetTextColor hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFORE)
-    
-    Dim textSize As SIZE
-    
-    If Not m_gotRect Then
-        swiftGetTextExtentPoint32 hdc, m_caption, textSize
-        
-        Dim textRect As RECT
-        
-        textRect = makeRect(m_x, m_x + textSize.cx, m_y, m_y + textSize.cy)
-        swiftDrawText hdc, m_caption, VarPtr(textRect), DT_SINGLELINE Or DT_VCENTER
-    Else
-        swiftDrawText hdc, m_caption, VarPtr(m_rect), DT_WORDBREAK
-    End If
-    
-    SelectObject hdc, oldFont
+          Dim oldFont As Long
+          
+10        oldFont = GetCurrentObject(hdc, OBJ_FONT)
+          
+20        If m_font <> 0 Then
+30            SelectObject hdc, m_font
+40        ElseIf m_labelType = ltHeading Then
+50            SelectObject hdc, g_fontHeading
+60        ElseIf m_labelType = ltSubHeading Then
+70            SelectObject hdc, g_fontSubHeading
+80        Else
+90            SelectObject hdc, g_fontUI
+100       End If
+          
+110       SetTextColor hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFORE)
+          
+          Dim textSize As SIZE
+          
+120       If Not m_gotRect Then
+130           swiftGetTextExtentPoint32 hdc, m_caption, textSize
+              
+              Dim textRect As RECT
+              
+140           textRect = makeRect(m_x, m_x + textSize.cx, m_y, m_y + textSize.cy)
+150           swiftDrawText hdc, m_caption, VarPtr(textRect), DT_SINGLELINE Or DT_VCENTER
+160       Else
+170           swiftDrawText hdc, m_caption, VarPtr(m_rect), DT_WORDBREAK
+180       End If
+          
+190       SelectObject hdc, oldFont
 End Sub

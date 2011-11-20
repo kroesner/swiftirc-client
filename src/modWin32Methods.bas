@@ -265,78 +265,78 @@ Public Declare Function MessageBoxW Lib "user32" (ByVal hwnd As Long, ByVal lpTe
     lpCaption As Long, ByVal uType As Long) As Long
 
 Public Function swiftGetTextExtentPoint32(ByVal hdc As Long, ByVal lpsz As String, lpSize As SIZE)
-    If g_canUseUnicode Then
-        swiftGetTextExtentPoint32 = GetTextExtentPoint32W(hdc, StrPtr(lpsz), Len(lpsz), lpSize)
-    Else
-        swiftGetTextExtentPoint32 = GetTextExtentPoint32A(hdc, lpsz, Len(lpsz), lpSize)
-    End If
+10        If g_canUseUnicode Then
+20            swiftGetTextExtentPoint32 = GetTextExtentPoint32W(hdc, StrPtr(lpsz), Len(lpsz), lpSize)
+30        Else
+40            swiftGetTextExtentPoint32 = GetTextExtentPoint32A(hdc, lpsz, Len(lpsz), lpSize)
+50        End If
 End Function
 
 Public Function swiftGetTextExtentExPoint(ByVal hdc As Long, ByVal lpszStr As String, _
     ByVal nMaxExtent As Long, lpnFit As Long, lpSize As SIZE) As Long
 
-    If g_canUseUnicode Then
-        swiftGetTextExtentExPoint = GetTextExtentExPointW(hdc, StrPtr(lpszStr), Len(lpszStr), nMaxExtent, lpnFit, ByVal 0, lpSize)
-    Else
-        swiftGetTextExtentExPoint = GetTextExtentExPointA(hdc, lpszStr, Len(lpszStr), nMaxExtent, lpnFit, ByVal 0, lpSize)
-    End If
+10        If g_canUseUnicode Then
+20            swiftGetTextExtentExPoint = GetTextExtentExPointW(hdc, StrPtr(lpszStr), Len(lpszStr), nMaxExtent, lpnFit, ByVal 0, lpSize)
+30        Else
+40            swiftGetTextExtentExPoint = GetTextExtentExPointA(hdc, lpszStr, Len(lpszStr), nMaxExtent, lpnFit, ByVal 0, lpSize)
+50        End If
 End Function
     
 Public Function swiftTextOut(ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal wOptions As _
     Long, ByVal lpRect As Long, ByVal lpString As String) As Long
 
-    If g_canUseUnicode Then
-        swiftTextOut = ExtTextOutW(hdc, x, y, wOptions, lpRect, StrPtr(lpString), Len(lpString), ByVal 0)
-    Else
-        swiftTextOut = ExtTextOutA(hdc, x, y, wOptions, lpRect, lpString, Len(lpString), ByVal 0)
-    End If
+10        If g_canUseUnicode Then
+20            swiftTextOut = ExtTextOutW(hdc, x, y, wOptions, lpRect, StrPtr(lpString), Len(lpString), ByVal 0)
+30        Else
+40            swiftTextOut = ExtTextOutA(hdc, x, y, wOptions, lpRect, lpString, Len(lpString), ByVal 0)
+50        End If
 End Function
 
 Public Function swiftDrawText(ByVal hdc As Long, ByVal lpStr As _
     String, ByVal lpRect As Long, ByVal wFormat As Long) As Long
-    
-    If g_canUseUnicode Then
-        swiftDrawText = DrawTextW(hdc, StrPtr(lpStr), -1, lpRect, wFormat)
-    Else
-        swiftDrawText = DrawTextA(hdc, lpStr, -1, lpRect, wFormat)
-    End If
+          
+10        If g_canUseUnicode Then
+20            swiftDrawText = DrawTextW(hdc, StrPtr(lpStr), -1, lpRect, wFormat)
+30        Else
+40            swiftDrawText = DrawTextA(hdc, lpStr, -1, lpRect, wFormat)
+50        End If
 End Function
 
 Public Function swiftLoadImage(ByVal hInst As Long, ByVal lpsz _
     As String, ByVal un1 As Long, ByVal n1 As Long, ByVal n2 As Long, ByVal un2 As Long) As Long
-    
-    If g_canUseUnicode Then
-        swiftLoadImage = LoadImageW(hInst, StrPtr(lpsz), un1, n1, n2, un2)
-    Else
-        swiftLoadImage = LoadImageA(hInst, lpsz, un1, n1, n2, un2)
-    End If
+          
+10        If g_canUseUnicode Then
+20            swiftLoadImage = LoadImageW(hInst, StrPtr(lpsz), un1, n1, n2, un2)
+30        Else
+40            swiftLoadImage = LoadImageA(hInst, lpsz, un1, n1, n2, un2)
+50        End If
 End Function
 
 Public Function LoWord(DWord As Long) As Integer
-    If DWord And &H8000& Then ' &H8000& = &H00008000
-        LoWord = DWord Or &HFFFF0000
-    Else
-        LoWord = DWord And &HFFFF&
-    End If
+10        If DWord And &H8000& Then ' &H8000& = &H00008000
+20            LoWord = DWord Or &HFFFF0000
+30        Else
+40            LoWord = DWord And &HFFFF&
+50        End If
 End Function
 
 Public Function HiWord(DWord As Long) As Integer
-    HiWord = (DWord And &HFFFF0000) \ &H10000
+10        HiWord = (DWord And &HFFFF0000) \ &H10000
 End Function
 
 Public Function MakeLong(wLow As Long, wHigh As Long) As Long
-    MakeLong = LoWord(wLow) Or (&H10000 * LoWord(wHigh))
+10        MakeLong = LoWord(wLow) Or (&H10000 * LoWord(wHigh))
 End Function
 
 Public Function MakeWord(msb As Byte, lsb As Byte) As Long
-    MakeWord = CLng("&h" & Trim$(Hex(msb)) & Trim$(Hex(lsb)))
+10        MakeWord = CLng("&h" & Trim$(Hex(msb)) & Trim$(Hex(lsb)))
 End Function
 
 Public Function DivDiv(lOne As Long, lTwo As Long, lThree As Long) As Long
-    Dim lTemp As Single
-    
-    lTemp = lTwo / lThree
-    lTemp = lOne / lTemp
-    
-    DivDiv = CLng(lTemp)
+          Dim lTemp As Single
+          
+10        lTemp = lTwo / lThree
+20        lTemp = lOne / lTemp
+          
+30        DivDiv = CLng(lTemp)
 End Function

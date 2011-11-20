@@ -18,26 +18,26 @@ Private m_userCount As Long
 Private m_topic As String
 
 Public Property Get name() As String
-    name = m_name
+10        name = m_name
 End Property
 
 Public Property Let name(newValue As String)
-    m_name = newValue
+10        m_name = newValue
 End Property
 
 Public Property Get userCount() As Long
-    userCount = m_userCount
+10        userCount = m_userCount
 End Property
 
 Public Property Let userCount(newValue As Long)
-    m_userCount = newValue
+10        m_userCount = newValue
 End Property
 
 Public Property Get topic() As String
-    topic = m_topic
+10        topic = m_topic
 End Property
 
 Public Property Let topic(newValue As String)
-    m_topic = newValue
+10        m_topic = newValue
 End Property
 

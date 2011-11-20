@@ -18,25 +18,25 @@ Private m_name As String
 Private m_style As CUserStyle
 
 Public Property Get symbol() As String
-    symbol = m_symbol
+10        symbol = m_symbol
 End Property
 
 Public Property Let symbol(newValue As String)
-    m_symbol = newValue
+10        m_symbol = newValue
 End Property
 
 Public Property Get name() As String
-    name = m_name
+10        name = m_name
 End Property
 
 Public Property Let name(newValue As String)
-    m_name = newValue
+10        m_name = newValue
 End Property
 
 Public Property Get style() As CUserStyle
-    Set style = m_style
+10        Set style = m_style
 End Property
 
 Public Property Let style(newValue As CUserStyle)
-    Set m_style = newValue
+10        Set m_style = newValue
 End Property

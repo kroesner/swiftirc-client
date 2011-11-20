@@ -26,62 +26,62 @@ Private m_palette() As Long
 Public Event colourChanged()
 
 Public Sub setPalette(newPalette() As Long)
-    m_palette = newPalette
-    m_gotPalette = True
-    UserControl_Paint
+10        m_palette = newPalette
+20        m_gotPalette = True
+30        UserControl_Paint
 End Sub
 
 Public Property Get colour() As Long
-    colour = m_colour
+10        colour = m_colour
 End Property
 
 Public Property Let colour(newValue As Long)
-    m_colour = newValue
-    UserControl_Paint
+10        m_colour = newValue
+20        UserControl_Paint
 End Property
 
 Private Property Let IWindow_realWindow(RHS As Object)
-    Set m_realWindow = RHS
+10        Set m_realWindow = RHS
 End Property
 
 Private Property Get IWindow_realWindow() As Object
-    Set IWindow_realWindow = m_realWindow
+10        Set IWindow_realWindow = m_realWindow
 End Property
 
 Private Sub UserControl_Click()
-    Dim frmColourSelector As New frmColourSelector
-    
-    frmColourSelector.setPalette m_palette
-    frmColourSelector.Show vbModal, Me
-    
-    If frmColourSelector.selectedColour <> -1 Then
-        m_colour = frmColourSelector.selectedColour
-        RaiseEvent colourChanged
-        UserControl_Paint
-    End If
-    
-    Unload frmColourSelector
+          Dim frmColourSelector As New frmColourSelector
+          
+10        frmColourSelector.setPalette m_palette
+20        frmColourSelector.Show vbModal, Me
+          
+30        If frmColourSelector.selectedColour <> -1 Then
+40            m_colour = frmColourSelector.selectedColour
+50            RaiseEvent colourChanged
+60            UserControl_Paint
+70        End If
+          
+80        Unload frmColourSelector
 End Sub
 
 Private Sub UserControl_Paint()
-    If Not m_gotPalette Then
-        Exit Sub
-    End If
+10        If Not m_gotPalette Then
+20            Exit Sub
+30        End If
 
-    Dim brush As Long
-    
-    brush = CreateSolidBrush(m_palette(m_colour))
+          Dim brush As Long
+          
+40        brush = CreateSolidBrush(m_palette(m_colour))
 
-    Dim controlRect As RECT
+          Dim controlRect As RECT
 
-    controlRect = makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight)
+50        controlRect = makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight)
 
-    FillRect UserControl.hdc, controlRect, brush
-    FrameRect UserControl.hdc, controlRect, colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
-    
-    DeleteObject brush
+60        FillRect UserControl.hdc, controlRect, brush
+70        FrameRect UserControl.hdc, controlRect, colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
+          
+80        DeleteObject brush
 End Sub
 
 Private Sub UserControl_Terminate()
-    debugLog "ctlSingleColourSelector terminating"
+10        debugLog "ctlSingleColourSelector terminating"
 End Sub

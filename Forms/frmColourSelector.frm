@@ -28,27 +28,27 @@ Private m_palette() As Long
 Private m_selectedColour As Long
 
 Public Property Get selectedColour() As Long
-    selectedColour = m_selectedColour
+10        selectedColour = m_selectedColour
 End Property
 
 Public Sub setPalette(newPalette() As Long)
-    m_palette = newPalette
+10        m_palette = newPalette
 End Sub
 
 Private Sub Form_Load()
-    m_selectedColour = -1
+10        m_selectedColour = -1
 
-    Set m_colourPalette = createControl(Controls, "swiftIrc.ctlColourPalette", "palette")
-    m_colourPalette.setPalette m_palette
-    Me.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
-    MoveWindow Me.hwnd, Me.left, Me.top, 200, 75, 1
+20        Set m_colourPalette = createControl(Controls, "swiftIrc.ctlColourPalette", "palette")
+30        m_colourPalette.setPalette m_palette
+40        Me.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
+50        MoveWindow Me.hwnd, Me.left, Me.top, 200, 75, 1
 End Sub
 
 Private Sub Form_Resize()
-    getRealWindow(m_colourPalette).Move 0, 0, 200, 50
+10        getRealWindow(m_colourPalette).Move 0, 0, 200, 50
 End Sub
 
 Private Sub m_colourPalette_colourSelected(index As Long)
-    m_selectedColour = index
-    Me.Hide
+10        m_selectedColour = index
+20        Me.Hide
 End Sub

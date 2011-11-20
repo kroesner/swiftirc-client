@@ -36,8 +36,8 @@ Private Property Let ITextRenderBlock_left(RHS As Long)
 End Property
 
 Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
-    drawingData.hasBackColour = hasBackColour
-    drawingData.backColour = backColour
+10        drawingData.hasBackColour = hasBackColour
+20        drawingData.backColour = backColour
 End Sub
 
 Private Sub ITextRenderBlock_selectAll()
@@ -57,7 +57,7 @@ Private Sub ITextRenderBlock_unSelect()
 End Sub
 
 Private Property Get ITextRenderBlock_width() As Long
-    ITextRenderBlock_width = 0
+10        ITextRenderBlock_width = 0
 End Property
 
 Private Property Let ITextRenderBlock_width(RHS As Long)

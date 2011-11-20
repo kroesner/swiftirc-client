@@ -62,234 +62,234 @@ Private WithEvents m_buttonNewServerWindow As swiftIrc.ctlButton
 Attribute m_buttonNewServerWindow.VB_VarHelpID = -1
 
 Public Property Get client() As swiftIrc.SwiftIrcClient
-    Set client = m_client
+10        Set client = m_client
 End Property
 
 Public Property Let client(newValue As swiftIrc.SwiftIrcClient)
-    Set m_client = newValue
+10        Set m_client = newValue
 End Property
 
 Private Sub IColourUser_coloursUpdated()
-    UserControl.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
-    updateColours Controls
-    UserControl_Paint
+10        UserControl.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
+20        updateColours Controls
+30        UserControl_Paint
 End Sub
 
 Private Property Let IWindow_realWindow(RHS As Object)
-    Set m_realWindow = RHS
+10        Set m_realWindow = RHS
 End Property
 
 Private Property Get IWindow_realWindow() As Object
-    Set IWindow_realWindow = m_realWindow
+10        Set IWindow_realWindow = m_realWindow
 End Property
 
 Private Sub m_buttonConnect_clicked()
-    settings.quickConnectNickname = m_fieldNickname.value
-    settings.quickConnectChannel = m_fieldChannel.value
-    settings.saveSettings
-    
-    If comboProfiles.ListIndex = 0 Then
-        If LenB(settings.quickConnectNickname) = 0 Then
-            serverProfiles.quickConnectProfile.primaryNickname = m_client.generateDefaultNickname
-            serverProfiles.quickConnectProfile.backupNickname = m_client.generateDefaultNickname
-            serverProfiles.quickConnectProfile.realName = m_client.generateDefaultNickname
-        Else
-            serverProfiles.quickConnectProfile.primaryNickname = settings.quickConnectNickname
-            serverProfiles.quickConnectProfile.backupNickname = settings.quickConnectNickname & "_"
-            serverProfiles.quickConnectProfile.realName = settings.quickConnectNickname
-        End If
-    
-        If LenB(settings.quickConnectPassword) <> 0 Then
-            serverProfiles.quickConnectProfile.enableAutoIdentify = True
-            serverProfiles.quickConnectProfile.nicknamePassword = settings.quickConnectPassword
-        Else
-            serverProfiles.quickConnectProfile.enableAutoIdentify = False
-        End If
-        
-        serverProfiles.quickConnectProfile.clearAutoJoinChannels
-        
-        If LenB(settings.quickConnectChannel) <> 0 Then
-            serverProfiles.quickConnectProfile.enableAutoJoin = True
-            serverProfiles.quickConnectProfile.addAutoJoinChannel settings.quickConnectChannel, vbNullString
-        Else
-            serverProfiles.quickConnectProfile.enableAutoJoin = False
-        End If
-        
-        settings.setting("lastServerProfile", estString) = vbNullString
-        RaiseEvent profileConnect(serverProfiles.quickConnectProfile)
-    Else
-        Dim profile As CServerProfile
-        
-        Set profile = serverProfiles.profileItem(comboProfiles.ListIndex)
-        settings.setting("lastServerProfile", estString) = profile.name
-        
-        RaiseEvent profileConnect(profile)
-    End If
+10        settings.quickConnectNickname = m_fieldNickname.value
+20        settings.quickConnectChannel = m_fieldChannel.value
+30        settings.saveSettings
+          
+40        If comboProfiles.ListIndex = 0 Then
+50            If LenB(settings.quickConnectNickname) = 0 Then
+60                serverProfiles.quickConnectProfile.primaryNickname = m_client.generateDefaultNickname
+70                serverProfiles.quickConnectProfile.backupNickname = m_client.generateDefaultNickname
+80                serverProfiles.quickConnectProfile.realName = m_client.generateDefaultNickname
+90            Else
+100               serverProfiles.quickConnectProfile.primaryNickname = settings.quickConnectNickname
+110               serverProfiles.quickConnectProfile.backupNickname = settings.quickConnectNickname & "_"
+120               serverProfiles.quickConnectProfile.realName = settings.quickConnectNickname
+130           End If
+          
+140           If LenB(settings.quickConnectPassword) <> 0 Then
+150               serverProfiles.quickConnectProfile.enableAutoIdentify = True
+160               serverProfiles.quickConnectProfile.nicknamePassword = settings.quickConnectPassword
+170           Else
+180               serverProfiles.quickConnectProfile.enableAutoIdentify = False
+190           End If
+              
+200           serverProfiles.quickConnectProfile.clearAutoJoinChannels
+              
+210           If LenB(settings.quickConnectChannel) <> 0 Then
+220               serverProfiles.quickConnectProfile.enableAutoJoin = True
+230               serverProfiles.quickConnectProfile.addAutoJoinChannel settings.quickConnectChannel, vbNullString
+240           Else
+250               serverProfiles.quickConnectProfile.enableAutoJoin = False
+260           End If
+              
+270           settings.setting("lastServerProfile", estString) = vbNullString
+280           RaiseEvent profileConnect(serverProfiles.quickConnectProfile)
+290       Else
+              Dim profile As CServerProfile
+              
+300           Set profile = serverProfiles.profileItem(comboProfiles.ListIndex)
+310           settings.setting("lastServerProfile", estString) = profile.name
+              
+320           RaiseEvent profileConnect(profile)
+330       End If
 End Sub
 
 Private Sub m_buttonNewServerWindow_clicked()
-    RaiseEvent newSession
+10        RaiseEvent newSession
 End Sub
 
 Private Sub m_buttonOptions_clicked()
-    Dim options As New frmOptions
-    
-    options.client = m_client
-    options.Show vbModal, Me
-    
-    Unload options
+          Dim options As New frmOptions
+          
+10        options.client = m_client
+20        options.Show vbModal, Me
+          
+30        Unload options
 End Sub
 
 Private Sub setProfile()
-    If comboProfiles.ListIndex = 0 Then
-        m_fieldNickname.visible = True
-        m_fieldChannel.visible = True
-        m_buttonRegister.visible = False
-        m_buttonSetPassword.visible = True
-        
-        m_labelProfileName.visible = False
-        m_labelProfileServer.visible = False
-        m_labelProfileNickname.visible = False
-    Else
-        m_fieldNickname.visible = False
-        m_fieldChannel.visible = False
-        m_buttonRegister.visible = False
-        m_buttonSetPassword.visible = False
-        
-        m_labelProfileName.caption = "Profile name: " & serverProfiles.profileItem(comboProfiles.ListIndex).name
-        m_labelProfileServer.caption = "Server hostname: " & serverProfiles.profileItem(comboProfiles.ListIndex).hostname
-        m_labelProfileNickname.caption = "Nickname: " & serverProfiles.profileItem(comboProfiles.ListIndex).primaryNickname
-         
-        m_labelProfileName.visible = True
-        m_labelProfileServer.visible = True
-        m_labelProfileNickname.visible = True
-    End If
-    
-    UserControl_Paint
+10        If comboProfiles.ListIndex = 0 Then
+20            m_fieldNickname.visible = True
+30            m_fieldChannel.visible = True
+40            m_buttonRegister.visible = False
+50            m_buttonSetPassword.visible = True
+              
+60            m_labelProfileName.visible = False
+70            m_labelProfileServer.visible = False
+80            m_labelProfileNickname.visible = False
+90        Else
+100           m_fieldNickname.visible = False
+110           m_fieldChannel.visible = False
+120           m_buttonRegister.visible = False
+130           m_buttonSetPassword.visible = False
+              
+140           m_labelProfileName.caption = "Profile name: " & serverProfiles.profileItem(comboProfiles.ListIndex).name
+150           m_labelProfileServer.caption = "Server hostname: " & serverProfiles.profileItem(comboProfiles.ListIndex).hostname
+160           m_labelProfileNickname.caption = "Nickname: " & serverProfiles.profileItem(comboProfiles.ListIndex).primaryNickname
+               
+170           m_labelProfileName.visible = True
+180           m_labelProfileServer.visible = True
+190           m_labelProfileNickname.visible = True
+200       End If
+          
+210       UserControl_Paint
 End Sub
 
 Private Sub comboProfiles_Click()
-    setProfile
+10        setProfile
 End Sub
 
 Private Sub m_buttonRegister_clicked()
-    Dim register As New frmRegisterPhase1
-    
-    register.init m_client
-    register.Show vbModal, Me
-    Unload register
+          Dim register As New frmRegisterPhase1
+          
+10        register.init m_client
+20        register.Show vbModal, Me
+30        Unload register
 End Sub
 
 Private Sub m_buttonSetPassword_clicked()
-    Dim result As Variant
-    
-    result = requestInput("Auto-identify", "Enter your nickname password", vbNullString, Me, True)
-    
-    If result = False Or result = vbNullString Then
-        Exit Sub
-    End If
-    
-    settings.quickConnectPassword = result
-    settings.saveSettings
+          Dim result As Variant
+          
+10        result = requestInput("Auto-identify", "Enter your nickname password", vbNullString, Me, True)
+          
+20        If result = False Or result = vbNullString Then
+30            Exit Sub
+40        End If
+          
+50        settings.quickConnectPassword = result
+60        settings.saveSettings
 End Sub
 
 Private Sub m_serverProfiles_profilesChanged()
-    If comboProfiles.ListIndex <> 0 Then
-        Dim currentProfileName As String
-        currentProfileName = comboProfiles.list(comboProfiles.ListIndex)
-        
-        updateProfiles
-        
-        Dim count As Long
-        
-        For count = 1 To comboProfiles.ListCount - 1
-            If StrComp(comboProfiles.list(count), currentProfileName, vbTextCompare) = 0 Then
-                comboProfiles.ListIndex = count
-                setProfile
-                Exit Sub
-            End If
-        Next count
-        
-        comboProfiles.ListIndex = 0
-        setProfile
-    Else
-        updateProfiles
-        comboProfiles.ListIndex = 0
-        setProfile
-    End If
+10        If comboProfiles.ListIndex <> 0 Then
+              Dim currentProfileName As String
+20            currentProfileName = comboProfiles.list(comboProfiles.ListIndex)
+              
+30            updateProfiles
+              
+              Dim count As Long
+              
+40            For count = 1 To comboProfiles.ListCount - 1
+50                If StrComp(comboProfiles.list(count), currentProfileName, vbTextCompare) = 0 Then
+60                    comboProfiles.ListIndex = count
+70                    setProfile
+80                    Exit Sub
+90                End If
+100           Next count
+              
+110           comboProfiles.ListIndex = 0
+120           setProfile
+130       Else
+140           updateProfiles
+150           comboProfiles.ListIndex = 0
+160           setProfile
+170       End If
 End Sub
 
 Private Sub UserControl_Initialize()
-    initControls
-    IColourUser_coloursUpdated
-    
-    Set m_serverProfiles = serverProfiles
-    
-    m_fieldNickname.value = settings.quickConnectNickname
-    m_fieldChannel.value = settings.quickConnectChannel
+10        initControls
+20        IColourUser_coloursUpdated
+          
+30        Set m_serverProfiles = serverProfiles
+          
+40        m_fieldNickname.value = settings.quickConnectNickname
+50        m_fieldChannel.value = settings.quickConnectChannel
 End Sub
 
 Private Sub updateProfiles()
-    Dim count As Long
-    
-    comboProfiles.clear
-    comboProfiles.addItem "Quick connect", 0
-    
-    For count = 1 To serverProfiles.profileCount
-        comboProfiles.addItem serverProfiles.profileItem(count).name
-    Next count
+          Dim count As Long
+          
+10        comboProfiles.clear
+20        comboProfiles.addItem "Quick connect", 0
+          
+30        For count = 1 To serverProfiles.profileCount
+40            comboProfiles.addItem serverProfiles.profileItem(count).name
+50        Next count
 End Sub
 
 Private Sub initControls()
-    Set m_fieldNickname = addField(Controls, "Nickname:", 225, 35, 200, 20)
-    Set m_fieldChannel = addField(Controls, "Channel:", 225, 60, 200, 20)
-    
-    m_fieldNickname.justification = fjRight
-    m_fieldChannel.justification = fjRight
-    
-    m_fieldNickname.mask = fmIrcNickname
-    
-    Set m_buttonRegister = addButton(Controls, "Register nickname", 450, 35, 125, 20)
-    
-    m_buttonRegister.visible = False
-    
-    Set m_buttonSetPassword = addButton(Controls, "Set-up auto-identify", 450, 35, 125, 20)
-    
-    m_labelManager.addLabel "Select profile:", ltSubHeading, 225, 5
-    
-    Set m_labelProfileName = m_labelManager.addLabel("Name", ltNormal, 255, 35)
-    Set m_labelProfileServer = m_labelManager.addLabel("Server", ltNormal, 255, 50)
-    Set m_labelProfileNickname = m_labelManager.addLabel("Nick", ltNormal, 255, 65)
-    
-    comboProfiles.left = 325
-    comboProfiles.top = 5
-    comboProfiles.width = 150
+10        Set m_fieldNickname = addField(Controls, "Nickname:", 225, 35, 200, 20)
+20        Set m_fieldChannel = addField(Controls, "Channel:", 225, 60, 200, 20)
+          
+30        m_fieldNickname.justification = fjRight
+40        m_fieldChannel.justification = fjRight
+          
+50        m_fieldNickname.mask = fmIrcNickname
+          
+60        Set m_buttonRegister = addButton(Controls, "Register nickname", 450, 35, 125, 20)
+          
+70        m_buttonRegister.visible = False
+          
+80        Set m_buttonSetPassword = addButton(Controls, "Set-up auto-identify", 450, 35, 125, 20)
+          
+90        m_labelManager.addLabel "Select profile:", ltSubHeading, 225, 5
+          
+100       Set m_labelProfileName = m_labelManager.addLabel("Name", ltNormal, 255, 35)
+110       Set m_labelProfileServer = m_labelManager.addLabel("Server", ltNormal, 255, 50)
+120       Set m_labelProfileNickname = m_labelManager.addLabel("Nick", ltNormal, 255, 65)
+          
+130       comboProfiles.left = 325
+140       comboProfiles.top = 5
+150       comboProfiles.width = 150
 
-    updateProfiles
-    comboProfiles.ListIndex = 0
-    
-    Dim count As Long
-    Dim lastProfile As String
-    
-    lastProfile = settings.setting("lastServerProfile", estString)
-    
-    If LenB(lastProfile) <> 0 Then
-        For count = 1 To serverProfiles.profileCount
-            If StrComp(serverProfiles.profileItem(count).name, lastProfile, vbTextCompare) = 0 Then
-                comboProfiles.ListIndex = count
-            End If
-        Next count
-    End If
+160       updateProfiles
+170       comboProfiles.ListIndex = 0
+          
+          Dim count As Long
+          Dim lastProfile As String
+          
+180       lastProfile = settings.setting("lastServerProfile", estString)
+          
+190       If LenB(lastProfile) <> 0 Then
+200           For count = 1 To serverProfiles.profileCount
+210               If StrComp(serverProfiles.profileItem(count).name, lastProfile, vbTextCompare) = 0 Then
+220                   comboProfiles.ListIndex = count
+230               End If
+240           Next count
+250       End If
 
-    setProfile
-    
-    Set m_buttonConnect = addButton(Controls, "Connect", 315, 90, 75, 20)
-    Set m_buttonOptions = addButton(Controls, "Options", 10, 10, 125, 20)
-    Set m_buttonNewServerWindow = addButton(Controls, "New server window", 10, 35, 125, 20)
+260       setProfile
+          
+270       Set m_buttonConnect = addButton(Controls, "Connect", 315, 90, 75, 20)
+280       Set m_buttonOptions = addButton(Controls, "Options", 10, 10, 125, 20)
+290       Set m_buttonNewServerWindow = addButton(Controls, "New server window", 10, 35, 125, 20)
 End Sub
 
 Private Sub UserControl_Paint()
-    FillRect UserControl.hdc, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
-        colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
-    m_labelManager.renderLabels UserControl.hdc
+10        FillRect UserControl.hdc, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
+              colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
+20        m_labelManager.renderLabels UserControl.hdc
 End Sub

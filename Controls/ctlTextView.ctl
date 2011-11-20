@@ -109,337 +109,337 @@ Private m_scrollbarEnabled As Boolean
 Private m_fontManager As CFontManager
 
 Private Sub scrolled()
-    If m_currentRealLine >= m_realLineCount Then
-        m_atBottom = True
-    Else
-        m_atBottom = False
-    End If
-    
-    If m_wasOverUrl Then
-        UserControl.MousePointer = 0
-        m_wasOverUrl = False
-    End If
+10        If m_currentRealLine >= m_realLineCount Then
+20            m_atBottom = True
+30        Else
+40            m_atBottom = False
+50        End If
+          
+60        If m_wasOverUrl Then
+70            UserControl.MousePointer = 0
+80            m_wasOverUrl = False
+90        End If
 End Sub
 
 Public Property Get logName() As String
-    logName = m_logBaseName
+10        logName = m_logBaseName
 End Property
 
 Public Property Let logName(newValue As String)
-    m_logBaseName = newValue
+10        m_logBaseName = newValue
 End Property
 
 Public Property Get enableLogging() As Boolean
-    enableLogging = m_enableLogging
+10        enableLogging = m_enableLogging
 End Property
 
 Public Property Let enableLogging(newValue As Boolean)
-    m_enableLogging = newValue
+10        m_enableLogging = newValue
 End Property
 
 Public Property Get ignoreSeperators() As Boolean
-    ignoreSeperators = m_drawingData.ignoreSeperators
+10        ignoreSeperators = m_drawingData.ignoreSeperators
 End Property
 
 Public Property Let ignoreSeperators(newValue As Boolean)
-    m_drawingData.ignoreSeperators = newValue
+10        m_drawingData.ignoreSeperators = newValue
 End Property
 
 Public Sub clear()
-    m_currentRealLine = 1
-    m_currentVirtLine = 1
-    m_currentPhysLine = 1
-    m_realLineCount = 1
+10        m_currentRealLine = 1
+20        m_currentVirtLine = 1
+30        m_currentPhysLine = 1
+40        m_realLineCount = 1
 
-    scrolled
+50        scrolled
 
-    m_visibleLines.clear
-    m_lines.clear
-    m_allLines.clear
-    refresh
+60        m_visibleLines.clear
+70        m_lines.clear
+80        m_allLines.clear
+90        refresh
 End Sub
 
 Private Sub updateColours()
-    m_drawingData.defaultForeColour = g_textViewFore
-    m_drawingData.defaultBackColour = g_textViewBack
-    reDraw
+10        m_drawingData.defaultForeColour = g_textViewFore
+20        m_drawingData.defaultBackColour = g_textViewBack
+30        reDraw
 End Sub
 
 Public Property Let eventManager(newValue As CEventManager)
-    Set m_eventManager = newValue
+10        Set m_eventManager = newValue
 End Property
 
 Public Property Get foreColour() As Byte
-    foreColour = m_drawingData.defaultForeColour
+10        foreColour = m_drawingData.defaultForeColour
 End Property
 
 Public Property Let foreColour(newValue As Byte)
-    m_drawingData.defaultForeColour = newValue
-    reDraw
+10        m_drawingData.defaultForeColour = newValue
+20        reDraw
 End Property
 
 Public Property Get backColour() As Byte
-    backColour = m_drawingData.defaultBackColour
+10        backColour = m_drawingData.defaultBackColour
 End Property
 
 Public Property Let backColour(newValue As Byte)
-    m_drawingData.defaultBackColour = newValue
-    reDraw
+10        m_drawingData.defaultBackColour = newValue
+20        reDraw
 End Property
 
 Public Sub addEvent(eventName As String, params() As String)
-    addEventEx eventName, Nothing, vbNullString, TVE_NONE, params
+10        addEventEx eventName, Nothing, vbNullString, TVE_NONE, params
 End Sub
 
 Public Sub addEventEx(eventName As String, userStyle As CUserStyle, username As String, flags As _
     Long, params() As String)
-    Dim line As New CLine
-    Dim aEvent As CEvent
-    
-   On Error GoTo addEventEx_Error
+          Dim line As New CLine
+          Dim aEvent As CEvent
+          
+10       On Error GoTo addEventEx_Error
 
-    Set aEvent = m_eventManager.findEvent(eventName)
-    
-    If aEvent Is Nothing Then
-        Exit Sub
-    End If
-    
-    line.init aEvent, flags, userStyle, username, params
-    
-    m_allLines.Add line
-    
-    If Not line.shouldShow Then
-        Exit Sub
-    End If
-    
-    If m_lines.count > 0 Then
-        If m_lines.item(m_lines.count).seperatorBottom(m_drawingData.ignoreSeperators) Then
-            line.seperatorAbove = True
-        End If
-    End If
-    
-    m_lines.Add line
-    
-    If m_atBottom Then
-        m_realLineCount = m_realLineCount + 1
-        
-        If UserControl.Extender.visible = True Then
-            wrap line, True
-            scrollDown m_realLineCount - m_currentRealLine
-        Else
-            If m_lines.count > 1 Then
-                m_currentRealLine = m_currentRealLine + 1
-                m_currentVirtLine = m_lines.count
-                m_currentPhysLine = 1
-            End If
-        End If
-    Else
-        m_realLineCount = m_realLineCount + 1
-    End If
-    
-    line.wasDisplayed = True
-    removeOldLines
-    
-    If m_realLineCount = 1 Then
-        reDraw
-    End If
-    
-    updateScrollBar
-    
-    logWrite line
-    
-   On Error GoTo 0
-   Exit Sub
+20        Set aEvent = m_eventManager.findEvent(eventName)
+          
+30        If aEvent Is Nothing Then
+40            Exit Sub
+50        End If
+          
+60        line.init aEvent, flags, userStyle, username, params
+          
+70        m_allLines.Add line
+          
+80        If Not line.shouldShow Then
+90            Exit Sub
+100       End If
+          
+110       If m_lines.count > 0 Then
+120           If m_lines.item(m_lines.count).seperatorBottom(m_drawingData.ignoreSeperators) Then
+130               line.seperatorAbove = True
+140           End If
+150       End If
+          
+160       m_lines.Add line
+          
+170       If m_atBottom Then
+180           m_realLineCount = m_realLineCount + 1
+              
+190           If UserControl.Extender.visible = True Then
+200               wrap line, True
+210               scrollDown m_realLineCount - m_currentRealLine
+220           Else
+230               If m_lines.count > 1 Then
+240                   m_currentRealLine = m_currentRealLine + 1
+250                   m_currentVirtLine = m_lines.count
+260                   m_currentPhysLine = 1
+270               End If
+280           End If
+290       Else
+300           m_realLineCount = m_realLineCount + 1
+310       End If
+          
+320       line.wasDisplayed = True
+330       removeOldLines
+          
+340       If m_realLineCount = 1 Then
+350           reDraw
+360       End If
+          
+370       updateScrollBar
+          
+380       logWrite line
+          
+390      On Error GoTo 0
+400      Exit Sub
 
 addEventEx_Error:
-    handleError "addEventEx", Err.Number, Err.Description, Erl, eventName
+410       handleError "addEventEx", Err.Number, Err.Description, Erl, eventName
 End Sub
 
 Public Sub addRawText(format As String, params() As String)
-    addRawTextEx eventColours.otherText, 0, format, Nothing, vbNullString, TVE_NONE, params
+10        addRawTextEx eventColours.otherText, 0, format, Nothing, vbNullString, TVE_NONE, params
 End Sub
 
 Public Sub addRawTextEx(eventColour As CEventColour, foreColour As Byte, format As String, _
     userStyle As CUserStyle, username As String, flags As Long, params() As String)
-    
-    Dim line As New CLine
-    
-    On Error GoTo addRawTextEx_Error
+          
+          Dim line As New CLine
+          
+10        On Error GoTo addRawTextEx_Error
 
-    line.initEx eventColour, foreColour, format, userStyle, username, flags Or TVE_NOEVENT Or _
-        TVE_VISIBLE, params
-    
-    m_allLines.Add line
-    m_lines.Add line
-    
-    If m_atBottom Then
-        If UserControl.Extender.visible Then
-            m_realLineCount = m_realLineCount + 1
-            wrap line, True
-            scrollDown m_realLineCount - m_currentRealLine
-        Else
-            If m_lines.count > 1 Then
-                m_currentRealLine = m_currentRealLine + 1
-                m_currentVirtLine = m_lines.count
-                m_currentPhysLine = 1
-                m_realLineCount = m_realLineCount + 1
-            End If
-        End If
-    Else
-        m_realLineCount = m_realLineCount + 1
-    End If
-    
-    line.wasDisplayed = True
+20        line.initEx eventColour, foreColour, format, userStyle, username, flags Or TVE_NOEVENT Or _
+              TVE_VISIBLE, params
+          
+30        m_allLines.Add line
+40        m_lines.Add line
+          
+50        If m_atBottom Then
+60            If UserControl.Extender.visible Then
+70                m_realLineCount = m_realLineCount + 1
+80                wrap line, True
+90                scrollDown m_realLineCount - m_currentRealLine
+100           Else
+110               If m_lines.count > 1 Then
+120                   m_currentRealLine = m_currentRealLine + 1
+130                   m_currentVirtLine = m_lines.count
+140                   m_currentPhysLine = 1
+150                   m_realLineCount = m_realLineCount + 1
+160               End If
+170           End If
+180       Else
+190           m_realLineCount = m_realLineCount + 1
+200       End If
+          
+210       line.wasDisplayed = True
 
-    If m_realLineCount = 1 Then
-        reDraw
-    End If
+220       If m_realLineCount = 1 Then
+230           reDraw
+240       End If
 
-    removeOldLines
-    updateScrollBar
-    
-    logWrite line
+250       removeOldLines
+260       updateScrollBar
+          
+270       logWrite line
 
-   On Error GoTo 0
-   Exit Sub
+280      On Error GoTo 0
+290      Exit Sub
 
 addRawTextEx_Error:
-    handleError "addRawTextEx", Err.Number, Err.Description, Erl, format
+300       handleError "addRawTextEx", Err.Number, Err.Description, Erl, format
 End Sub
 
 Private Sub removeOldLines()
-    If m_lines.count <= MAX_LINES Then
-        Exit Sub
-    End If
+10        If m_lines.count <= MAX_LINES Then
+20            Exit Sub
+30        End If
 
-    Dim lineCount As Long
-    
-    lineCount = m_lines.count - MAX_LINES
-    
-    If lineCount > MAX_REMOVE_LINES Then
-        lineCount = MAX_REMOVE_LINES
-    End If
+          Dim lineCount As Long
+          
+40        lineCount = m_lines.count - MAX_LINES
+          
+50        If lineCount > MAX_REMOVE_LINES Then
+60            lineCount = MAX_REMOVE_LINES
+70        End If
 
-    If m_currentVirtLine <= lineCount Or m_currentRealLine <= m_pageLines + MAX_REMOVE_LINES Then
-        Exit Sub
-    End If
-    
-    If lineCount = 0 Then
-        Exit Sub
-    End If
-    
-    Dim count As Long
-    
-    For count = 1 To lineCount
-        m_realLineCount = m_realLineCount - m_lines.item(1).physLineCount
-        m_currentRealLine = m_currentRealLine - m_lines.item(1).physLineCount
-        m_currentVirtLine = m_currentVirtLine - 1
-        m_lines.Remove 1
-    Next count
-    
-    Dim removed As Long
-    
-    For count = 1 To m_allLines.count
-        If removed = lineCount Then
-            Exit For
-        End If
-        
-        If m_allLines.item(1).wasDisplayed Then
-            removed = removed + 1
-        End If
-        
-        m_allLines.Remove 1
-    Next count
+80        If m_currentVirtLine <= lineCount Or m_currentRealLine <= m_pageLines + MAX_REMOVE_LINES Then
+90            Exit Sub
+100       End If
+          
+110       If lineCount = 0 Then
+120           Exit Sub
+130       End If
+          
+          Dim count As Long
+          
+140       For count = 1 To lineCount
+150           m_realLineCount = m_realLineCount - m_lines.item(1).physLineCount
+160           m_currentRealLine = m_currentRealLine - m_lines.item(1).physLineCount
+170           m_currentVirtLine = m_currentVirtLine - 1
+180           m_lines.Remove 1
+190       Next count
+          
+          Dim removed As Long
+          
+200       For count = 1 To m_allLines.count
+210           If removed = lineCount Then
+220               Exit For
+230           End If
+              
+240           If m_allLines.item(1).wasDisplayed Then
+250               removed = removed + 1
+260           End If
+              
+270           m_allLines.Remove 1
+280       Next count
 End Sub
 
 Public Sub updateVisibility()
-    calculateEventVisibility
+10        calculateEventVisibility
 End Sub
 
 Private Sub calculateEventVisibility()
-    Dim count As Integer
-    Dim line As CLine
-    Dim origVirtLine As Integer
-    
-    origVirtLine = m_currentVirtLine
-    
-    For count = 1 To m_lines.count
-        Set line = m_lines.item(count)
-    
-        If Not line.shouldShow Then
-            m_realLineCount = m_realLineCount - line.physLineCount
-            
-            If count <= origVirtLine Then
-                m_currentRealLine = m_currentRealLine - line.physLineCount
-                m_currentVirtLine = m_currentVirtLine - 1
-            End If
-            
-            If line.wrapped Then
-                line.clearWrap
-            End If
-            
-            line.wasDisplayed = False
-        End If
-    Next count
-    
-    m_lines.clear
-    
-    Dim linesAdded As Boolean
-    
-    For count = 1 To m_allLines.count
-        Set line = m_allLines.item(count)
-        
-        If line.shouldShow Then
-            If Not line.wasDisplayed Then
-                linesAdded = True
-            
-                m_realLineCount = m_realLineCount + line.physLineCount
-                
-                If count <= m_currentVirtLine Then
-                    m_currentRealLine = m_currentRealLine + line.physLineCount
-                    m_currentVirtLine = m_currentVirtLine + 1
-                End If
-                
-                line.wasDisplayed = True
-            End If
-            
-            m_lines.Add line
-        End If
-    Next count
-    
-    If linesAdded Then
-        If m_currentVirtLine = 0 Then
-            m_currentVirtLine = 1
-            m_currentPhysLine = 1
-            m_currentRealLine = 1
-        End If
-    End If
-    
-    If m_lines.count > 0 Then
-        If m_currentPhysLine > m_lines.item(m_currentVirtLine).physLineCount Then
-            m_currentPhysLine = m_lines.item(m_currentVirtLine).physLineCount
-        End If
-    End If
-    
-    refresh
+          Dim count As Integer
+          Dim line As CLine
+          Dim origVirtLine As Integer
+          
+10        origVirtLine = m_currentVirtLine
+          
+20        For count = 1 To m_lines.count
+30            Set line = m_lines.item(count)
+          
+40            If Not line.shouldShow Then
+50                m_realLineCount = m_realLineCount - line.physLineCount
+                  
+60                If count <= origVirtLine Then
+70                    m_currentRealLine = m_currentRealLine - line.physLineCount
+80                    m_currentVirtLine = m_currentVirtLine - 1
+90                End If
+                  
+100               If line.wrapped Then
+110                   line.clearWrap
+120               End If
+                  
+130               line.wasDisplayed = False
+140           End If
+150       Next count
+          
+160       m_lines.clear
+          
+          Dim linesAdded As Boolean
+          
+170       For count = 1 To m_allLines.count
+180           Set line = m_allLines.item(count)
+              
+190           If line.shouldShow Then
+200               If Not line.wasDisplayed Then
+210                   linesAdded = True
+                  
+220                   m_realLineCount = m_realLineCount + line.physLineCount
+                      
+230                   If count <= m_currentVirtLine Then
+240                       m_currentRealLine = m_currentRealLine + line.physLineCount
+250                       m_currentVirtLine = m_currentVirtLine + 1
+260                   End If
+                      
+270                   line.wasDisplayed = True
+280               End If
+                  
+290               m_lines.Add line
+300           End If
+310       Next count
+          
+320       If linesAdded Then
+330           If m_currentVirtLine = 0 Then
+340               m_currentVirtLine = 1
+350               m_currentPhysLine = 1
+360               m_currentRealLine = 1
+370           End If
+380       End If
+          
+390       If m_lines.count > 0 Then
+400           If m_currentPhysLine > m_lines.item(m_currentVirtLine).physLineCount Then
+410               m_currentPhysLine = m_lines.item(m_currentVirtLine).physLineCount
+420           End If
+430       End If
+          
+440       refresh
 End Sub
 
 Private Sub IColourUser_coloursUpdated()
-    m_drawingData.setPalette colourThemes.currentTheme.getPalette
-    m_drawingData.defaultBackColour = g_textViewBack
-    m_drawingData.defaultForeColour = g_textViewFore
-    hardRedraw
+10        m_drawingData.setPalette colourThemes.currentTheme.getPalette
+20        m_drawingData.defaultBackColour = g_textViewBack
+30        m_drawingData.defaultForeColour = g_textViewFore
+40        hardRedraw
 End Sub
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+10        Set m_fontManager = RHS
 End Property
 
 Private Sub IFontUser_fontsUpdated()
-    m_fontHeight = m_fontManager.fontHeight
-    m_drawingData.fontHeight = m_fontHeight
-    m_drawingData.fontManager = m_fontManager
-    refresh
+10        m_fontHeight = m_fontManager.fontHeight
+20        m_drawingData.fontHeight = m_fontHeight
+30        m_drawingData.fontManager = m_fontManager
+40        refresh
 End Sub
 
 Private Property Let ISubclass_MsgResponse(ByVal RHS As EMsgResponse)
@@ -447,1053 +447,1053 @@ Private Property Let ISubclass_MsgResponse(ByVal RHS As EMsgResponse)
 End Property
 
 Private Property Get ISubclass_MsgResponse() As EMsgResponse
-    Select Case CurrentMessage
-        Case WM_SYSCOLORCHANGE
-            ISubclass_MsgResponse = emrPreprocess
-        Case Else
-            ISubclass_MsgResponse = emrConsume
-    End Select
+10        Select Case CurrentMessage
+              Case WM_SYSCOLORCHANGE
+20                ISubclass_MsgResponse = emrPreprocess
+30            Case Else
+40                ISubclass_MsgResponse = emrConsume
+50        End Select
 End Property
 
 Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, _
     ByVal lParam As Long) As Long
-    Select Case iMsg
-        Case WM_VSCROLL
-            Dim scrollCode As Integer
-            
-            scrollCode = LoWord(wParam)
-            processScroll scrollCode
-        Case WM_MOUSEWHEEL
-            Dim accumDelta As Integer
-            
-            accumDelta = HiWord(wParam)
-            processMouseWheel accumDelta
-    End Select
+10        Select Case iMsg
+              Case WM_VSCROLL
+                  Dim scrollCode As Integer
+                  
+20                scrollCode = LoWord(wParam)
+30                processScroll scrollCode
+40            Case WM_MOUSEWHEEL
+                  Dim accumDelta As Integer
+                  
+50                accumDelta = HiWord(wParam)
+60                processMouseWheel accumDelta
+70        End Select
 End Function
 
 Public Sub processMouseWheel(ByVal accumDelta As Integer)
-    Dim lines As Long
-    
-    Do While accumDelta >= 40
-        lines = lines + 1
-        accumDelta = accumDelta - 40
-    Loop
-    
-    If lines > 0 Then
-        If lines >= m_currentRealLine Then
-            lines = m_currentRealLine - 1
-        End If
-        
-        scrollUp lines
-    End If
-    
-    lines = 0
-    
-    Do While accumDelta <= -40
-        lines = lines + 1
-        accumDelta = accumDelta + 40
-    Loop
-    
-    If lines > 0 Then
-        If lines > m_realLineCount - m_currentRealLine Then
-            lines = m_realLineCount - m_currentRealLine
-        End If
-        
-        scrollDown lines
-    End If
-    
-    updateScrollBar
+          Dim lines As Long
+          
+10        Do While accumDelta >= 40
+20            lines = lines + 1
+30            accumDelta = accumDelta - 40
+40        Loop
+          
+50        If lines > 0 Then
+60            If lines >= m_currentRealLine Then
+70                lines = m_currentRealLine - 1
+80            End If
+              
+90            scrollUp lines
+100       End If
+          
+110       lines = 0
+          
+120       Do While accumDelta <= -40
+130           lines = lines + 1
+140           accumDelta = accumDelta + 40
+150       Loop
+          
+160       If lines > 0 Then
+170           If lines > m_realLineCount - m_currentRealLine Then
+180               lines = m_realLineCount - m_currentRealLine
+190           End If
+              
+200           scrollDown lines
+210       End If
+          
+220       updateScrollBar
 End Sub
 
 Private Property Let IWindow_realWindow(RHS As Object)
-    Set m_realWindow = RHS
+10        Set m_realWindow = RHS
 End Property
 
 Private Property Get IWindow_realWindow() As Object
-    Set IWindow_realWindow = m_realWindow
+10        Set IWindow_realWindow = m_realWindow
 End Property
 
 Private Sub UserControl_DblClick()
-    RaiseEvent doubleClick
+10        RaiseEvent doubleClick
 End Sub
 
 Private Sub UserControl_Initialize()
-    m_logHandle = -1
+10        m_logHandle = -1
 
-    m_fontHeight = 20
+20        m_fontHeight = 20
 
-    m_drawingData.setPalette colourThemes.currentTheme.getPalette
-    m_drawingData.fontHeight = m_fontHeight
-    m_drawingData.fontManager = m_fontManager
+30        m_drawingData.setPalette colourThemes.currentTheme.getPalette
+40        m_drawingData.fontHeight = m_fontHeight
+50        m_drawingData.fontManager = m_fontManager
 
-    initScrollBar
-    initMessages
+60        initScrollBar
+70        initMessages
 
-    m_currentRealLine = 1
-    m_currentVirtLine = 1
-    m_currentPhysLine = 1
-    
-    m_atBottom = True
-    
-    updateScrollBar
-    
-    updateColours
+80        m_currentRealLine = 1
+90        m_currentVirtLine = 1
+100       m_currentPhysLine = 1
+          
+110       m_atBottom = True
+          
+120       updateScrollBar
+          
+130       updateColours
 End Sub
 
 Private Sub initMessages()
-    AttachMessage Me, UserControl.hwnd, WM_CTLCOLORSCROLLBAR
-    AttachMessage Me, UserControl.hwnd, WM_VSCROLL
-    AttachMessage Me, UserControl.hwnd, WM_MOUSEWHEEL
-    AttachMessage Me, UserControl.hwnd, WM_SYSCOLORCHANGE
+10        AttachMessage Me, UserControl.hwnd, WM_CTLCOLORSCROLLBAR
+20        AttachMessage Me, UserControl.hwnd, WM_VSCROLL
+30        AttachMessage Me, UserControl.hwnd, WM_MOUSEWHEEL
+40        AttachMessage Me, UserControl.hwnd, WM_SYSCOLORCHANGE
 End Sub
 
 Private Sub deInitMessages()
-    DetachMessage Me, UserControl.hwnd, WM_CTLCOLORSCROLLBAR
-    DetachMessage Me, UserControl.hwnd, WM_VSCROLL
-    DetachMessage Me, UserControl.hwnd, WM_MOUSEWHEEL
-    DetachMessage Me, UserControl.hwnd, WM_SYSCOLORCHANGE
+10        DetachMessage Me, UserControl.hwnd, WM_CTLCOLORSCROLLBAR
+20        DetachMessage Me, UserControl.hwnd, WM_VSCROLL
+30        DetachMessage Me, UserControl.hwnd, WM_MOUSEWHEEL
+40        DetachMessage Me, UserControl.hwnd, WM_SYSCOLORCHANGE
 End Sub
 
 Private Sub scrollTop()
-    m_currentVirtLine = 1
-    m_currentPhysLine = 1
-    m_currentRealLine = 1
-    
-    scrolled
-    
-    updateScrollBar
-    reDraw
+10        m_currentVirtLine = 1
+20        m_currentPhysLine = 1
+30        m_currentRealLine = 1
+          
+40        scrolled
+          
+50        updateScrollBar
+60        reDraw
 End Sub
 
 Private Sub scrollBottom()
-    Dim line As CLine
-    
-    m_currentVirtLine = m_lines.count
-    
-    Set line = m_lines.item(m_currentVirtLine)
-    
-    wrap line, True
-    
-    m_currentPhysLine = line.physLineCount
-    m_currentRealLine = m_realLineCount
-    
-    scrolled
-    
-    updateScrollBar
-    reDraw
+          Dim line As CLine
+          
+10        m_currentVirtLine = m_lines.count
+          
+20        Set line = m_lines.item(m_currentVirtLine)
+          
+30        wrap line, True
+          
+40        m_currentPhysLine = line.physLineCount
+50        m_currentRealLine = m_realLineCount
+          
+60        scrolled
+          
+70        updateScrollBar
+80        reDraw
 End Sub
 
 Private Sub scrollUp(lines As Long)
-   On Error GoTo scrollUp_Error
+10       On Error GoTo scrollUp_Error
 
-    If lines < 1 Then
-        Exit Sub
-    End If
-    
-    Dim count As Long
-    Dim lastVisibleLine As Long
-    Dim visibleLines As Long
-    Dim line As CLine
-    
-    For count = m_currentVirtLine To 1 Step -1
-        Set line = m_lines.item(count)
-   
-        If count = m_currentVirtLine Then
-            visibleLines = visibleLines + m_currentPhysLine
-        Else
-            visibleLines = visibleLines + line.physLineCount
-        End If
-   
-        If visibleLines > m_pageLines Then
-            If count < m_currentVirtLine Then
-                visibleLines = visibleLines - line.physLineCount
-            End If
-            
-            Exit For
-        End If
-    Next count
-    
-    lastVisibleLine = count
-    
-    For count = lines To 1 Step -1
-        If m_currentPhysLine > 1 Then
-            m_currentPhysLine = m_currentPhysLine - 1
-        Else
-            If m_currentVirtLine = 1 Then
-                lines = lines - count
-                Exit For
-            End If
-            
-            If m_visibleLines.count > 0 Then
-                If m_visibleLines.item(m_visibleLines.count).selected Then
-                    m_visibleLines.item(m_visibleLines.count).unSelect
-                End If
-            
-                m_visibleLines.item(m_visibleLines.count).clearWrap
-                m_visibleLines.item(m_visibleLines.count).visible = False
-                
-                m_visibleLines.Remove m_visibleLines.count
-            End If
-            
-            m_currentVirtLine = m_currentVirtLine - 1
-            wrap m_lines.item(m_currentVirtLine), True
-            m_currentPhysLine = m_lines.item(m_currentVirtLine).physLineCount
-        End If
-    Next count
-    
-    If lines < 1 Then
-        Exit Sub
-    End If
-    
-    m_currentRealLine = m_currentRealLine - lines
-    
-    If lines >= m_pageLines Then
-        reDraw
-        Exit Sub
-    End If
+20        If lines < 1 Then
+30            Exit Sub
+40        End If
+          
+          Dim count As Long
+          Dim lastVisibleLine As Long
+          Dim visibleLines As Long
+          Dim line As CLine
+          
+50        For count = m_currentVirtLine To 1 Step -1
+60            Set line = m_lines.item(count)
+         
+70            If count = m_currentVirtLine Then
+80                visibleLines = visibleLines + m_currentPhysLine
+90            Else
+100               visibleLines = visibleLines + line.physLineCount
+110           End If
+         
+120           If visibleLines > m_pageLines Then
+130               If count < m_currentVirtLine Then
+140                   visibleLines = visibleLines - line.physLineCount
+150               End If
+                  
+160               Exit For
+170           End If
+180       Next count
+          
+190       lastVisibleLine = count
+          
+200       For count = lines To 1 Step -1
+210           If m_currentPhysLine > 1 Then
+220               m_currentPhysLine = m_currentPhysLine - 1
+230           Else
+240               If m_currentVirtLine = 1 Then
+250                   lines = lines - count
+260                   Exit For
+270               End If
+                  
+280               If m_visibleLines.count > 0 Then
+290                   If m_visibleLines.item(m_visibleLines.count).selected Then
+300                       m_visibleLines.item(m_visibleLines.count).unSelect
+310                   End If
+                  
+320                   m_visibleLines.item(m_visibleLines.count).clearWrap
+330                   m_visibleLines.item(m_visibleLines.count).visible = False
+                      
+340                   m_visibleLines.Remove m_visibleLines.count
+350               End If
+                  
+360               m_currentVirtLine = m_currentVirtLine - 1
+370               wrap m_lines.item(m_currentVirtLine), True
+380               m_currentPhysLine = m_lines.item(m_currentVirtLine).physLineCount
+390           End If
+400       Next count
+          
+410       If lines < 1 Then
+420           Exit Sub
+430       End If
+          
+440       m_currentRealLine = m_currentRealLine - lines
+          
+450       If lines >= m_pageLines Then
+460           reDraw
+470           Exit Sub
+480       End If
 
-    Dim copyHeight As Long
-    Dim topMargin As Long
-    Dim copyY As Long
-    
-    topMargin = UserControl.ScaleHeight - (visibleLines * m_fontHeight)
-    copyHeight = m_fontHeight * (visibleLines - lines)
-    copyY = topMargin + (m_fontHeight * lines)
-    
-    BitBlt m_backBuffer, 0, copyY, UserControl.ScaleWidth - SB_WIDTH, copyHeight, m_backBuffer, 0, topMargin, _
-        vbSrcCopy
-    
-    drawLines lastVisibleLine, 0, CInt(copyY)
-    displayBackBuffer
-    
-    scrolled
+          Dim copyHeight As Long
+          Dim topMargin As Long
+          Dim copyY As Long
+          
+490       topMargin = UserControl.ScaleHeight - (visibleLines * m_fontHeight)
+500       copyHeight = m_fontHeight * (visibleLines - lines)
+510       copyY = topMargin + (m_fontHeight * lines)
+          
+520       BitBlt m_backBuffer, 0, copyY, UserControl.ScaleWidth - SB_WIDTH, copyHeight, m_backBuffer, 0, topMargin, _
+              vbSrcCopy
+          
+530       drawLines lastVisibleLine, 0, CInt(copyY)
+540       displayBackBuffer
+          
+550       scrolled
 
-   On Error GoTo 0
-   Exit Sub
+560      On Error GoTo 0
+570      Exit Sub
 
 scrollUp_Error:
-    handleError "scrollUp", Err.Number, Err.Description, Erl, CStr(lines) & " lines"
+580       handleError "scrollUp", Err.Number, Err.Description, Erl, CStr(lines) & " lines"
 End Sub
 
 Private Sub scrollDown(lines As Long)
-   On Error GoTo scrollDown_Error
+10       On Error GoTo scrollDown_Error
 
-    If lines < 1 Then
-        Exit Sub
-    End If
-    
-    Dim count As Long
-    Dim diff As Long
-    
-    For count = lines To 1 Step -1
-        If m_lines.item(m_currentVirtLine).physLineCount > m_currentPhysLine Then
-            m_currentPhysLine = m_currentPhysLine + 1
-        Else
-            If m_lines.count <= m_currentVirtLine Then
-                lines = lines - count
-                Exit For
-            End If
-            
-            m_currentVirtLine = m_currentVirtLine + 1
-            m_currentPhysLine = 1
-            
-            wrap m_lines.item(m_currentVirtLine), True
-        End If
-    Next count
-    
-    If lines < 1 Then
-        Exit Sub
-    End If
-    
-    m_currentRealLine = m_currentRealLine + lines
-    
-    If lines >= m_pageLines Then
-        reDraw
-        Exit Sub
-    End If
-    
-    Dim scrollDist As Long
-    Dim copyHeight As Long
-    
-    scrollDist = m_fontHeight * lines
-    copyHeight = UserControl.ScaleHeight - scrollDist
-    
-    BitBlt m_backBuffer, 0, 0, UserControl.ScaleWidth - SB_WIDTH, copyHeight, m_backBuffer, 0, scrollDist, _
-        vbSrcCopy
-    
-    For count = 1 To m_visibleLines.count
-        m_visibleLines.item(count).shiftedUp scrollDist
-    Next count
-    
-    Do While m_visibleLines.count > 0
-        If m_visibleLines.item(1).bottom >= 0 Then
-            Exit Do
-        End If
-        
-        If m_visibleLines.item(1).selected Then
-            m_visibleLines.item(1).unSelect
-        End If
-        
-        m_visibleLines.item(1).visible = False
-        m_visibleLines.item(1).clearWrap
-        
-        m_visibleLines.Remove 1
-    Loop
-    
-    drawLines m_currentVirtLine, copyHeight, UserControl.ScaleHeight - copyHeight
-    displayBackBuffer
-    
-    scrolled
+20        If lines < 1 Then
+30            Exit Sub
+40        End If
+          
+          Dim count As Long
+          Dim diff As Long
+          
+50        For count = lines To 1 Step -1
+60            If m_lines.item(m_currentVirtLine).physLineCount > m_currentPhysLine Then
+70                m_currentPhysLine = m_currentPhysLine + 1
+80            Else
+90                If m_lines.count <= m_currentVirtLine Then
+100                   lines = lines - count
+110                   Exit For
+120               End If
+                  
+130               m_currentVirtLine = m_currentVirtLine + 1
+140               m_currentPhysLine = 1
+                  
+150               wrap m_lines.item(m_currentVirtLine), True
+160           End If
+170       Next count
+          
+180       If lines < 1 Then
+190           Exit Sub
+200       End If
+          
+210       m_currentRealLine = m_currentRealLine + lines
+          
+220       If lines >= m_pageLines Then
+230           reDraw
+240           Exit Sub
+250       End If
+          
+          Dim scrollDist As Long
+          Dim copyHeight As Long
+          
+260       scrollDist = m_fontHeight * lines
+270       copyHeight = UserControl.ScaleHeight - scrollDist
+          
+280       BitBlt m_backBuffer, 0, 0, UserControl.ScaleWidth - SB_WIDTH, copyHeight, m_backBuffer, 0, scrollDist, _
+              vbSrcCopy
+          
+290       For count = 1 To m_visibleLines.count
+300           m_visibleLines.item(count).shiftedUp scrollDist
+310       Next count
+          
+320       Do While m_visibleLines.count > 0
+330           If m_visibleLines.item(1).bottom >= 0 Then
+340               Exit Do
+350           End If
+              
+360           If m_visibleLines.item(1).selected Then
+370               m_visibleLines.item(1).unSelect
+380           End If
+              
+390           m_visibleLines.item(1).visible = False
+400           m_visibleLines.item(1).clearWrap
+              
+410           m_visibleLines.Remove 1
+420       Loop
+          
+430       drawLines m_currentVirtLine, copyHeight, UserControl.ScaleHeight - copyHeight
+440       displayBackBuffer
+          
+450       scrolled
 
-   On Error GoTo 0
-   Exit Sub
+460      On Error GoTo 0
+470      Exit Sub
 
 scrollDown_Error:
-    handleError "scrollDown", Err.Number, Err.Description, Erl, CStr(lines) & " lines"
+480       handleError "scrollDown", Err.Number, Err.Description, Erl, CStr(lines) & " lines"
 End Sub
 
 Public Sub pageUp()
-    If m_currentRealLine - m_pageLines < 1 Then
-        scrollUp m_currentRealLine - 1
-    Else
-        scrollUp m_pageLines
-    End If
-    
-    scrolled
-    updateScrollBar
+10        If m_currentRealLine - m_pageLines < 1 Then
+20            scrollUp m_currentRealLine - 1
+30        Else
+40            scrollUp m_pageLines
+50        End If
+          
+60        scrolled
+70        updateScrollBar
 End Sub
 
 Public Sub pageDown()
-    If m_currentRealLine + m_pageLines > m_realLineCount Then
-        scrollDown m_realLineCount - m_currentRealLine
-    Else
-        scrollDown m_pageLines
-    End If
-    
-    scrolled
-    updateScrollBar
+10        If m_currentRealLine + m_pageLines > m_realLineCount Then
+20            scrollDown m_realLineCount - m_currentRealLine
+30        Else
+40            scrollDown m_pageLines
+50        End If
+          
+60        scrolled
+70        updateScrollBar
 End Sub
 
 Private Sub processScroll(scrollCode As Integer)
-   On Error GoTo processScroll_Error
+10       On Error GoTo processScroll_Error
 
-    Select Case scrollCode
-        Case SB_PAGEUP
-            pageUp
-        Case SB_PAGEDOWN
-            pageDown
-        Case SB_LINEUP
-            If m_currentRealLine > 1 Then
-                scrollUp 1
-                updateScrollBar
-            End If
-        Case SB_LINEDOWN
-            If m_currentRealLine < m_realLineCount Then
-                scrollDown 1
-                updateScrollBar
-            End If
-        Case SB_TOP
-            scrollTop
-        Case SB_BOTTOM
-            scrollBottom
-        Case SB_THUMBTRACK
-            Dim si As SCROLLINFO
-            Dim diff As Long
-            
-            si.cbSize = Len(si)
-            si.fMask = SIF_TRACKPOS
-            
-            GetScrollInfo m_hScrollBar, SB_CTL, si
-            
-            If si.nTrackPos = 1 Then
-                scrollTop
-                Exit Sub
-            ElseIf si.nTrackPos >= m_realLineCount Then
-                scrollBottom
-                Exit Sub
-            End If
-            
-            Dim pos As Single
-            Dim vline As Integer
-            
-            diff = m_currentRealLine - si.nTrackPos
-            
-            If diff < 0 Then
-                If -diff > (m_pageLines) Then
-                    bigScroll diff
-                Else
-                    If m_currentRealLine - diff > m_realLineCount Then
-                        scrollDown m_realLineCount - m_currentRealLine
-                        updateScrollBar
-                    Else
-                        scrollDown -diff
-                        updateScrollBar
-                    End If
-                End If
-            Else
-                If diff > (m_pageLines) Then
-                    bigScroll diff
-                Else
-                    If m_currentRealLine - diff < 1 Then
-                        scrollUp diff - m_currentRealLine
-                        updateScrollBar
-                    Else
-                        scrollUp diff
-                        updateScrollBar
-                    End If
-                End If
-            End If
-    End Select
+20        Select Case scrollCode
+              Case SB_PAGEUP
+30                pageUp
+40            Case SB_PAGEDOWN
+50                pageDown
+60            Case SB_LINEUP
+70                If m_currentRealLine > 1 Then
+80                    scrollUp 1
+90                    updateScrollBar
+100               End If
+110           Case SB_LINEDOWN
+120               If m_currentRealLine < m_realLineCount Then
+130                   scrollDown 1
+140                   updateScrollBar
+150               End If
+160           Case SB_TOP
+170               scrollTop
+180           Case SB_BOTTOM
+190               scrollBottom
+200           Case SB_THUMBTRACK
+                  Dim si As SCROLLINFO
+                  Dim diff As Long
+                  
+210               si.cbSize = Len(si)
+220               si.fMask = SIF_TRACKPOS
+                  
+230               GetScrollInfo m_hScrollBar, SB_CTL, si
+                  
+240               If si.nTrackPos = 1 Then
+250                   scrollTop
+260                   Exit Sub
+270               ElseIf si.nTrackPos >= m_realLineCount Then
+280                   scrollBottom
+290                   Exit Sub
+300               End If
+                  
+                  Dim pos As Single
+                  Dim vline As Integer
+                  
+310               diff = m_currentRealLine - si.nTrackPos
+                  
+320               If diff < 0 Then
+330                   If -diff > (m_pageLines) Then
+340                       bigScroll diff
+350                   Else
+360                       If m_currentRealLine - diff > m_realLineCount Then
+370                           scrollDown m_realLineCount - m_currentRealLine
+380                           updateScrollBar
+390                       Else
+400                           scrollDown -diff
+410                           updateScrollBar
+420                       End If
+430                   End If
+440               Else
+450                   If diff > (m_pageLines) Then
+460                       bigScroll diff
+470                   Else
+480                       If m_currentRealLine - diff < 1 Then
+490                           scrollUp diff - m_currentRealLine
+500                           updateScrollBar
+510                       Else
+520                           scrollUp diff
+530                           updateScrollBar
+540                       End If
+550                   End If
+560               End If
+570       End Select
 
-   On Error GoTo 0
-   Exit Sub
+580      On Error GoTo 0
+590      Exit Sub
 
 processScroll_Error:
-    handleError "processScroll", Err.Number, Err.Description, Erl, vbNullString
+600       handleError "processScroll", Err.Number, Err.Description, Erl, vbNullString
 End Sub
 
 Private Sub bigScroll(diff As Long)
-    Dim count As Long
+          Dim count As Long
 
-    For count = m_currentVirtLine To 1 Step -1
-        If m_lines.item(count).wrapped = False Then
-            Exit For
-        End If
-            
-        m_lines.item(count).clearWrap
-    Next count
+10        For count = m_currentVirtLine To 1 Step -1
+20            If m_lines.item(count).wrapped = False Then
+30                Exit For
+40            End If
+                  
+50            m_lines.item(count).clearWrap
+60        Next count
 
-    If diff > 0 Then
-        For count = diff To 1 Step -1
-            If m_currentPhysLine = 1 Then
-                If m_currentVirtLine = 1 Then Exit For
-                
-                m_currentVirtLine = m_currentVirtLine - 1
-                m_currentPhysLine = m_lines.item(m_currentVirtLine).physLineCount
-            Else
-                m_currentPhysLine = m_currentPhysLine - 1
-            End If
-        Next count
-    Else
-        For count = -diff To 1 Step -1
-            If m_currentPhysLine = m_lines.item(m_currentVirtLine).physLineCount Then
-                If m_currentVirtLine = m_lines.count Then Exit For
-            
-                m_currentVirtLine = m_currentVirtLine + 1
-                m_currentPhysLine = 1
-            Else
-                m_currentPhysLine = m_currentPhysLine + 1
-            End If
-        Next count
-    End If
-    
-    m_currentRealLine = m_currentRealLine - diff
-    
-    If m_currentRealLine < 1 Then
-        m_currentRealLine = 1
-    ElseIf m_currentRealLine > m_realLineCount Then
-        m_currentRealLine = m_realLineCount
-    End If
-    
-    scrolled
-    
-    updateScrollBar
-    reDraw
+70        If diff > 0 Then
+80            For count = diff To 1 Step -1
+90                If m_currentPhysLine = 1 Then
+100                   If m_currentVirtLine = 1 Then Exit For
+                      
+110                   m_currentVirtLine = m_currentVirtLine - 1
+120                   m_currentPhysLine = m_lines.item(m_currentVirtLine).physLineCount
+130               Else
+140                   m_currentPhysLine = m_currentPhysLine - 1
+150               End If
+160           Next count
+170       Else
+180           For count = -diff To 1 Step -1
+190               If m_currentPhysLine = m_lines.item(m_currentVirtLine).physLineCount Then
+200                   If m_currentVirtLine = m_lines.count Then Exit For
+                  
+210                   m_currentVirtLine = m_currentVirtLine + 1
+220                   m_currentPhysLine = 1
+230               Else
+240                   m_currentPhysLine = m_currentPhysLine + 1
+250               End If
+260           Next count
+270       End If
+          
+280       m_currentRealLine = m_currentRealLine - diff
+          
+290       If m_currentRealLine < 1 Then
+300           m_currentRealLine = 1
+310       ElseIf m_currentRealLine > m_realLineCount Then
+320           m_currentRealLine = m_realLineCount
+330       End If
+          
+340       scrolled
+          
+350       updateScrollBar
+360       reDraw
 End Sub
 
 Private Sub initScrollBar()
-    m_hScrollBar = CreateWindowEx(0, "SCROLLBAR", "", WS_CHILD Or SBS_VERT, UserControl.ScaleWidth _
-        - SB_WIDTH, 0, SB_WIDTH, UserControl.ScaleHeight, UserControl.hwnd, 0, App.hInstance, ByVal 0&)
-    ShowScrollBar m_hScrollBar, SB_CTL, 1
-    
-    m_scrollbarEnabled = True
-    
-    updateScrollBar
+10        m_hScrollBar = CreateWindowEx(0, "SCROLLBAR", "", WS_CHILD Or SBS_VERT, UserControl.ScaleWidth _
+              - SB_WIDTH, 0, SB_WIDTH, UserControl.ScaleHeight, UserControl.hwnd, 0, App.hInstance, ByVal 0&)
+20        ShowScrollBar m_hScrollBar, SB_CTL, 1
+          
+30        m_scrollbarEnabled = True
+          
+40        updateScrollBar
 End Sub
 
 Private Sub updateScrollBar()
-    Dim si As SCROLLINFO
-    
-    si.cbSize = Len(si)
-    si.fMask = SIF_RANGE Or SIF_PAGE Or SIF_POS
-    
-    si.nMin = 1
-    
-    If m_realLineCount < 2 Then
-        si.nMax = 0
-    Else
-        si.nMax = m_realLineCount + (m_pageLines - 1)
-    End If
-    
-    si.nPage = m_pageLines
-    si.nPos = m_currentRealLine
-    
-    SetScrollInfo m_hScrollBar, SB_CTL, si, 0
-    
-    If si.nMax = 0 Then
-        EnableScrollBar m_hScrollBar, SB_CTL, ESB_DISABLE_BOTH
-    Else
-        EnableScrollBar m_hScrollBar, SB_CTL, ESB_ENABLE_BOTH
-    End If
-    
-    RedrawWindow m_hScrollBar, ByVal 0, ByVal 0, RDW_INVALIDATE Or RDW_UPDATENOW
+          Dim si As SCROLLINFO
+          
+10        si.cbSize = Len(si)
+20        si.fMask = SIF_RANGE Or SIF_PAGE Or SIF_POS
+          
+30        si.nMin = 1
+          
+40        If m_realLineCount < 2 Then
+50            si.nMax = 0
+60        Else
+70            si.nMax = m_realLineCount + (m_pageLines - 1)
+80        End If
+          
+90        si.nPage = m_pageLines
+100       si.nPos = m_currentRealLine
+          
+110       SetScrollInfo m_hScrollBar, SB_CTL, si, 0
+          
+120       If si.nMax = 0 Then
+130           EnableScrollBar m_hScrollBar, SB_CTL, ESB_DISABLE_BOTH
+140       Else
+150           EnableScrollBar m_hScrollBar, SB_CTL, ESB_ENABLE_BOTH
+160       End If
+          
+170       RedrawWindow m_hScrollBar, ByVal 0, ByVal 0, RDW_INVALIDATE Or RDW_UPDATENOW
 End Sub
 
 Private Sub UserControl_KeyDown(KeyCode As Integer, Shift As Integer)
-    If KeyCode = vbKeyPageUp Then
-        SendMessage UserControl.hwnd, WM_VSCROLL, SB_PAGEUP, ByVal 0&
-    ElseIf KeyCode = vbKeyPageDown Then
-        SendMessage UserControl.hwnd, WM_VSCROLL, SB_PAGEDOWN, ByVal 0&
-    End If
+10        If KeyCode = vbKeyPageUp Then
+20            SendMessage UserControl.hwnd, WM_VSCROLL, SB_PAGEUP, ByVal 0&
+30        ElseIf KeyCode = vbKeyPageDown Then
+40            SendMessage UserControl.hwnd, WM_VSCROLL, SB_PAGEDOWN, ByVal 0&
+50        End If
 End Sub
 
 Private Sub UserControl_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Button = vbKeyLButton Then
-        If m_wasOverUrl Then
-            RaiseEvent clickedUrl(m_url)
-        Else
-            m_selecting = True
-            m_selectStartX = x
-            m_selectStartY = y
-            
-            m_realSelectStartX = x
-            m_realSelectStartY = y
-        End If
-    End If
+10        If Button = vbKeyLButton Then
+20            If m_wasOverUrl Then
+30                RaiseEvent clickedUrl(m_url)
+40            Else
+50                m_selecting = True
+60                m_selectStartX = x
+70                m_selectStartY = y
+                  
+80                m_realSelectStartX = x
+90                m_realSelectStartY = y
+100           End If
+110       End If
 End Sub
 
 Private Sub UserControl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-   On Error GoTo UserControl_MouseMove_Error
+10       On Error GoTo UserControl_MouseMove_Error
 
-    m_mouseX = x
-    m_mouseY = y
-    
-    If m_selecting Then
-        UserControl.MousePointer = vbIbeam
-    
-        If x > m_realSelectStartX Then
-            If x < 0 Then
-                x = 0
-            Else
-                m_selectEndX = x
-            End If
-        
-            m_selectStartX = m_realSelectStartX
-        Else
-            m_selectEndX = m_realSelectStartX
-            
-            If x < 0 Then
-                m_selectStartX = 0
-            Else
-                m_selectStartX = x
-            End If
-        End If
-        
-        If y > m_realSelectStartY Then
-            m_selectEndY = y
-            m_selectStartY = m_realSelectStartY
-        Else
-            m_selectEndY = m_realSelectStartY
-            m_selectStartY = y
-        End If
-        
-        If x < 0 Then
-            m_moveX = 0
-        Else
-            m_moveX = x
-        End If
-        
-        processSelection
-    Else
-        If y < 0 Or y > UserControl.ScaleHeight Then
-            If m_wasOverUrl Then
-                UserControl.MousePointer = 0
-                m_wasOverUrl = False
-            End If
-            
-            Exit Sub
-        End If
-        
-        Dim physLine As CPhysLine
-        Set physLine = getLineByCoords(y)
-        
-        If physLine Is Nothing Then
-            m_wasOverUrl = False
-            Exit Sub
-        End If
-        
-        Dim block As ITextRenderBlock
-        Set block = physLine.getMouseOverBlock(x)
+20        m_mouseX = x
+30        m_mouseY = y
+          
+40        If m_selecting Then
+50            UserControl.MousePointer = vbIbeam
+          
+60            If x > m_realSelectStartX Then
+70                If x < 0 Then
+80                    x = 0
+90                Else
+100                   m_selectEndX = x
+110               End If
+              
+120               m_selectStartX = m_realSelectStartX
+130           Else
+140               m_selectEndX = m_realSelectStartX
+                  
+150               If x < 0 Then
+160                   m_selectStartX = 0
+170               Else
+180                   m_selectStartX = x
+190               End If
+200           End If
+              
+210           If y > m_realSelectStartY Then
+220               m_selectEndY = y
+230               m_selectStartY = m_realSelectStartY
+240           Else
+250               m_selectEndY = m_realSelectStartY
+260               m_selectStartY = y
+270           End If
+              
+280           If x < 0 Then
+290               m_moveX = 0
+300           Else
+310               m_moveX = x
+320           End If
+              
+330           processSelection
+340       Else
+350           If y < 0 Or y > UserControl.ScaleHeight Then
+360               If m_wasOverUrl Then
+370                   UserControl.MousePointer = 0
+380                   m_wasOverUrl = False
+390               End If
+                  
+400               Exit Sub
+410           End If
+              
+              Dim physLine As CPhysLine
+420           Set physLine = getLineByCoords(y)
+              
+430           If physLine Is Nothing Then
+440               m_wasOverUrl = False
+450               Exit Sub
+460           End If
+              
+              Dim block As ITextRenderBlock
+470           Set block = physLine.getMouseOverBlock(x)
 
-        Dim isUrl As Boolean
+              Dim isUrl As Boolean
 
-        If Not block Is Nothing Then
-            If TypeOf block Is CBlockText Then
-                Dim textBlock As CBlockText
-            
-                Set textBlock = block
-                
-                If textBlock.isUrl Then
-                    If Not m_wasOverUrl Then
-                        If Not g_handCursor Is Nothing Then
-                            UserControl.MouseIcon = g_handCursor
-                            UserControl.MousePointer = vbCustom
-                        End If
-                        
-                        m_url = textBlock.url
-                        m_wasOverUrl = True
-                    End If
-                    
-                    isUrl = True
-                End If
-            End If
-        End If
-        
-        If Not isUrl Then
-            If m_wasOverUrl Then
-                UserControl.MousePointer = 0
-                m_wasOverUrl = False
-            End If
-        End If
-    End If
+480           If Not block Is Nothing Then
+490               If TypeOf block Is CBlockText Then
+                      Dim textBlock As CBlockText
+                  
+500                   Set textBlock = block
+                      
+510                   If textBlock.isUrl Then
+520                       If Not m_wasOverUrl Then
+530                           If Not g_handCursor Is Nothing Then
+540                               UserControl.MouseIcon = g_handCursor
+550                               UserControl.MousePointer = vbCustom
+560                           End If
+                              
+570                           m_url = textBlock.url
+580                           m_wasOverUrl = True
+590                       End If
+                          
+600                       isUrl = True
+610                   End If
+620               End If
+630           End If
+              
+640           If Not isUrl Then
+650               If m_wasOverUrl Then
+660                   UserControl.MousePointer = 0
+670                   m_wasOverUrl = False
+680               End If
+690           End If
+700       End If
 
-   On Error GoTo 0
-   Exit Sub
+710      On Error GoTo 0
+720      Exit Sub
 
 UserControl_MouseMove_Error:
-    handleError "UserControl_MouseMove", Err.Number, Err.Description, Erl, vbNullString
+730       handleError "UserControl_MouseMove", Err.Number, Err.Description, Erl, vbNullString
 End Sub
 
 Private Function getLineByCoords(ByVal y As Long) As CPhysLine
-    Dim count As Long
-    Dim linesUp As Long
-    Dim pline As Long
-    Dim vline As Long
-    
-    linesUp = Fix((UserControl.ScaleHeight - y) / m_fontHeight)
-    
-    vline = m_currentVirtLine
-    pline = m_currentPhysLine
-    
-    For count = linesUp To 1 Step -1
-        If pline = 1 Then
-            vline = vline - 1
-                            
-            If vline < 1 Then
-                Exit Function
-            End If
-            
-            pline = m_lines.item(vline).physLineCount
-        Else
-            pline = pline - 1
-        End If
-    Next count
-    
-    If vline <= m_lines.count And m_lines.count > 0 Then
-        If pline <= m_lines.item(vline).realPhysLineCount Then
-            If m_lines.item(vline).realPhysLineCount > 0 Then
-                Set getLineByCoords = m_lines.item(vline).physLine(pline)
-            End If
-        End If
-    End If
+          Dim count As Long
+          Dim linesUp As Long
+          Dim pline As Long
+          Dim vline As Long
+          
+10        linesUp = Fix((UserControl.ScaleHeight - y) / m_fontHeight)
+          
+20        vline = m_currentVirtLine
+30        pline = m_currentPhysLine
+          
+40        For count = linesUp To 1 Step -1
+50            If pline = 1 Then
+60                vline = vline - 1
+                                  
+70                If vline < 1 Then
+80                    Exit Function
+90                End If
+                  
+100               pline = m_lines.item(vline).physLineCount
+110           Else
+120               pline = pline - 1
+130           End If
+140       Next count
+          
+150       If vline <= m_lines.count And m_lines.count > 0 Then
+160           If pline <= m_lines.item(vline).realPhysLineCount Then
+170               If m_lines.item(vline).realPhysLineCount > 0 Then
+180                   Set getLineByCoords = m_lines.item(vline).physLine(pline)
+190               End If
+200           End If
+210       End If
 End Function
 
 Private Sub processSelection()
-    Dim count As Integer
+          Dim count As Integer
 
-    For count = 1 To m_visibleLines.count
-        If m_visibleLines.item(count).bottom >= m_selectStartY And m_visibleLines.item(count).top _
-            <= m_selectEndY Then
-            m_visibleLines.item(count).setSelection m_selectStartY, m_selectEndY, m_selectStartX, _
-                m_selectEndX, m_realSelectStartX, m_realSelectStartY, m_moveX
-        Else
-            If m_visibleLines.item(count).selected Then
-                m_visibleLines.item(count).unSelect
-            End If
-        End If
-    Next count
-    
-    reDraw
+10        For count = 1 To m_visibleLines.count
+20            If m_visibleLines.item(count).bottom >= m_selectStartY And m_visibleLines.item(count).top _
+                  <= m_selectEndY Then
+30                m_visibleLines.item(count).setSelection m_selectStartY, m_selectEndY, m_selectStartX, _
+                      m_selectEndX, m_realSelectStartX, m_realSelectStartY, m_moveX
+40            Else
+50                If m_visibleLines.item(count).selected Then
+60                    m_visibleLines.item(count).unSelect
+70                End If
+80            End If
+90        Next count
+          
+100       reDraw
 End Sub
 
 Private Sub UserControl_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Not Button = vbKeyLButton Then
-        Exit Sub
-    End If
+10        If Not Button = vbKeyLButton Then
+20            Exit Sub
+30        End If
 
-    m_selecting = False
-    
-    Dim count As Integer
-    
-    copySelectedText
-    
-    For count = 1 To m_visibleLines.count
-        If m_visibleLines.item(count).selected Then
-            m_visibleLines.item(count).unSelect
-        End If
-    Next count
-    
-    If m_wasOverUrl Then
-        UserControl.MouseIcon = g_handCursor
-        UserControl.MousePointer = vbCustom
-    Else
-        UserControl.MousePointer = vbDefault
-    End If
-    
-    reDraw
-    
-    RaiseEvent noLongerNeedFocus
+40        m_selecting = False
+          
+          Dim count As Integer
+          
+50        copySelectedText
+          
+60        For count = 1 To m_visibleLines.count
+70            If m_visibleLines.item(count).selected Then
+80                m_visibleLines.item(count).unSelect
+90            End If
+100       Next count
+          
+110       If m_wasOverUrl Then
+120           UserControl.MouseIcon = g_handCursor
+130           UserControl.MousePointer = vbCustom
+140       Else
+150           UserControl.MousePointer = vbDefault
+160       End If
+          
+170       reDraw
+          
+180       RaiseEvent noLongerNeedFocus
 End Sub
 
 Private Sub copySelectedText()
-    Dim count As Integer
-    
-    Dim text As String
-    
-    For count = 1 To m_visibleLines.count
-        If m_visibleLines.item(count).selected Then
-            text = text & m_visibleLines.item(count).getSelectedText(m_drawingData, False)
-        End If
-    Next count
-    
-    If LenB(text) <> 0 Then
-        Clipboard.clear
-        Clipboard.SetText UTF8Encode(text)
-    End If
+          Dim count As Integer
+          
+          Dim text As String
+          
+10        For count = 1 To m_visibleLines.count
+20            If m_visibleLines.item(count).selected Then
+30                text = text & m_visibleLines.item(count).getSelectedText(m_drawingData, False)
+40            End If
+50        Next count
+          
+60        If LenB(text) <> 0 Then
+70            Clipboard.clear
+80            Clipboard.SetText UTF8Encode(text)
+90        End If
 End Sub
 
 Private Sub UserControl_Paint()
-    reDraw
+10        reDraw
 End Sub
 
 Private Sub drawLines(first As Long, y As Long, height As Integer)
-    If m_fontManager Is Nothing Then
-        Exit Sub
-    End If
-    
-    Dim oldFont As Long
-    
-    m_drawingData.left = 0
-    m_drawingData.right = UserControl.ScaleWidth - SB_WIDTH
-    m_drawingData.top = UserControl.ScaleHeight - (UserControl.ScaleHeight - y)
-    m_drawingData.bottom = (y + height)
-    
-    m_drawingData.x = 0
-    m_drawingData.y = m_drawingData.bottom - m_fontHeight
+10        If m_fontManager Is Nothing Then
+20            Exit Sub
+30        End If
+          
+          Dim oldFont As Long
+          
+40        m_drawingData.left = 0
+50        m_drawingData.right = UserControl.ScaleWidth - SB_WIDTH
+60        m_drawingData.top = UserControl.ScaleHeight - (UserControl.ScaleHeight - y)
+70        m_drawingData.bottom = (y + height)
+          
+80        m_drawingData.x = 0
+90        m_drawingData.y = m_drawingData.bottom - m_fontHeight
 
-    m_drawingData.setPalette colourThemes.currentTheme.getPalette
+100       m_drawingData.setPalette colourThemes.currentTheme.getPalette
 
-    Dim count As Integer
-    Dim line As CLine
-    Dim srcY As Integer
-    
-    Dim realBottom As Integer
-    Dim count2 As Integer
-    
-    realBottom = y + height
-    
-    m_drawingData.realY = y + height
-    
-    Dim found As Boolean
-    Dim pos As Integer
-    
-    Dim newLines As New cArrayList
-    
-    For count = first To 1 Step -1
-        m_drawingData.reset
-        
-        Set line = m_lines.item(count)
+          Dim count As Integer
+          Dim line As CLine
+          Dim srcY As Integer
+          
+          Dim realBottom As Integer
+          Dim count2 As Integer
+          
+110       realBottom = y + height
+          
+120       m_drawingData.realY = y + height
+          
+          Dim found As Boolean
+          Dim pos As Integer
+          
+          Dim newLines As New cArrayList
+          
+130       For count = first To 1 Step -1
+140           m_drawingData.reset
+              
+150           Set line = m_lines.item(count)
 
-        If count = m_currentVirtLine Then
-            wrap line, True
-            line.render m_drawingData, m_currentPhysLine
-        Else
-            wrap line, False
-            line.render m_drawingData, 0
-        End If
-        
-        If Not line.visible Then
-            newLines.Add line
-            line.visible = True
-        End If
-        
-        If m_drawingData.y <= (m_drawingData.top - m_drawingData.fontHeight) Then
-            Exit For
-        End If
-    Next count
-    
-    If first = m_currentVirtLine Then
-        For count = newLines.count To 1 Step -1
-            m_visibleLines.Add newLines.item(count)
-        Next count
-    Else
-        For count = 1 To newLines.count
-            m_visibleLines.Add newLines.item(count), 1
-        Next count
-    End If
-    
-    m_drawingData.fillSpace
+160           If count = m_currentVirtLine Then
+170               wrap line, True
+180               line.render m_drawingData, m_currentPhysLine
+190           Else
+200               wrap line, False
+210               line.render m_drawingData, 0
+220           End If
+              
+230           If Not line.visible Then
+240               newLines.Add line
+250               line.visible = True
+260           End If
+              
+270           If m_drawingData.y <= (m_drawingData.top - m_drawingData.fontHeight) Then
+280               Exit For
+290           End If
+300       Next count
+          
+310       If first = m_currentVirtLine Then
+320           For count = newLines.count To 1 Step -1
+330               m_visibleLines.Add newLines.item(count)
+340           Next count
+350       Else
+360           For count = 1 To newLines.count
+370               m_visibleLines.Add newLines.item(count), 1
+380           Next count
+390       End If
+          
+400       m_drawingData.fillSpace
 End Sub
 
 Private Sub wrap(line As CLine, first As Boolean)
-    If Not line.wrapped Then
-        Dim diff As Integer
-    
-        diff = line.wordWrap(m_drawingData)
+10        If Not line.wrapped Then
+              Dim diff As Integer
+          
+20            diff = line.wordWrap(m_drawingData)
 
-        If first = True Then
-            If diff < 0 Then
-                If m_currentPhysLine <> 1 Then
-                    If m_currentPhysLine + diff < 1 Then
-                        m_currentRealLine = m_currentRealLine - (m_currentPhysLine - 1)
-                        m_currentPhysLine = 1
-                    Else
-                        m_currentPhysLine = m_currentPhysLine + diff
-                        m_currentRealLine = m_currentRealLine + diff
-                    End If
-                End If
-                
-                m_realLineCount = m_realLineCount + diff
-            Else
-                m_realLineCount = m_realLineCount + diff
-            End If
-        Else
-            m_realLineCount = m_realLineCount + diff
-            m_currentRealLine = m_currentRealLine + diff
-        End If
-    End If
+30            If first = True Then
+40                If diff < 0 Then
+50                    If m_currentPhysLine <> 1 Then
+60                        If m_currentPhysLine + diff < 1 Then
+70                            m_currentRealLine = m_currentRealLine - (m_currentPhysLine - 1)
+80                            m_currentPhysLine = 1
+90                        Else
+100                           m_currentPhysLine = m_currentPhysLine + diff
+110                           m_currentRealLine = m_currentRealLine + diff
+120                       End If
+130                   End If
+                      
+140                   m_realLineCount = m_realLineCount + diff
+150               Else
+160                   m_realLineCount = m_realLineCount + diff
+170               End If
+180           Else
+190               m_realLineCount = m_realLineCount + diff
+200               m_currentRealLine = m_currentRealLine + diff
+210           End If
+220       End If
 End Sub
 
 Private Sub updateBackbuffer()
-    If m_backBitmap <> 0 Then
-        DeleteObject m_backBitmap
-    End If
-    
-    If m_backBuffer <> 0 Then
-        DeleteDC m_backBuffer
-    End If
-    
-    m_backBuffer = CreateCompatibleDC(UserControl.hdc)
-    m_backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth - SB_WIDTH, _
-        UserControl.ScaleHeight)
-        
-    SelectObject m_backBuffer, m_backBitmap
-    
-    SetBkMode m_backBuffer, OPAQUE
-    
-    If Not m_fontManager Is Nothing Then
-        SelectObject m_backBuffer, m_fontManager.getFont(False, False, False)
-    End If
-    
-    m_drawingData.Dc = m_backBuffer
-    m_drawingData.width = UserControl.ScaleWidth - SB_WIDTH
+10        If m_backBitmap <> 0 Then
+20            DeleteObject m_backBitmap
+30        End If
+          
+40        If m_backBuffer <> 0 Then
+50            DeleteDC m_backBuffer
+60        End If
+          
+70        m_backBuffer = CreateCompatibleDC(UserControl.hdc)
+80        m_backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth - SB_WIDTH, _
+              UserControl.ScaleHeight)
+              
+90        SelectObject m_backBuffer, m_backBitmap
+          
+100       SetBkMode m_backBuffer, OPAQUE
+          
+110       If Not m_fontManager Is Nothing Then
+120           SelectObject m_backBuffer, m_fontManager.getFont(False, False, False)
+130       End If
+          
+140       m_drawingData.Dc = m_backBuffer
+150       m_drawingData.width = UserControl.ScaleWidth - SB_WIDTH
 End Sub
 
 Private Sub displayBackBuffer()
-    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth - SB_WIDTH, UserControl.ScaleHeight, _
-        m_backBuffer, 0, 0, vbSrcCopy
+10        BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth - SB_WIDTH, UserControl.ScaleHeight, _
+              m_backBuffer, 0, 0, vbSrcCopy
 End Sub
 
 Private Sub reDraw()
-    If m_fontManager Is Nothing Then
-        Exit Sub
-    End If
+10        If m_fontManager Is Nothing Then
+20            Exit Sub
+30        End If
 
-    Dim count As Integer
-    
-    For count = 1 To m_visibleLines.count
-        m_visibleLines.item(count).visible = False
-    Next count
-    
-    m_visibleLines.clear
+          Dim count As Integer
+          
+40        For count = 1 To m_visibleLines.count
+50            m_visibleLines.item(count).visible = False
+60        Next count
+          
+70        m_visibleLines.clear
 
-    Dim line As CLine
+          Dim line As CLine
 
-    If m_lines.count <> 0 Then
-        If m_atBottom Then
-            Set line = m_lines.item(m_currentVirtLine)
-            wrap line, True
-            
-            m_currentRealLine = m_currentRealLine + (line.physLineCount - m_currentPhysLine)
-            m_currentPhysLine = line.physLineCount
-        End If
-    
-        drawLines CInt(m_currentVirtLine), 0, UserControl.ScaleHeight
-        displayBackBuffer
-    Else
-        m_drawingData.top = 0
-        m_drawingData.bottom = UserControl.ScaleHeight
-        m_drawingData.left = 0
-        m_drawingData.right = UserControl.ScaleWidth - SB_WIDTH
-        m_drawingData.y = UserControl.ScaleHeight
-        m_drawingData.fillSpace
-        displayBackBuffer
-    End If
+80        If m_lines.count <> 0 Then
+90            If m_atBottom Then
+100               Set line = m_lines.item(m_currentVirtLine)
+110               wrap line, True
+                  
+120               m_currentRealLine = m_currentRealLine + (line.physLineCount - m_currentPhysLine)
+130               m_currentPhysLine = line.physLineCount
+140           End If
+          
+150           drawLines CInt(m_currentVirtLine), 0, UserControl.ScaleHeight
+160           displayBackBuffer
+170       Else
+180           m_drawingData.top = 0
+190           m_drawingData.bottom = UserControl.ScaleHeight
+200           m_drawingData.left = 0
+210           m_drawingData.right = UserControl.ScaleWidth - SB_WIDTH
+220           m_drawingData.y = UserControl.ScaleHeight
+230           m_drawingData.fillSpace
+240           displayBackBuffer
+250       End If
 End Sub
 
 Private Sub hardRedraw()
-    Dim count As Long
-    
-    For count = 1 To m_visibleLines.count
-        m_visibleLines.item(count).needsWrapping
-    Next count
-    
-    reDraw
+          Dim count As Long
+          
+10        For count = 1 To m_visibleLines.count
+20            m_visibleLines.item(count).needsWrapping
+30        Next count
+          
+40        reDraw
 End Sub
 
 Private Sub UserControl_Resize()
-    MoveWindow m_hScrollBar, UserControl.ScaleWidth - SB_WIDTH, 0, SB_WIDTH, UserControl.ScaleHeight, False
+10        MoveWindow m_hScrollBar, UserControl.ScaleWidth - SB_WIDTH, 0, SB_WIDTH, UserControl.ScaleHeight, False
 
-    m_pageLines = Fix(UserControl.ScaleHeight / m_fontHeight)
-    updateScrollBar
-    
-    Dim count As Integer
-    Dim diff As Long
-    
-    If m_lines.count > 0 Then
-        For count = m_lines.count To 1 Step -1
-            If m_lines.item(count).wrapped = False Then
-                Exit For
-            End If
-            
-            m_lines.item(count).clearWrap
-        Next count
-        
-        If count > 1 Then
-            For count = 1 To m_lines.count
-                If m_lines.item(count).wrapped = False Then
-                    Exit For
-                End If
-                
-                m_lines.item(count).clearWrap
-            Next count
-        End If
-        
-        For count = m_currentVirtLine To 1 Step -1
-            If m_lines.item(count).wrapped = False Then
-                Exit For
-            End If
-            
-            m_lines.item(count).clearWrap
-        Next count
-    End If
-    
-    updateBackbuffer
-    
-    reDraw
-    updateScrollBar
+20        m_pageLines = Fix(UserControl.ScaleHeight / m_fontHeight)
+30        updateScrollBar
+          
+          Dim count As Integer
+          Dim diff As Long
+          
+40        If m_lines.count > 0 Then
+50            For count = m_lines.count To 1 Step -1
+60                If m_lines.item(count).wrapped = False Then
+70                    Exit For
+80                End If
+                  
+90                m_lines.item(count).clearWrap
+100           Next count
+              
+110           If count > 1 Then
+120               For count = 1 To m_lines.count
+130                   If m_lines.item(count).wrapped = False Then
+140                       Exit For
+150                   End If
+                      
+160                   m_lines.item(count).clearWrap
+170               Next count
+180           End If
+              
+190           For count = m_currentVirtLine To 1 Step -1
+200               If m_lines.item(count).wrapped = False Then
+210                   Exit For
+220               End If
+                  
+230               m_lines.item(count).clearWrap
+240           Next count
+250       End If
+          
+260       updateBackbuffer
+          
+270       reDraw
+280       updateScrollBar
 End Sub
 
 Public Sub refresh()
-    UserControl_Resize
+10        UserControl_Resize
 End Sub
 
 Private Sub UserControl_Terminate()
-    deInitMessages
-    closeLog
+10        deInitMessages
+20        closeLog
 End Sub
 
 Public Sub writeEntireBuffer()
-    Dim count As Long
-    Dim text As String
-    Dim numberWritten As Long
-    Dim codes As Boolean
-    Dim timestamps As Boolean
-    
-    codes = settings.setting("logIncludeCodes", estBoolean)
-    timestamps = settings.setting("logIncludeTimestamp", estBoolean)
-    
-    For count = 1 To m_lines.count
-        text = m_lines.item(count).getText(codes, timestamps, m_drawingData.ignoreSeperators)
-        logRealWrite text
-    Next count
+          Dim count As Long
+          Dim text As String
+          Dim numberWritten As Long
+          Dim codes As Boolean
+          Dim timestamps As Boolean
+          
+10        codes = settings.setting("logIncludeCodes", estBoolean)
+20        timestamps = settings.setting("logIncludeTimestamp", estBoolean)
+          
+30        For count = 1 To m_lines.count
+40            text = m_lines.item(count).getText(codes, timestamps, m_drawingData.ignoreSeperators)
+50            logRealWrite text
+60        Next count
 End Sub
 
 Private Sub openLog()
-    m_logFilename = m_logBaseName & "." & getFileNameDate & ".log"
-    m_logHandle = CreateFile(StrPtr(m_logFilename), GENERIC_WRITE, _
-        FILE_SHARE_READ Or FILE_SHARE_WRITE, ByVal 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, ByVal 0)
+10        m_logFilename = m_logBaseName & "." & getFileNameDate & ".log"
+20        m_logHandle = CreateFile(StrPtr(m_logFilename), GENERIC_WRITE, _
+              FILE_SHARE_READ Or FILE_SHARE_WRITE, ByVal 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, ByVal 0)
 
-    If m_logHandle = -1 Then
-        Exit Sub
-    End If
+30        If m_logHandle = -1 Then
+40            Exit Sub
+50        End If
 
-    SetFilePointer m_logHandle, 0, ByVal 0, FILE_END
-    
-    Dim fileSize1 As Long
-    Dim fileSize2 As Long
-    
-    Dim numberWritten As Long
-    
-    fileSize1 = GetFileSize(m_logHandle, fileSize2)
-    
-    If fileSize1 = 0 And fileSize2 = 0 Then
-        Dim bom As String
-        
-        bom = ChrW$(&HFEFF)
-        WriteFile m_logHandle, ByVal StrPtr(bom), LenB(bom), numberWritten, ByVal 0
-    End If
-    
-    Dim text As String
-    
-    text = vbCrLf & "Log started: " & formatTime(getSystemTime()) & vbCrLf
-    WriteFile m_logHandle, ByVal StrPtr(text), LenB(text), numberWritten, ByVal 0
+60        SetFilePointer m_logHandle, 0, ByVal 0, FILE_END
+          
+          Dim fileSize1 As Long
+          Dim fileSize2 As Long
+          
+          Dim numberWritten As Long
+          
+70        fileSize1 = GetFileSize(m_logHandle, fileSize2)
+          
+80        If fileSize1 = 0 And fileSize2 = 0 Then
+              Dim bom As String
+              
+90            bom = ChrW$(&HFEFF)
+100           WriteFile m_logHandle, ByVal StrPtr(bom), LenB(bom), numberWritten, ByVal 0
+110       End If
+          
+          Dim text As String
+          
+120       text = vbCrLf & "Log started: " & formatTime(getSystemTime()) & vbCrLf
+130       WriteFile m_logHandle, ByVal StrPtr(text), LenB(text), numberWritten, ByVal 0
 End Sub
 
 Private Sub logWrite(line As CLine)
-    Dim text As String
-    
-   On Error GoTo logWrite_Error
+          Dim text As String
+          
+10       On Error GoTo logWrite_Error
 
-    text = line.getText(settings.setting("logIncludeCodes", estBoolean), _
-        settings.setting("logIncludeTimestamp", estBoolean), m_drawingData.ignoreSeperators)
-    logRealWrite text
+20        text = line.getText(settings.setting("logIncludeCodes", estBoolean), _
+              settings.setting("logIncludeTimestamp", estBoolean), m_drawingData.ignoreSeperators)
+30        logRealWrite text
 
-   On Error GoTo 0
-   Exit Sub
+40       On Error GoTo 0
+50       Exit Sub
 
 logWrite_Error:
-    handleError "logWrite", Err.Number, Err.Description, Erl, vbNullString
+60        handleError "logWrite", Err.Number, Err.Description, Erl, vbNullString
 End Sub
 
 Private Sub logRealWrite(text As String)
-   On Error GoTo logRealWrite_Error
+10       On Error GoTo logRealWrite_Error
 
-    If Not m_enableLogging Then
-        Exit Sub
-    End If
+20        If Not m_enableLogging Then
+30            Exit Sub
+40        End If
 
-    If m_logHandle = -1 Then
-        openLog
-    Else
-        If m_logFilename <> m_logBaseName & "." & getFileNameDate & ".log" Then
-            closeLog
-            openLog
-        End If
-    End If
+50        If m_logHandle = -1 Then
+60            openLog
+70        Else
+80            If m_logFilename <> m_logBaseName & "." & getFileNameDate & ".log" Then
+90                closeLog
+100               openLog
+110           End If
+120       End If
 
-    SetFilePointer m_logHandle, 0, ByVal 0, FILE_END
+130       SetFilePointer m_logHandle, 0, ByVal 0, FILE_END
 
-    Dim numberWritten As Long
-    WriteFile m_logHandle, ByVal StrPtr(text), LenB(text), numberWritten, ByVal 0
+          Dim numberWritten As Long
+140       WriteFile m_logHandle, ByVal StrPtr(text), LenB(text), numberWritten, ByVal 0
 
-   On Error GoTo 0
-   Exit Sub
+150      On Error GoTo 0
+160      Exit Sub
 
 logRealWrite_Error:
-    handleError "logRealWrite", Err.Number, Err.Description, Erl, vbNullString
+170       handleError "logRealWrite", Err.Number, Err.Description, Erl, vbNullString
 End Sub
 
 Private Sub closeLog()
-    If m_logHandle <> -1 Then
-        Dim text As String
-        Dim numberWritten As Long
-        
-        text = vbCrLf & "Log ended: " & formatTime(getSystemTime()) & vbCrLf
-    
-        WriteFile m_logHandle, ByVal StrPtr(text), LenB(text), numberWritten, ByVal 0
-        CloseHandle m_logHandle
-    End If
-    
-    m_logHandle = -1
+10        If m_logHandle <> -1 Then
+              Dim text As String
+              Dim numberWritten As Long
+              
+20            text = vbCrLf & "Log ended: " & formatTime(getSystemTime()) & vbCrLf
+          
+30            WriteFile m_logHandle, ByVal StrPtr(text), LenB(text), numberWritten, ByVal 0
+40            CloseHandle m_logHandle
+50        End If
+          
+60        m_logHandle = -1
 End Sub

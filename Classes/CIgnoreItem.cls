@@ -34,68 +34,68 @@ Private m_flags As Long
 Private m_flagChars(6) As ignoreFlagChar
 
 Public Property Get mask() As String
-    mask = m_mask
+10        mask = m_mask
 End Property
 
 Public Property Let mask(newValue As String)
-    m_mask = newValue
+10        m_mask = newValue
 End Property
 
 Public Property Get flags() As Long
-    flags = m_flags
+10        flags = m_flags
 End Property
 
 Public Property Let flags(newValue As Long)
-    m_flags = newValue
+10        m_flags = newValue
 End Property
 
 Public Property Get flagChars() As String
-    Dim count As Long
-    
-    For count = 0 To UBound(m_flagChars)
-        If m_flags And m_flagChars(count).flag Then
-            flagChars = flagChars & m_flagChars(count).char
-        End If
-    Next count
+          Dim count As Long
+          
+10        For count = 0 To UBound(m_flagChars)
+20            If m_flags And m_flagChars(count).flag Then
+30                flagChars = flagChars & m_flagChars(count).char
+40            End If
+50        Next count
 End Property
 
 Public Function parseFlagChars(flagChars As String) As Boolean
-    Dim count As Long
-    Dim flagCount As Long
-    Dim char As String
-    
-    m_flags = 0
-    flagChars = LCase(flagChars)
-    
-    For count = 1 To Len(flagChars)
-        char = Mid$(flagChars, count, 1)
-        
-        For flagCount = 0 To UBound(m_flagChars)
-            If char = m_flagChars(flagCount).char Then
-                m_flags = m_flags Or m_flagChars(flagCount).flag
-                Exit For
-            End If
-        Next flagCount
-    Next count
-    
-    If m_flags <> 0 Then
-        parseFlagChars = True
-    End If
+          Dim count As Long
+          Dim flagCount As Long
+          Dim char As String
+          
+10        m_flags = 0
+20        flagChars = LCase(flagChars)
+          
+30        For count = 1 To Len(flagChars)
+40            char = Mid$(flagChars, count, 1)
+              
+50            For flagCount = 0 To UBound(m_flagChars)
+60                If char = m_flagChars(flagCount).char Then
+70                    m_flags = m_flags Or m_flagChars(flagCount).flag
+80                    Exit For
+90                End If
+100           Next flagCount
+110       Next count
+          
+120       If m_flags <> 0 Then
+130           parseFlagChars = True
+140       End If
 End Function
 
 Private Sub Class_Initialize()
-    m_flagChars(0).flag = IGNORE_PRIVATE
-    m_flagChars(0).char = "p"
-    m_flagChars(1).flag = IGNORE_CHANNEL
-    m_flagChars(1).char = "c"
-    m_flagChars(2).flag = IGNORE_NOTICE
-    m_flagChars(2).char = "n"
-    m_flagChars(3).flag = IGNORE_CTCP
-    m_flagChars(3).char = "t"
-    m_flagChars(4).flag = IGNORE_INVITE
-    m_flagChars(4).char = "i"
-    m_flagChars(5).flag = IGNORE_CODES
-    m_flagChars(5).char = "f"
-    m_flagChars(6).flag = IGNORE_EXCLUDE
-    m_flagChars(6).char = "w"
+10        m_flagChars(0).flag = IGNORE_PRIVATE
+20        m_flagChars(0).char = "p"
+30        m_flagChars(1).flag = IGNORE_CHANNEL
+40        m_flagChars(1).char = "c"
+50        m_flagChars(2).flag = IGNORE_NOTICE
+60        m_flagChars(2).char = "n"
+70        m_flagChars(3).flag = IGNORE_CTCP
+80        m_flagChars(3).char = "t"
+90        m_flagChars(4).flag = IGNORE_INVITE
+100       m_flagChars(4).char = "i"
+110       m_flagChars(5).flag = IGNORE_CODES
+120       m_flagChars(5).char = "f"
+130       m_flagChars(6).flag = IGNORE_EXCLUDE
+140       m_flagChars(6).char = "w"
 End Sub

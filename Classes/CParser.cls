@@ -19,33 +19,33 @@ Private m_maxParams As Byte
 Private m_func As String
 
 Public Property Get name() As String
-    name = m_name
+10        name = m_name
 End Property
 
 Public Property Let name(newValue As String)
-    m_name = newValue
+10        m_name = newValue
 End Property
 
 Public Property Get minParams() As Byte
-    minParams = m_minParams
+10        minParams = m_minParams
 End Property
 
 Public Property Let minParams(newValue As Byte)
-    m_minParams = newValue
+10        m_minParams = newValue
 End Property
 
 Public Property Get maxParams() As Byte
-    maxParams = m_maxParams
+10        maxParams = m_maxParams
 End Property
 
 Public Property Let maxParams(newValue As Byte)
-    m_maxParams = newValue
+10        m_maxParams = newValue
 End Property
 
 Public Property Get func() As String
-    func = m_func
+10        func = m_func
 End Property
 
 Public Property Let func(newValue As String)
-    m_func = newValue
+10        m_func = newValue
 End Property

@@ -34,61 +34,61 @@ Attribute m_buttonCancel.VB_VarHelpID = -1
 Private m_success As Boolean
 
 Public Property Get success() As Boolean
-    success = m_success
+10        success = m_success
 End Property
 
 Public Property Get channel() As String
-    channel = m_fieldChannel.value
+10        channel = m_fieldChannel.value
 End Property
 
 Public Property Let channel(newValue As String)
-    m_fieldChannel.value = newValue
+10        m_fieldChannel.value = newValue
 End Property
 
 Public Property Get key() As String
-    key = m_fieldKey.value
+10        key = m_fieldKey.value
 End Property
 
 Public Property Let key(newValue As String)
-    m_fieldKey.value = newValue
+10        m_fieldKey.value = newValue
 End Property
 
 Private Sub Form_Initialize()
-    Set m_fieldChannel = addField(Controls, "Channel name:", 20, 20, Me.ScaleWidth - 40, 20)
-    Set m_fieldKey = addField(Controls, "Key/password:", 20, 45, Me.ScaleWidth - 40, 20)
-    Set m_buttonSave = addButton(Controls, "Save", 20, 75, 100, 20)
-    Set m_buttonCancel = addButton(Controls, "Cancel", 130, 75, 100, 20)
+10        Set m_fieldChannel = addField(Controls, "Channel name:", 20, 20, Me.ScaleWidth - 40, 20)
+20        Set m_fieldKey = addField(Controls, "Key/password:", 20, 45, Me.ScaleWidth - 40, 20)
+30        Set m_buttonSave = addButton(Controls, "Save", 20, 75, 100, 20)
+40        Set m_buttonCancel = addButton(Controls, "Cancel", 130, 75, 100, 20)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    If KeyAscii = vbKeyEscape Then
-        Me.Hide
-        KeyAscii = 0
-    ElseIf KeyAscii = vbKeyReturn Then
-        m_buttonSave_clicked
-        KeyAscii = 0
-    End If
+10        If KeyAscii = vbKeyEscape Then
+20            Me.Hide
+30            KeyAscii = 0
+40        ElseIf KeyAscii = vbKeyReturn Then
+50            m_buttonSave_clicked
+60            KeyAscii = 0
+70        End If
 End Sub
 
 Private Sub Form_Load()
-    Me.BackColor = colourManager.getColour(SWIFTCOLOUR_WINDOW)
+10        Me.BackColor = colourManager.getColour(SWIFTCOLOUR_WINDOW)
 End Sub
 
 Private Sub Form_Paint()
-    SelectObject Me.hdc, colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
-    RoundRect Me.hdc, 10, 10, Me.ScaleWidth - 10, Me.ScaleHeight - 10, 10, 10
+10        SelectObject Me.hdc, colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
+20        RoundRect Me.hdc, 10, 10, Me.ScaleWidth - 10, Me.ScaleHeight - 10, 10, 10
 End Sub
 
 Private Sub m_buttonCancel_clicked()
-    Me.Hide
+10        Me.Hide
 End Sub
 
 Private Sub m_buttonSave_clicked()
-    If LenB(m_fieldChannel.value) = 0 Then
-        MsgBox "Please enter a channel name", vbCritical, "Missing fields"
-        Exit Sub
-    End If
+10        If LenB(m_fieldChannel.value) = 0 Then
+20            MsgBox "Please enter a channel name", vbCritical, "Missing fields"
+30            Exit Sub
+40        End If
 
-    m_success = True
-    Me.Hide
+50        m_success = True
+60        Me.Hide
 End Sub

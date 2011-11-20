@@ -17,15 +17,15 @@ Private m_mode As String
 Private m_param As String
 
 Public Sub init(mode As String, param As String)
-    m_mode = mode
-    m_param = param
+10        m_mode = mode
+20        m_param = param
 End Sub
 
 Public Property Get mode() As String
-    mode = m_mode
+10        mode = m_mode
 End Property
 
 Public Property Get param() As String
-    param = m_param
+10        param = m_param
 End Property
 

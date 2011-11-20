@@ -17,18 +17,18 @@ Private m_text As String
 Private m_prefix As String
 
 Public Property Get text() As String
-    text = m_text
+10        text = m_text
 End Property
 
 Public Property Let text(newValue As String)
-    m_text = newValue
+10        m_text = newValue
 End Property
 
 Public Property Get prefix() As String
-    prefix = m_prefix
+10        prefix = m_prefix
 End Property
 
 Public Property Let prefix(newValue As String)
-    m_prefix = newValue
+10        m_prefix = newValue
 End Property
 

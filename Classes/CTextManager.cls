@@ -16,48 +16,48 @@ Option Explicit
 Private m_textEntries As New Collection
 
 Private Sub addText(name As String, text As String)
-    If Not getTextItem(name) Is Nothing Then
-        Exit Sub
-    End If
+10        If Not getTextItem(name) Is Nothing Then
+20            Exit Sub
+30        End If
 
-    Dim textItem As New CTextItem
-    
-    textItem.name = name
-    textItem.text = text
-    
-    m_textEntries.Add textItem, LCase$(name)
+          Dim textItem As New CTextItem
+          
+40        textItem.name = name
+50        textItem.text = text
+          
+60        m_textEntries.Add textItem, LCase$(name)
 End Sub
 
 Private Function getTextItem(name As String) As CTextItem
-    On Error Resume Next
-    Set getTextItem = m_textEntries.item(LCase$(name))
+10        On Error Resume Next
+20        Set getTextItem = m_textEntries.item(LCase$(name))
 End Function
 
 Public Function getText(name As String) As String
-    Dim textItem As CTextItem
-    
-    Set textItem = getTextItem(name)
-    
-    If Not textItem Is Nothing Then
-        getText = textItem.text
-    End If
+          Dim textItem As CTextItem
+          
+10        Set textItem = getTextItem(name)
+          
+20        If Not textItem Is Nothing Then
+30            getText = textItem.text
+40        End If
 End Function
 
-Public Sub loadText(fileName As String)
-    Dim xml As New msxml2.DOMDocument30
-    
-    If Not xml.load(fileName) Then
-        Exit Sub
-    End If
-    
-    Dim textNode As msxml2.IXMLDOMNode
-    Dim textAttrib As msxml2.IXMLDOMAttribute
-    
-    For Each textNode In xml.documentElement.childNodes
-        If LCase$(textNode.nodeName) = "text" Then
-            Set textAttrib = textNode.Attributes.getNamedItem("name")
-            
-            addText textAttrib.text, textNode.text
-        End If
-    Next textNode
+Public Sub loadText(filename As String)
+          Dim xml As New msxml2.DOMDocument30
+          
+10        If Not xml.load(filename) Then
+20            Exit Sub
+30        End If
+          
+          Dim textNode As msxml2.IXMLDOMNode
+          Dim textAttrib As msxml2.IXMLDOMAttribute
+          
+40        For Each textNode In xml.documentElement.childNodes
+50            If LCase$(textNode.nodeName) = "text" Then
+60                Set textAttrib = textNode.Attributes.getNamedItem("name")
+                  
+70                addText textAttrib.text, textNode.text
+80            End If
+90        Next textNode
 End Sub

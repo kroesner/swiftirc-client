@@ -19,69 +19,69 @@ Private m_text As String
 Private m_image As CImage
 
 Public Function copy() As CUserStyle
-    Set copy = New CUserStyle
-    copy.init m_text, m_image, m_foreColour
+10        Set copy = New CUserStyle
+20        copy.init m_text, m_image, m_foreColour
 End Function
 
 Public Sub init(text As String, image As CImage, foreColour As Byte)
-    m_text = text
-    Set m_image = image
-    
-    If Not m_image Is Nothing Then
-        m_image.caption = m_text
-    End If
-    
-    m_hasForeColour = True
-    m_foreColour = foreColour
+10        m_text = text
+20        Set m_image = image
+          
+30        If Not m_image Is Nothing Then
+40            m_image.caption = m_text
+50        End If
+          
+60        m_hasForeColour = True
+70        m_foreColour = foreColour
 End Sub
 
 Public Property Get text() As String
-    text = m_text
+10        text = m_text
 End Property
 
 Public Property Get image() As CImage
-    Set image = m_image
+10        Set image = m_image
 End Property
 
 Public Property Get foreColour() As Byte
-    foreColour = m_foreColour
+10        foreColour = m_foreColour
 End Property
 
 Public Property Let foreColour(ByVal newValue As Byte)
-    m_foreColour = newValue
+10        m_foreColour = newValue
 End Property
 
 Public Property Get hasForeColour() As Boolean
-    hasForeColour = m_hasForeColour
+10        hasForeColour = m_hasForeColour
 End Property
 
 Public Property Let hasForeColour(newValue As Boolean)
-    m_hasForeColour = newValue
+10        m_hasForeColour = newValue
 End Property
 
 Public Sub buildFormat(blocks As cArrayList)
-    If settings.setting("boldNicks", estBoolean) Then
-        Dim blockBold As New CBlockBold
-        blockBold.bold = True
-        blocks.Add blockBold
-    End If
+10        If settings.setting("boldNicks", estBoolean) Then
+              Dim blockBold As New CBlockBold
+20            blockBold.bold = True
+30            blocks.Add blockBold
+40        End If
 
-    If m_hasForeColour Then
-        Dim blockForeColour As New CBlockForeColour
-        blockForeColour.hasForeColour = True
-        blockForeColour.foreColour = m_foreColour
-        blocks.Add blockForeColour
-    End If
-    
-    If Not m_image Is Nothing And settings.setting("nicknameIcons", estBoolean) Then
-        Dim blockImage As New CBlockImage
-        blockImage.caption = m_text
-        blockImage.image = m_image
-        blocks.Add blockImage
-    Else
-        Dim blockText As New CBlockText
-        blockText.text = m_text
-        blocks.Add blockText
-    End If
+50        If m_hasForeColour Then
+              Dim blockForeColour As New CBlockForeColour
+60            blockForeColour.hasForeColour = True
+70            blockForeColour.foreColour = m_foreColour
+80            blocks.Add blockForeColour
+90        End If
+          
+100       If Not m_image Is Nothing And settings.setting("nicknameIcons", estBoolean) Then
+              Dim blockImage As New CBlockImage
+110           blockImage.caption = m_text
+120           blockImage.image = m_image
+130           blocks.Add blockImage
+140       Else
+              Dim blockText As New CBlockText
+150           blockText.text = m_text
+160           blocks.Add blockText
+170       End If
 End Sub
 

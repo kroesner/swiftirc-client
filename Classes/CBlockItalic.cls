@@ -23,19 +23,19 @@ Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, w
 End Function
 
 Public Property Get italic() As Boolean
-    italic = m_italic
+10        italic = m_italic
 End Property
 
 Public Property Let italic(newValue As Boolean)
-    m_italic = newValue
+10        m_italic = newValue
 End Property
 
 Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
-    drawingData.italic = m_italic
+10        drawingData.italic = m_italic
 End Sub
 
 Private Property Get ITextRenderBlock_width() As Long
-    ITextRenderBlock_width = 0
+10        ITextRenderBlock_width = 0
 End Property
 
 Private Property Let ITextRenderBlock_width(RHS As Long)

@@ -120,185 +120,185 @@ Private m_hwnd As Long
 Private wsData As WSAData
 
 Public Sub init(hwnd As Long)
-    Dim ret As Long
+          Dim ret As Long
 
-    ret = WSAStartup(MakeWord(2, 2), wsData)
-    
-    If ret Then
-        Exit Sub
-    End If
-    
-    m_hwnd = hwnd
-    initMessages
-    
-    m_initialized = True
+10        ret = WSAStartup(MakeWord(2, 2), wsData)
+          
+20        If ret Then
+30            Exit Sub
+40        End If
+          
+50        m_hwnd = hwnd
+60        initMessages
+          
+70        m_initialized = True
 End Sub
 
 Public Sub deInit()
-    deInitMessages
-    closeSocket False
-    m_initialized = False
+10        deInitMessages
+20        closeSocket False
+30        m_initialized = False
 End Sub
 
 Public Function resolveAddrByName(host As String) As Long
-    resolveAddrByName = WSAAsyncGetHostByName(m_hwnd, WSM_RESOLVECOMPLETE_A, host, m_hostEnt, 1024)
+10        resolveAddrByName = WSAAsyncGetHostByName(m_hwnd, WSM_RESOLVECOMPLETE_A, host, m_hostEnt, 1024)
 End Function
 
 Public Function resolveNameByAddr(ip As String) As Long
-    resolveNameByAddr = WSAAsyncGetHostByAddr(m_hwnd, WSM_RESOLVECOMPLETE_PTR, inet_addr(ip), 4, 2, m_hostEnt, 1024)
+10        resolveNameByAddr = WSAAsyncGetHostByAddr(m_hwnd, WSM_RESOLVECOMPLETE_PTR, inet_addr(ip), 4, 2, m_hostEnt, 1024)
 End Function
 
 Public Property Get lastError() As Long
-    lastError = Err.LastDllError
+10        lastError = Err.LastDllError
 End Property
 
 Public Sub connect(ByVal addr As Long, ByVal port As Long)
-    m_connected = False
-    m_socket = APISocket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
-    
-    If m_socket = INVALID_SOCKET Then
-        Exit Sub
-    End If
-    
-    setSelect False
-    
-    Dim sockaddr As sockaddr_in
-    
-    sockaddr.sin_family = AF_INET
-    sockaddr.sin_addr.S_addr = addr
-    sockaddr.sin_port = htons(port)
-    
-    APIConnect m_socket, sockaddr, Len(sockaddr)
+10        m_connected = False
+20        m_socket = APISocket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
+          
+30        If m_socket = INVALID_SOCKET Then
+40            Exit Sub
+50        End If
+          
+60        setSelect False
+          
+          Dim sockaddr As sockaddr_in
+          
+70        sockaddr.sin_family = AF_INET
+80        sockaddr.sin_addr.S_addr = addr
+90        sockaddr.sin_port = htons(port)
+          
+100       APIConnect m_socket, sockaddr, Len(sockaddr)
 End Sub
 
 Public Sub closeSocket(Optional hard As Boolean = False)
-    If m_socket = INVALID_SOCKET Then
-        Exit Sub
-    End If
+10        If m_socket = INVALID_SOCKET Then
+20            Exit Sub
+30        End If
 
-    stopAsyncSelect
+40        stopAsyncSelect
 
-    If Not hard Then
-        If LenB(m_buffer) <> 0 Then
-            If m_connected Then
-                flushBuffer
-            End If
-        End If
-    End If
-    
-    APICloseSocket m_socket
-    m_socket = INVALID_SOCKET
+50        If Not hard Then
+60            If LenB(m_buffer) <> 0 Then
+70                If m_connected Then
+80                    flushBuffer
+90                End If
+100           End If
+110       End If
+          
+120       APICloseSocket m_socket
+130       m_socket = INVALID_SOCKET
 
-    m_connected = False
+140       m_connected = False
 End Sub
 
 Private Sub setSelect(wantWrite As Boolean)
-    Dim activityFlags As Long
-    
-    activityFlags = FD_READ Or FD_CONNECT Or FD_CLOSE
-    
-    If wantWrite Then
-        activityFlags = activityFlags Or FD_WRITE
-    End If
-    
-    WSAAsyncSelect m_socket, m_hwnd, WSM_SOCKET_ACTIVITY, activityFlags
+          Dim activityFlags As Long
+          
+10        activityFlags = FD_READ Or FD_CONNECT Or FD_CLOSE
+          
+20        If wantWrite Then
+30            activityFlags = activityFlags Or FD_WRITE
+40        End If
+          
+50        WSAAsyncSelect m_socket, m_hwnd, WSM_SOCKET_ACTIVITY, activityFlags
 End Sub
 
 Private Sub stopAsyncSelect()
-    WSAAsyncSelect m_socket, m_hwnd, 0, 0
+10        WSAAsyncSelect m_socket, m_hwnd, 0, 0
 End Sub
 
 Public Function sockRead(ByRef buf As String, Optional readLen As Long = 4096) As Long
-    buf = Space$(readLen)
-    buf = StrConv(buf, vbFromUnicode)
-    
-    sockRead = APIRecv(m_socket, StrPtr(buf), readLen, 0)
-    
-    If sockRead > 0 Then
-        buf = Mid$(buf, 1, sockRead / 2)
-        buf = UTF8Decode(StrConv(buf, vbUnicode))
-    Else
-        buf = vbNullString
-    
-        If lastError = WSAEWOULDBLOCK Then
-            'Fake success
-            sockRead = 1
-        End If
-    End If
+10        buf = Space$(readLen)
+20        buf = StrConv(buf, vbFromUnicode)
+          
+30        sockRead = APIRecv(m_socket, StrPtr(buf), readLen, 0)
+          
+40        If sockRead > 0 Then
+50            buf = Mid$(buf, 1, sockRead / 2)
+60            buf = UTF8Decode(StrConv(buf, vbUnicode))
+70        Else
+80            buf = vbNullString
+          
+90            If lastError = WSAEWOULDBLOCK Then
+                  'Fake success
+100               sockRead = 1
+110           End If
+120       End If
 End Function
 
 Public Sub send(ByRef buf As String)
-    sockWrite buf
+10        sockWrite buf
 End Sub
 
 Public Sub sendLine(ByRef buf As String)
-    sockWrite buf & vbCrLf
+10        sockWrite buf & vbCrLf
 End Sub
 
 Public Sub sockWrite(ByRef buf As String)
-    If LenB(buf) = 0 Then
-        Exit Sub
-    End If
+10        If LenB(buf) = 0 Then
+20            Exit Sub
+30        End If
 
-    If LenB(m_buffer) = 0 Then
-        setSelect True
-    End If
+40        If LenB(m_buffer) = 0 Then
+50            setSelect True
+60        End If
 
-    m_buffer = m_buffer & UTF8Encode(buf)
+70        m_buffer = m_buffer & UTF8Encode(buf)
 End Sub
 
 Private Sub flushBuffer()
-    Dim result As Long
-    
-    Do While LenB(m_buffer) <> 0
-        result = APISend(m_socket, m_buffer, Len(m_buffer), 0)
-        
-        If result > 0 Then
-            If result = Len(m_buffer) Then
-                m_buffer = vbNullString
-            Else
-                m_buffer = Mid$(m_buffer, result)
-            End If
-        Else
-            If result = SOCKET_ERROR Then
-                If lastError <> WSAEWOULDBLOCK Then
-                    m_connected = False
-                    closeSocket
-                    RaiseEvent closed(lastError)
-                End If
-            End If
-            
-            Exit Do
-        End If
-    Loop
+          Dim result As Long
+          
+10        Do While LenB(m_buffer) <> 0
+20            result = APISend(m_socket, m_buffer, Len(m_buffer), 0)
+              
+30            If result > 0 Then
+40                If result = Len(m_buffer) Then
+50                    m_buffer = vbNullString
+60                Else
+70                    m_buffer = Mid$(m_buffer, result)
+80                End If
+90            Else
+100               If result = SOCKET_ERROR Then
+110                   If lastError <> WSAEWOULDBLOCK Then
+120                       m_connected = False
+130                       closeSocket
+140                       RaiseEvent closed(lastError)
+150                   End If
+160               End If
+                  
+170               Exit Do
+180           End If
+190       Loop
 End Sub
 
 Private Sub initMessages()
-    If m_hwnd = 0 Then
-        Exit Sub
-    End If
+10        If m_hwnd = 0 Then
+20            Exit Sub
+30        End If
 
-    AttachMessage Me, m_hwnd, WSM_RESOLVECOMPLETE_A
-    AttachMessage Me, m_hwnd, WSM_RESOLVECOMPLETE_PTR
-    AttachMessage Me, m_hwnd, WSM_SOCKET_ACTIVITY
+40        AttachMessage Me, m_hwnd, WSM_RESOLVECOMPLETE_A
+50        AttachMessage Me, m_hwnd, WSM_RESOLVECOMPLETE_PTR
+60        AttachMessage Me, m_hwnd, WSM_SOCKET_ACTIVITY
 End Sub
 
 Private Sub deInitMessages()
-    If m_hwnd = 0 Then
-        Exit Sub
-    End If
+10        If m_hwnd = 0 Then
+20            Exit Sub
+30        End If
 
-    DetachMessage Me, m_hwnd, WSM_RESOLVECOMPLETE_A
-    DetachMessage Me, m_hwnd, WSM_RESOLVECOMPLETE_PTR
-    DetachMessage Me, m_hwnd, WSM_SOCKET_ACTIVITY
+40        DetachMessage Me, m_hwnd, WSM_RESOLVECOMPLETE_A
+50        DetachMessage Me, m_hwnd, WSM_RESOLVECOMPLETE_PTR
+60        DetachMessage Me, m_hwnd, WSM_SOCKET_ACTIVITY
 End Sub
 
 Private Sub Class_Initialize()
-    m_socket = INVALID_SOCKET
+10        m_socket = INVALID_SOCKET
 End Sub
 
 Private Sub Class_Terminate()
-    deInit
+10        deInit
 End Sub
 
 Private Property Let ISubclass_MsgResponse(ByVal RHS As EMsgResponse)
@@ -306,114 +306,114 @@ Private Property Let ISubclass_MsgResponse(ByVal RHS As EMsgResponse)
 End Property
 
 Private Property Get ISubclass_MsgResponse() As EMsgResponse
-    Select Case CurrentMessage
-        Case WSM_RESOLVECOMPLETE_A
-            ISubclass_MsgResponse = emrConsume
-        Case WSM_RESOLVECOMPLETE_PTR
-            ISubclass_MsgResponse = emrConsume
-        Case WSM_SOCKET_ACTIVITY
-            ISubclass_MsgResponse = emrConsume
-        Case Else
-            ISubclass_MsgResponse = emrPostProcess
-    End Select
+10        Select Case CurrentMessage
+              Case WSM_RESOLVECOMPLETE_A
+20                ISubclass_MsgResponse = emrConsume
+30            Case WSM_RESOLVECOMPLETE_PTR
+40                ISubclass_MsgResponse = emrConsume
+50            Case WSM_SOCKET_ACTIVITY
+60                ISubclass_MsgResponse = emrConsume
+70            Case Else
+80                ISubclass_MsgResponse = emrPostProcess
+90        End Select
 End Property
 
 Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-    Dim error As Long
-    
-    Select Case iMsg
-        Case WSM_RESOLVECOMPLETE_A
-            resolveCompleteA wParam, lParam
-        Case WSM_RESOLVECOMPLETE_PTR
-            resolveCompletePtr wParam, lParam
-        Case WSM_SOCKET_ACTIVITY
-            If wParam = m_socket Then
-                error = HiWord(lParam)
-            
-                Select Case LoWord(lParam)
-                    Case FD_READ
-                        If error Then
-                            m_connected = False
-                            closeSocket
-                            RaiseEvent closed(error)
-                        Else
-                            RaiseEvent readable
-                        End If
-                    Case FD_WRITE
-                        If error Then
-                            m_connected = False
-                            closeSocket
-                            RaiseEvent closed(error)
-                        Else
-                            flushBuffer
-                            
-                            If LenB(m_buffer) = 0 Then
-                                setSelect False
-                            End If
-                        End If
-                    Case FD_CONNECT
-                        If error Then
-                            RaiseEvent connectFailed(error)
-                        Else
-                            If Not m_connected Then
-                                m_connected = True
-                                RaiseEvent connected
-                            End If
-                        End If
-                    Case FD_CLOSE
-                        m_connected = False
-                        closeSocket
-                        RaiseEvent closed(error)
-                End Select
-            End If
-    End Select
+          Dim error As Long
+          
+10        Select Case iMsg
+              Case WSM_RESOLVECOMPLETE_A
+20                resolveCompleteA wParam, lParam
+30            Case WSM_RESOLVECOMPLETE_PTR
+40                resolveCompletePtr wParam, lParam
+50            Case WSM_SOCKET_ACTIVITY
+60                If wParam = m_socket Then
+70                    error = HiWord(lParam)
+                  
+80                    Select Case LoWord(lParam)
+                          Case FD_READ
+90                            If error Then
+100                               m_connected = False
+110                               closeSocket
+120                               RaiseEvent closed(error)
+130                           Else
+140                               RaiseEvent readable
+150                           End If
+160                       Case FD_WRITE
+170                           If error Then
+180                               m_connected = False
+190                               closeSocket
+200                               RaiseEvent closed(error)
+210                           Else
+220                               flushBuffer
+                                  
+230                               If LenB(m_buffer) = 0 Then
+240                                   setSelect False
+250                               End If
+260                           End If
+270                       Case FD_CONNECT
+280                           If error Then
+290                               RaiseEvent connectFailed(error)
+300                           Else
+310                               If Not m_connected Then
+320                                   m_connected = True
+330                                   RaiseEvent connected
+340                               End If
+350                           End If
+360                       Case FD_CLOSE
+370                           m_connected = False
+380                           closeSocket
+390                           RaiseEvent closed(error)
+400                   End Select
+410               End If
+420       End Select
 End Function
 
 Private Sub resolveCompleteA(wParam As Long, lParam As Long)
-    Dim listPtr As Long
-    Dim addrPtr As Long
-    Dim addr As Long
-    
-    Dim list As cArrayList
-    Dim addrObj As CIpAddr
+          Dim listPtr As Long
+          Dim addrPtr As Long
+          Dim addr As Long
+          
+          Dim list As cArrayList
+          Dim addrObj As CIpAddr
 
-    If HiWord(lParam) <> 0 Then
-        RaiseEvent resolveFailed(wParam, HiWord(lParam))
-        Exit Sub
-    End If
-    
-    listPtr = m_hostEnt.hAddrList
-    CopyMemory addrPtr, ByVal listPtr, 4
-    
-    Set list = New cArrayList
-    
-    Do While addrPtr <> 0
-        CopyMemory addr, ByVal addrPtr, 4
-        
-        Set addrObj = New CIpAddr
-        addrObj.addr = addr
-        list.Add addrObj
-        
-        listPtr = listPtr + 4
-        CopyMemory addrPtr, ByVal listPtr, 4
-    Loop
-    
-    RaiseEvent resolveCompleteA(wParam, list)
+10        If HiWord(lParam) <> 0 Then
+20            RaiseEvent resolveFailed(wParam, HiWord(lParam))
+30            Exit Sub
+40        End If
+          
+50        listPtr = m_hostEnt.hAddrList
+60        CopyMemory addrPtr, ByVal listPtr, 4
+          
+70        Set list = New cArrayList
+          
+80        Do While addrPtr <> 0
+90            CopyMemory addr, ByVal addrPtr, 4
+              
+100           Set addrObj = New CIpAddr
+110           addrObj.addr = addr
+120           list.Add addrObj
+              
+130           listPtr = listPtr + 4
+140           CopyMemory addrPtr, ByVal listPtr, 4
+150       Loop
+          
+160       RaiseEvent resolveCompleteA(wParam, list)
 End Sub
 
 Private Sub resolveCompletePtr(wParam As Long, lParam As Long)
-    Dim host As String
-    Dim hostLen As Long
+          Dim host As String
+          Dim hostLen As Long
 
-    If HiWord(lParam) <> 0 Then
-        RaiseEvent resolveFailed(wParam, HiWord(lParam))
-        Exit Sub
-    End If
-    
-    hostLen = strLen(ByVal m_hostEnt.hName)
-    
-    host = Space$(hostLen)
-    CopyMemory ByVal host, ByVal m_hostEnt.hName, hostLen
-    
-    RaiseEvent resolveCompletePtr(wParam, host)
+10        If HiWord(lParam) <> 0 Then
+20            RaiseEvent resolveFailed(wParam, HiWord(lParam))
+30            Exit Sub
+40        End If
+          
+50        hostLen = strLen(ByVal m_hostEnt.hName)
+          
+60        host = Space$(hostLen)
+70        CopyMemory ByVal host, ByVal m_hostEnt.hName, hostLen
+          
+80        RaiseEvent resolveCompletePtr(wParam, host)
 End Sub

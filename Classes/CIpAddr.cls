@@ -16,10 +16,10 @@ Option Explicit
 Private m_addr As Long
 
 Public Property Get addr() As Long
-    addr = m_addr
+10        addr = m_addr
 End Property
 
 Public Property Let addr(newValue As Long)
-    m_addr = newValue
+10        m_addr = newValue
 End Property
 

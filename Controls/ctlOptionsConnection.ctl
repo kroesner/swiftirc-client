@@ -46,122 +46,122 @@ Private WithEvents m_buttonRemoveServer As swiftIrc.ctlButton
 Attribute m_buttonRemoveServer.VB_VarHelpID = -1
 
 Public Property Let client(newValue As swiftIrc.SwiftIrcClient)
-    Set m_client = newValue
+10        Set m_client = newValue
 End Property
 
 Private Sub IColourUser_coloursUpdated()
-    UserControl.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
-    SetTextColor UserControl.hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFORE)
-    updateColours Controls
+10        UserControl.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
+20        SetTextColor UserControl.hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFORE)
+30        updateColours Controls
 End Sub
 
 Private Property Let IWindow_realWindow(RHS As Object)
-    Set m_realWindow = RHS
+10        Set m_realWindow = RHS
 End Property
 
 Private Property Get IWindow_realWindow() As Object
-    Set IWindow_realWindow = m_realWindow
+10        Set IWindow_realWindow = m_realWindow
 End Property
 
 Private Sub m_buttonAddServer_clicked()
-    Dim editServer As New frmEditServer
-    
-    editServer.Show vbModal, UserControl.parent
-    updateServerProfileList
-    saveSettings
+          Dim editServer As New frmEditServer
+          
+10        editServer.Show vbModal, UserControl.parent
+20        updateServerProfileList
+30        saveSettings
 End Sub
 
 Private Sub m_buttonConnect_clicked()
-    If m_listServerProfiles.ListIndex = -1 Then
-        Exit Sub
-    End If
-    
-    Dim profile As CServerProfile
-    Dim profileName As String
-    
-    Set profile = serverProfiles.profileItem(m_listServerProfiles.ListIndex + 1)
-    
-    If m_checkNewWindow.value = 1 Then
-        Dim session As CSession
-        Set session = m_client.newSession
-        
-        m_client.ShowWindow session.statusWindow
-        
-        session.serverProfile = profile
-        session.connect
-    End If
-    
-    UserControl.parent.Hide
+10        If m_listServerProfiles.ListIndex = -1 Then
+20            Exit Sub
+30        End If
+          
+          Dim profile As CServerProfile
+          Dim profileName As String
+          
+40        Set profile = serverProfiles.profileItem(m_listServerProfiles.ListIndex + 1)
+          
+50        If m_checkNewWindow.value = 1 Then
+              Dim session As CSession
+60            Set session = m_client.newSession
+              
+70            m_client.ShowWindow session.statusWindow
+              
+80            session.serverProfile = profile
+90            session.connect
+100       End If
+          
+110       UserControl.parent.Hide
 End Sub
 
 Private Sub m_buttonEditServer_clicked()
-    If m_listServerProfiles.ListIndex = -1 Then
-        Exit Sub
-    End If
-    
-    Dim editServer As New frmEditServer
-    
-    editServer.editProfile = serverProfiles.profileItem(m_listServerProfiles.ListIndex + 1)
-    editServer.Show vbModal, Me
-    updateServerProfileList
-    saveSettings
+10        If m_listServerProfiles.ListIndex = -1 Then
+20            Exit Sub
+30        End If
+          
+          Dim editServer As New frmEditServer
+          
+40        editServer.editProfile = serverProfiles.profileItem(m_listServerProfiles.ListIndex + 1)
+50        editServer.Show vbModal, Me
+60        updateServerProfileList
+70        saveSettings
 End Sub
 
 Private Sub m_buttonRemoveServer_clicked()
-    If m_listServerProfiles.ListIndex = -1 Then
-        Exit Sub
-    End If
-    
-    serverProfiles.removeProfileIndex m_listServerProfiles.ListIndex + 1
-    updateServerProfileList
-    saveSettings
+10        If m_listServerProfiles.ListIndex = -1 Then
+20            Exit Sub
+30        End If
+          
+40        serverProfiles.removeProfileIndex m_listServerProfiles.ListIndex + 1
+50        updateServerProfileList
+60        saveSettings
 End Sub
 
 Private Sub UserControl_Initialize()
-    initControls
-    updateServerProfileList
+10        initControls
+20        updateServerProfileList
 End Sub
 
 Private Sub initControls()
-    m_labelManager.addLabel "Connect to a server", ltHeading, 15, 15
-    Set m_listServerProfiles = createControl(Controls, "VB.ListBox", "list")
-    m_listServerProfiles.Move 15, 35, 200, 285
-    
-    Set m_checkNewWindow = addCheckBox(Controls, "New window", 220, 35, 100, 20)
-    m_checkNewWindow.value = 1
-    
-    Set m_buttonConnect = addButton(Controls, "Connect", 220, 60, 75, 25)
-    
-    Set m_buttonAddServer = addButton(Controls, "Add", 220, 110, 75, 25)
-    Set m_buttonEditServer = addButton(Controls, "Edit", 220, 140, 75, 25)
-    Set m_buttonRemoveServer = addButton(Controls, "Remove", 220, 170, 75, 25)
+10        m_labelManager.addLabel "Connect to a server", ltHeading, 15, 15
+20        Set m_listServerProfiles = createControl(Controls, "VB.ListBox", "list")
+30        m_listServerProfiles.Move 15, 35, 200, 285
+          
+40        Set m_checkNewWindow = addCheckBox(Controls, "New window", 220, 35, 100, 20)
+50        m_checkNewWindow.value = 1
+          
+60        Set m_buttonConnect = addButton(Controls, "Connect", 220, 60, 75, 25)
+          
+70        Set m_buttonAddServer = addButton(Controls, "Add", 220, 110, 75, 25)
+80        Set m_buttonEditServer = addButton(Controls, "Edit", 220, 140, 75, 25)
+90        Set m_buttonRemoveServer = addButton(Controls, "Remove", 220, 170, 75, 25)
 End Sub
 
 Private Sub updateServerProfileList()
-    Dim serverProfile As CServerProfile
-    Dim count As Long
-    
-    m_listServerProfiles.clear
-    
-    For count = 1 To serverProfiles.profileCount
-        Set serverProfile = serverProfiles.profileItem(count)
-        m_listServerProfiles.addItem serverProfile.name & " (" & serverProfile.hostname & ":" & _
-            serverProfile.port & ")"
-    Next count
+          Dim serverProfile As CServerProfile
+          Dim count As Long
+          
+10        m_listServerProfiles.clear
+          
+20        For count = 1 To serverProfiles.profileCount
+30            Set serverProfile = serverProfiles.profileItem(count)
+40            m_listServerProfiles.addItem serverProfile.name & " (" & serverProfile.hostname & ":" & _
+                  serverProfile.port & ")"
+50        Next count
 End Sub
 
 Private Sub reDraw()
-    m_labelManager.renderLabels (UserControl.hdc)
+10        m_labelManager.renderLabels (UserControl.hdc)
 End Sub
 
 Private Sub UserControl_Paint()
-    reDraw
+10        reDraw
 End Sub
 
 Public Sub saveSettings()
-    serverProfiles.saveProfiles g_userPath & "swiftirc_servers.xml"
+10        serverProfiles.saveProfiles g_userPath & "swiftirc_servers.xml"
 End Sub
 
 Private Sub UserControl_Terminate()
-    debugLog "ctlOptionsConnection terminating"
+10        debugLog "ctlOptionsConnection terminating"
 End Sub

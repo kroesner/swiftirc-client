@@ -39,138 +39,138 @@ Private m_enableConnectRetry As Boolean
 Private m_autoJoinChannels As New cArrayList
 
 Public Property Get name() As String
-    name = m_name
+10        name = m_name
 End Property
 
 Public Property Let name(newValue As String)
-    m_name = newValue
+10        m_name = newValue
 End Property
 
 Public Property Get hostname() As String
-    hostname = m_hostname
+10        hostname = m_hostname
 End Property
 
 Public Property Let hostname(newValue As String)
-    m_hostname = newValue
+10        m_hostname = newValue
 End Property
 
 Public Property Get port() As Long
-    port = m_port
+10        port = m_port
 End Property
 
 Public Property Let port(newValue As Long)
-    m_port = newValue
+10        m_port = newValue
 End Property
 
 Public Property Get serverPassword() As String
-    serverPassword = m_serverPassword
+10        serverPassword = m_serverPassword
 End Property
 
 Public Property Let serverPassword(newValue As String)
-    m_serverPassword = newValue
+10        m_serverPassword = newValue
 End Property
 
 Public Property Get primaryNickname() As String
-    primaryNickname = m_primaryNickname
+10        primaryNickname = m_primaryNickname
 End Property
 
 Public Property Let primaryNickname(newValue As String)
-    m_primaryNickname = newValue
+10        m_primaryNickname = newValue
 End Property
 
 Public Property Get backupNickname() As String
-    backupNickname = m_backupNickname
+10        backupNickname = m_backupNickname
 End Property
 
 Public Property Let backupNickname(newValue As String)
-    m_backupNickname = newValue
+10        m_backupNickname = newValue
 End Property
 
 Public Property Get realName() As String
-    realName = m_realName
+10        realName = m_realName
 End Property
 
 Public Property Let realName(newValue As String)
-    m_realName = newValue
+10        m_realName = newValue
 End Property
 
 Public Property Get nicknamePassword() As String
-    nicknamePassword = m_nicknamePassword
+10        nicknamePassword = m_nicknamePassword
 End Property
 
 Public Property Let nicknamePassword(newValue As String)
-    m_nicknamePassword = newValue
+10        m_nicknamePassword = newValue
 End Property
 
 Public Property Get enablePerform() As Boolean
-    enablePerform = m_enablePerform
+10        enablePerform = m_enablePerform
 End Property
 
 Public Property Let enablePerform(newValue As Boolean)
-    m_enablePerform = newValue
+10        m_enablePerform = newValue
 End Property
 
 Public Property Get perform() As String
-    perform = m_perform
+10        perform = m_perform
 End Property
 
 Public Property Let perform(newValue As String)
-    m_perform = newValue
+10        m_perform = newValue
 End Property
 
 Public Property Get enableAutoJoin() As Boolean
-    enableAutoJoin = m_enableAutoJoin
+10        enableAutoJoin = m_enableAutoJoin
 End Property
 
 Public Property Let enableAutoJoin(newValue As Boolean)
-    m_enableAutoJoin = newValue
+10        m_enableAutoJoin = newValue
 End Property
 
 Public Property Get enableAutoIdentify() As Boolean
-    enableAutoIdentify = m_enableAutoIdentify
+10        enableAutoIdentify = m_enableAutoIdentify
 End Property
 
 Public Property Let enableAutoIdentify(newValue As Boolean)
-    m_enableAutoIdentify = newValue
+10        m_enableAutoIdentify = newValue
 End Property
 
 Public Property Get enableReconnect() As Boolean
-    enableReconnect = m_enableReconnect
+10        enableReconnect = m_enableReconnect
 End Property
 
 Public Property Let enableReconnect(newValue As Boolean)
-    m_enableReconnect = newValue
+10        m_enableReconnect = newValue
 End Property
 
 Public Property Get enableConnectRetry() As Boolean
-    enableConnectRetry = m_enableConnectRetry
+10        enableConnectRetry = m_enableConnectRetry
 End Property
 
 Public Property Let enableConnectRetry(newValue As Boolean)
-    m_enableConnectRetry = newValue
+10        m_enableConnectRetry = newValue
 End Property
 
 Public Sub addAutoJoinChannel(channel As String, key As String)
-    Dim newChannel As New CAutoJoinChannel
-    
-    newChannel.channel = channel
-    newChannel.key = key
-    
-    m_autoJoinChannels.Add newChannel
+          Dim newChannel As New CAutoJoinChannel
+          
+10        newChannel.channel = channel
+20        newChannel.key = key
+          
+30        m_autoJoinChannels.Add newChannel
 End Sub
 
 Public Sub removeAutoJoinChannel(index As Long)
-    m_autoJoinChannels.Remove index
+10        m_autoJoinChannels.Remove index
 End Sub
 
 Public Function autoJoinChannel(index As Long) As CAutoJoinChannel
-    Set autoJoinChannel = m_autoJoinChannels.item(index)
+10        Set autoJoinChannel = m_autoJoinChannels.item(index)
 End Function
 
 Public Function autoJoinChannelCount() As Long
-    autoJoinChannelCount = m_autoJoinChannels.count
+10        autoJoinChannelCount = m_autoJoinChannels.count
 End Function
 
 Public Sub clearAutoJoinChannels()
-    m_autoJoinChannels.clear
+10        m_autoJoinChannels.clear
 End Sub

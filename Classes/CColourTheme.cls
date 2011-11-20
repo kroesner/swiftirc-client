@@ -24,99 +24,99 @@ Private m_switchbarColourHighlight As Byte
 Private m_backgroundColour As Byte
 
 Friend Sub copy(target As CColourTheme)
-    target.name = m_name
-    target.setEventColours m_eventColours
-    target.setPalette m_palette
-    target.switchbarColourEvent = m_switchbarColourEvent
-    target.switchbarColourMessage = m_switchbarColourMessage
-    target.switchbarColourHighlight = m_switchbarColourHighlight
-    target.backgroundColour = m_backgroundColour
+10        target.name = m_name
+20        target.setEventColours m_eventColours
+30        target.setPalette m_palette
+40        target.switchbarColourEvent = m_switchbarColourEvent
+50        target.switchbarColourMessage = m_switchbarColourMessage
+60        target.switchbarColourHighlight = m_switchbarColourHighlight
+70        target.backgroundColour = m_backgroundColour
 End Sub
 
 Public Property Get backgroundColour() As Byte
-    backgroundColour = m_backgroundColour
+10        backgroundColour = m_backgroundColour
 End Property
 
 Public Property Let backgroundColour(newValue As Byte)
-    m_backgroundColour = newValue
+10        m_backgroundColour = newValue
 End Property
 
 Public Property Get switchbarColourEvent() As Byte
-    switchbarColourEvent = m_switchbarColourEvent
+10        switchbarColourEvent = m_switchbarColourEvent
 End Property
 
 Public Property Let switchbarColourEvent(newValue As Byte)
-    m_switchbarColourEvent = newValue
+10        m_switchbarColourEvent = newValue
 End Property
 
 Public Property Get switchbarColourMessage() As Byte
-    switchbarColourMessage = m_switchbarColourMessage
+10        switchbarColourMessage = m_switchbarColourMessage
 End Property
 
 Public Property Let switchbarColourMessage(newValue As Byte)
-    m_switchbarColourMessage = newValue
+10        m_switchbarColourMessage = newValue
 End Property
 
 Public Property Get switchbarColourHighlight() As Byte
-    switchbarColourHighlight = m_switchbarColourHighlight
+10        switchbarColourHighlight = m_switchbarColourHighlight
 End Property
 
 Public Property Let switchbarColourHighlight(newValue As Byte)
-    m_switchbarColourHighlight = newValue
+10        m_switchbarColourHighlight = newValue
 End Property
 
 Public Property Get name() As String
-    name = m_name
+10        name = m_name
 End Property
 
 Public Property Let name(newValue As String)
-    m_name = newValue
+10        m_name = newValue
 End Property
 
 Public Function getPalette() As Long()
-    getPalette = m_palette()
+10        getPalette = m_palette()
 End Function
 
 Public Sub setPalette(newPalette() As Long)
-    Dim count As Long
-    
-    For count = 0 To UBound(m_palette)
-        m_palette(count) = newPalette(count)
-    Next count
+          Dim count As Long
+          
+10        For count = 0 To UBound(m_palette)
+20            m_palette(count) = newPalette(count)
+30        Next count
 End Sub
 
 Public Function getEventColours() As Byte()
-    getEventColours = m_eventColours()
+10        getEventColours = m_eventColours()
 End Function
 
 Public Sub setEventColours(newEventColours() As Byte)
-    Dim count As Long
-    
-    For count = 1 To UBound(m_eventColours)
-        m_eventColours(count) = newEventColours(count)
-    Next count
+          Dim count As Long
+          
+10        For count = 1 To UBound(m_eventColours)
+20            m_eventColours(count) = newEventColours(count)
+30        Next count
 End Sub
 
 Public Property Get paletteEntry(index As Long) As Long
-    paletteEntry = m_palette(index)
+10        paletteEntry = m_palette(index)
 End Property
 
 Public Property Let paletteEntry(index As Long, newValue As Long)
-    m_palette(index) = newValue
+10        m_palette(index) = newValue
 End Property
 
 Public Property Get paletteCount() As Long
-    paletteCount = UBound(m_palette) + 1
+10        paletteCount = UBound(m_palette) + 1
 End Property
 
 Public Property Get eventColour(index As Long) As Byte
-    eventColour = m_eventColours(index)
+10        eventColour = m_eventColours(index)
 End Property
 
 Public Property Let eventColour(index As Long, newValue As Byte)
-    m_eventColours(index) = newValue
+10        m_eventColours(index) = newValue
 End Property
 
 Public Property Get eventColourCount() As Long
-    eventColourCount = UBound(m_eventColours) + 1
+10        eventColourCount = UBound(m_eventColours) + 1
 End Property

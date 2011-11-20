@@ -18,37 +18,37 @@ Private m_username As String
 Private m_hostname As String
 
 Public Sub parseOrigin(origin As String)
-    If Not origin Like "*!*@*" Then
-        m_nickname = origin
-        Exit Sub
-    End If
-    
-    Dim temp As String
+10        If Not origin Like "*!*@*" Then
+20            m_nickname = origin
+30            Exit Sub
+40        End If
+          
+          Dim temp As String
 
-    Do While LenB(origin) <> 0
-        If left$(origin, 1) = "!" Then
-            m_nickname = temp
-            temp = vbNullString
-        ElseIf left$(origin, 1) = "@" Then
-            m_username = temp
-            temp = vbNullString
-            m_hostname = Mid$(origin, 2)
-        Else
-            temp = temp & left$(origin, 1)
-        End If
-        
-        origin = Mid$(origin, 2)
-    Loop
+50        Do While LenB(origin) <> 0
+60            If left$(origin, 1) = "!" Then
+70                m_nickname = temp
+80                temp = vbNullString
+90            ElseIf left$(origin, 1) = "@" Then
+100               m_username = temp
+110               temp = vbNullString
+120               m_hostname = Mid$(origin, 2)
+130           Else
+140               temp = temp & left$(origin, 1)
+150           End If
+              
+160           origin = Mid$(origin, 2)
+170       Loop
 End Sub
 
 Public Property Get nickname() As String
-    nickname = m_nickname
+10        nickname = m_nickname
 End Property
 
 Public Property Get username() As String
-    username = m_username
+10        username = m_username
 End Property
 
 Public Property Get hostname() As String
-    hostname = m_hostname
+10        hostname = m_hostname
 End Property

@@ -18,29 +18,29 @@ Private m_type As eHighlightType
 Private m_colour As Byte
 
 Public Sub copy(target As CHighlight)
-    target.text = m_text
+10        target.text = m_text
 End Sub
 
 Public Property Get text() As String
-    text = m_text
+10        text = m_text
 End Property
 
 Public Property Let text(newValue As String)
-    m_text = newValue
+10        m_text = newValue
 End Property
 
 Public Property Get highlightType() As eHighlightType
-    highlightType = m_type
+10        highlightType = m_type
 End Property
 
 Public Property Let highlightType(newValue As eHighlightType)
-    m_type = newValue
+10        m_type = newValue
 End Property
 
 Public Property Get colour() As Byte
-    colour = m_colour
+10        colour = m_colour
 End Property
 
 Public Property Let colour(newValue As Byte)
-    m_colour = newValue
+10        m_colour = newValue
 End Property
