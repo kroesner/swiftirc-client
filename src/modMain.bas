@@ -206,9 +206,6 @@ Public Sub Main()
         
         Set testContainer = New frmTestContainer
         testContainer.Show
-        
-        'Set testContainer = New frmTestContainer
-        'testContainer.Show
     #End If
 End Sub
 

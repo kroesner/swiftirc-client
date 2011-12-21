@@ -210,13 +210,13 @@ End Sub
 
 Private Sub m_ignoreAll_Click()
     If m_ignoreAll.value = 1 Then
-        m_ignorePrivate.Enabled = False
-        m_ignoreChannel.Enabled = False
-        m_ignoreNotice.Enabled = False
-        m_ignoreCtcp.Enabled = False
-        m_ignoreInvite.Enabled = False
-        m_ignoreCodes.Enabled = False
-        m_ignoreExclude.Enabled = False
+        m_ignorePrivate.enabled = False
+        m_ignoreChannel.enabled = False
+        m_ignoreNotice.enabled = False
+        m_ignoreCtcp.enabled = False
+        m_ignoreInvite.enabled = False
+        m_ignoreCodes.enabled = False
+        m_ignoreExclude.enabled = False
         
         m_ignorePrivate.value = 1
         m_ignoreChannel.value = 1
@@ -226,13 +226,13 @@ Private Sub m_ignoreAll_Click()
         m_ignoreCodes.value = 1
         m_ignoreExclude.value = 0
     Else
-        m_ignorePrivate.Enabled = True
-        m_ignoreChannel.Enabled = True
-        m_ignoreNotice.Enabled = True
-        m_ignoreCtcp.Enabled = True
-        m_ignoreInvite.Enabled = True
-        m_ignoreCodes.Enabled = True
-        m_ignoreExclude.Enabled = True
+        m_ignorePrivate.enabled = True
+        m_ignoreChannel.enabled = True
+        m_ignoreNotice.enabled = True
+        m_ignoreCtcp.enabled = True
+        m_ignoreInvite.enabled = True
+        m_ignoreCodes.enabled = True
+        m_ignoreExclude.enabled = True
         
         m_ignorePrivate.value = 0
         m_ignoreChannel.value = 0
@@ -245,13 +245,13 @@ End Sub
 
 Private Sub m_ignoreExclude_Click()
     If m_ignoreExclude.value = 1 Then
-        m_ignoreAll.Enabled = False
-        m_ignorePrivate.Enabled = False
-        m_ignoreChannel.Enabled = False
-        m_ignoreNotice.Enabled = False
-        m_ignoreCtcp.Enabled = False
-        m_ignoreInvite.Enabled = False
-        m_ignoreCodes.Enabled = False
+        m_ignoreAll.enabled = False
+        m_ignorePrivate.enabled = False
+        m_ignoreChannel.enabled = False
+        m_ignoreNotice.enabled = False
+        m_ignoreCtcp.enabled = False
+        m_ignoreInvite.enabled = False
+        m_ignoreCodes.enabled = False
         
         m_ignoreAll.value = 0
         m_ignorePrivate.value = 0
@@ -261,12 +261,12 @@ Private Sub m_ignoreExclude_Click()
         m_ignoreInvite.value = 0
         m_ignoreCodes.value = 0
     Else
-        m_ignoreAll.Enabled = True
-        m_ignorePrivate.Enabled = True
-        m_ignoreChannel.Enabled = True
-        m_ignoreNotice.Enabled = True
-        m_ignoreCtcp.Enabled = True
-        m_ignoreInvite.Enabled = True
-        m_ignoreCodes.Enabled = True
+        m_ignoreAll.enabled = True
+        m_ignorePrivate.enabled = True
+        m_ignoreChannel.enabled = True
+        m_ignoreNotice.enabled = True
+        m_ignoreCtcp.enabled = True
+        m_ignoreInvite.enabled = True
+        m_ignoreCodes.enabled = True
     End If
 End Sub

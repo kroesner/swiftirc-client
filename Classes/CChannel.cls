@@ -211,7 +211,7 @@ Public Sub meKicked(origin As COrigin, reason As String)
     If settings.autoRejoinOnKick Then
         m_windowText.addEvent "ME_REJOIN_DELAY", makeStringArray(m_name, "2 seconds")
         m_rejoinTimer.Interval = 2000
-        m_rejoinTimer.Enabled = True
+        m_rejoinTimer.enabled = True
     End If
 End Sub
 
@@ -726,6 +726,6 @@ Private Sub Class_Terminate()
 End Sub
 
 Private Sub m_rejoinTimer_Timer()
-    m_rejoinTimer.Enabled = False
+    m_rejoinTimer.enabled = False
     m_session.rejoinChannel Me
 End Sub

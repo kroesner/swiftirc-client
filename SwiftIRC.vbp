@@ -139,21 +139,19 @@ HelpFile=""
 RequireLicenseKey=1
 NoControlUpgrade=1
 Title="SwiftIRC"
-ExeName32="SwiftIRC.exe"
-Path32="C:\Users\Patrick\Desktop"
 Command32=""
 Name="swiftIrc"
 HelpContextID="0"
 CompatibleMode="0"
-CompatibleEXE32="..\swiftirc_base.ocx"
+CompatibleEXE32="..\..\SwiftIRC Client\swiftirc_base.ocx"
 MajorVer=1
-MinorVer=8
-RevisionVer=27
+MinorVer=9
+RevisionVer=1
 AutoIncrementVer=0
 ServerSupportFiles=0
 VersionCompanyName="SwiftIRC"
 VersionProductName="SwiftIRC Client"
-CondComp="debugmode = 1"
+CondComp="debugmode = 0"
 CompilationType=0
 OptimizationType=1
 FavorPentiumPro(tm)=0

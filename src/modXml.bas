@@ -60,7 +60,7 @@ Public Function xmlElementExists(node As IXMLDOMNode, name As String) As Boolean
     xmlElementExists = Not node.selectSingleNode(name) Is Nothing
 End Function
 
-Public Sub saveXml(xml As DOMDocument30, fileName As String)
+Public Sub saveXml(xml As DOMDocument30, filename As String)
     Dim rdr As New SAXXMLReader30
     Dim wrt As New MXXMLWriter30
     Dim Stream As New ADODB.Stream
@@ -83,6 +83,6 @@ Public Sub saveXml(xml As DOMDocument30, fileName As String)
     
     rdr.parse xml
     
-    Stream.SaveToFile fileName, adSaveCreateOverWrite
+    Stream.SaveToFile filename, adSaveCreateOverWrite
     Stream.Close
 End Sub

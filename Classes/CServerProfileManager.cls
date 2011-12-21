@@ -55,11 +55,11 @@ Public Function profileCount() As Long
     profileCount = m_serverProfiles.count
 End Function
 
-Public Sub loadProfiles(fileName As String)
+Public Sub loadProfiles(filename As String)
     Dim xml As New DOMDocument30
     Dim profileNode As IXMLDOMNode
     
-    If Not xml.load(fileName) Then
+    If Not xml.load(filename) Then
         Exit Sub
     End If
     
@@ -108,7 +108,7 @@ Public Sub loadProfiles(fileName As String)
     RaiseEvent profilesChanged
 End Sub
 
-Public Sub saveProfiles(fileName As String)
+Public Sub saveProfiles(filename As String)
     Dim profile As CServerProfile
     Dim xml As New DOMDocument30
     Dim profileNode As IXMLDOMNode
@@ -202,7 +202,7 @@ Public Sub saveProfiles(fileName As String)
     
     On Error GoTo ProfileSave_Error
     
-    saveXml xml, fileName
+    saveXml xml, filename
     RaiseEvent profilesChanged
 Exit Sub
 ProfileSave_Error:

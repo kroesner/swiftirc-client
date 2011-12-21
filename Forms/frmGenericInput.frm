@@ -95,7 +95,7 @@ Private Sub Form_Paint()
     m_labelManager.renderLabels Me.hdc
 End Sub
 
-Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+Private Sub Form_QueryUnload(cancel As Integer, UnloadMode As Integer)
     m_cancelled = True
 End Sub
 

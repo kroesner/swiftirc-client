@@ -43,10 +43,10 @@ Public Function getText(name As String) As String
     End If
 End Function
 
-Public Sub loadText(fileName As String)
+Public Sub loadText(filename As String)
     Dim xml As New msxml2.DOMDocument30
     
-    If Not xml.load(fileName) Then
+    If Not xml.load(filename) Then
         Exit Sub
     End If
     
