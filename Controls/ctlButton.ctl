@@ -42,16 +42,16 @@ End Enum
 Public Event clicked()
 
 Public Property Get visible() As Boolean
-10        visible = UserControl.Extender.visible
+    visible = UserControl.Extender.visible
 End Property
 
 Public Property Let visible(newValue As Boolean)
-10        UserControl.Extender.visible = newValue
+    UserControl.Extender.visible = newValue
 End Property
 
 
 Private Sub IColourUser_coloursUpdated()
-10        UserControl_Paint
+    UserControl_Paint
 End Sub
 
 Private Property Let ISubclass_MsgResponse(ByVal RHS As EMsgResponse)
@@ -59,187 +59,187 @@ Private Property Let ISubclass_MsgResponse(ByVal RHS As EMsgResponse)
 End Property
 
 Private Property Get ISubclass_MsgResponse() As EMsgResponse
-10        Select Case CurrentMessage
-              Case WM_LBUTTONDBLCLK
-20                ISubclass_MsgResponse = emrConsume
-30            Case Else
-40        End Select
+    Select Case CurrentMessage
+        Case WM_LBUTTONDBLCLK
+            ISubclass_MsgResponse = emrConsume
+        Case Else
+    End Select
 End Property
 
 Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-10        Select Case iMsg
-              Case WM_LBUTTONDBLCLK
-20                UserControl_MouseDown vbKeyLButton, 0, 0, 0
-30                ISubclass_WindowProc = 1
-40        End Select
+    Select Case iMsg
+        Case WM_LBUTTONDBLCLK
+            UserControl_MouseDown vbKeyLButton, 0, 0, 0
+            ISubclass_WindowProc = 1
+    End Select
 End Function
 
 Private Property Get IWindow_realWindow() As Object
-10        Set IWindow_realWindow = UserControl.Extender
+    Set IWindow_realWindow = UserControl.Extender
 End Property
 
 Private Property Let IWindow_realWindow(RHS As Object)
 End Property
 
 Public Property Get caption() As String
-10        caption = m_caption
+    caption = m_caption
 End Property
 
 Public Property Let caption(newValue As String)
-10        m_caption = newValue
-20        parsePrefix newValue
+    m_caption = newValue
+    parsePrefix newValue
 End Property
 
 Private Sub UserControl_AccessKeyPress(KeyAscii As Integer)
-10        If KeyAscii = vbKeyReturn Then
-20            RaiseEvent clicked
-30        End If
+    If KeyAscii = vbKeyReturn Then
+        RaiseEvent clicked
+    End If
 End Sub
 
 Private Sub UserControl_GotFocus()
-10        m_hasFocus = True
-20        UserControl_Paint
+    m_hasFocus = True
+    UserControl_Paint
 End Sub
 
 Private Sub initMessages()
-10        AttachMessage Me, UserControl.hwnd, WM_LBUTTONDBLCLK
+    AttachMessage Me, UserControl.hwnd, WM_LBUTTONDBLCLK
 End Sub
 
 Private Sub deInitMessages()
-10        DetachMessage Me, UserControl.hwnd, WM_LBUTTONDBLCLK
+    DetachMessage Me, UserControl.hwnd, WM_LBUTTONDBLCLK
 End Sub
 
 Private Sub UserControl_Initialize()
-10        initMessages
-20        SelectObject UserControl.hdc, g_fontUI
+    initMessages
+    SelectObject UserControl.hdc, g_fontUI
 End Sub
 
 Private Sub UserControl_Terminate()
-10        deInitMessages
-20        debugLog "ctlButton terminating: " & m_caption
+    deInitMessages
+    debugLog "ctlButton terminating: " & m_caption
 End Sub
 
 Private Sub UserControl_LostFocus()
-10        m_hasFocus = False
-20        UserControl_Paint
+    m_hasFocus = False
+    UserControl_Paint
 End Sub
 
 Private Sub UserControl_KeyDown(KeyCode As Integer, Shift As Integer)
-10        If KeyCode = vbKeyReturn Then
-20            RaiseEvent clicked
-30        ElseIf KeyCode = vbKeySpace Then
-40            UserControl_MouseDown vbKeyLButton, 0, 0, 0
-50        End If
+    If KeyCode = vbKeyReturn Then
+        RaiseEvent clicked
+    ElseIf KeyCode = vbKeySpace Then
+        UserControl_MouseDown vbKeyLButton, 0, 0, 0
+    End If
 End Sub
 
 Private Sub UserControl_KeyUp(KeyCode As Integer, Shift As Integer)
-10        If KeyCode = vbKeySpace Then
-20            UserControl_MouseUp vbKeyLButton, 0, -1, -1
-30            RaiseEvent clicked
-40        End If
+    If KeyCode = vbKeySpace Then
+        UserControl_MouseUp vbKeyLButton, 0, -1, -1
+        RaiseEvent clicked
+    End If
 End Sub
 
 Private Sub UserControl_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-10        If Button = vbKeyLButton Then
-20            m_state = bsMouseDown
-30            UserControl_Paint
-40        End If
+    If Button = vbKeyLButton Then
+        m_state = bsMouseDown
+        UserControl_Paint
+    End If
 End Sub
 
 Private Sub UserControl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-10        If Not m_state = bsMouseDown And Not m_state = bsMouseover Then
-20            m_state = bsMouseover
-30            SetCapture UserControl.hwnd
-40            UserControl_Paint
-50        Else
-60            If m_state = bsMouseover Then
-70                If x < 0 Or y < 0 Or x > UserControl.ScaleWidth Or y > UserControl.ScaleHeight Then
-80                    ReleaseCapture
-90                    m_state = bsNormal
-100                   UserControl_Paint
-110               End If
-120           End If
-130       End If
+    If Not m_state = bsMouseDown And Not m_state = bsMouseover Then
+        m_state = bsMouseover
+        SetCapture UserControl.hwnd
+        UserControl_Paint
+    Else
+        If m_state = bsMouseover Then
+            If x < 0 Or y < 0 Or x > UserControl.ScaleWidth Or y > UserControl.ScaleHeight Then
+                ReleaseCapture
+                m_state = bsNormal
+                UserControl_Paint
+            End If
+        End If
+    End If
 End Sub
 
 Private Sub UserControl_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-10        SetCapture UserControl.hwnd
+    SetCapture UserControl.hwnd
 
-20        If Button <> vbKeyLButton Then
-30            Exit Sub
-40        End If
+    If Button <> vbKeyLButton Then
+        Exit Sub
+    End If
 
-50        If x < 0 Or y < 0 Or x > UserControl.ScaleWidth Or y > UserControl.ScaleHeight Then
-60            m_state = bsNormal
-70            ReleaseCapture
-80            UserControl_Paint
-90        Else
-100           m_state = bsNormal
-110           UserControl_Paint
-120           ReleaseCapture
-130           RaiseEvent clicked
-140       End If
+    If x < 0 Or y < 0 Or x > UserControl.ScaleWidth Or y > UserControl.ScaleHeight Then
+        m_state = bsNormal
+        ReleaseCapture
+        UserControl_Paint
+    Else
+        m_state = bsNormal
+        UserControl_Paint
+        ReleaseCapture
+        RaiseEvent clicked
+    End If
 End Sub
 
 Private Sub parsePrefix(caption As String)
-          Dim count As Long
-          
-10        For count = 1 To Len(caption)
-20            If Mid$(caption, count, 1) = "&" Then
-30                If count < Len(caption) Then
-40                    If Mid$(caption, count + 1, 1) <> "&" Then
-50                        UserControl.AccessKeys = Mid$(caption, count + 1, 1)
-60                    End If
-70                End If
-80            End If
-90        Next count
+    Dim count As Long
+    
+    For count = 1 To Len(caption)
+        If Mid$(caption, count, 1) = "&" Then
+            If count < Len(caption) Then
+                If Mid$(caption, count + 1, 1) <> "&" Then
+                    UserControl.AccessKeys = Mid$(caption, count + 1, 1)
+                End If
+            End If
+        End If
+    Next count
 End Sub
 
 Private Sub UserControl_Paint()
-10        If Not g_initialized Then
-20            Exit Sub
-30        End If
-          
-          Dim oldPen As Long
-          Dim oldBrush As Long
+    If Not g_initialized Then
+        Exit Sub
+    End If
+    
+    Dim oldPen As Long
+    Dim oldBrush As Long
 
-40        oldBrush = SelectObject(UserControl.hdc, colourManager.getBrush(SWIFTCOLOUR_CONTROLBACK))
-50        oldPen = SelectObject(UserControl.hdc, colourManager.getPen(SWIFTPEN_BORDER))
-          
-60        Rectangle UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight
+    oldBrush = SelectObject(UserControl.hdc, colourManager.getBrush(SWIFTCOLOUR_CONTROLBACK))
+    oldPen = SelectObject(UserControl.hdc, colourManager.getPen(SWIFTPEN_BORDER))
+    
+    Rectangle UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight
 
-          Dim textRect As RECT
-          
-70        textRect.left = 3
-80        textRect.top = 3
-90        textRect.right = UserControl.ScaleWidth - 3
-100       textRect.bottom = UserControl.ScaleHeight - 3
-          
-          Dim focusRect As RECT
-          
-110       focusRect.left = 2
-120       focusRect.top = 2
-130       focusRect.right = UserControl.ScaleWidth - 2
-140       focusRect.bottom = UserControl.ScaleHeight - 2
-          
-150       If m_hasFocus Then
-160           SetTextColor UserControl.hdc, Not colourManager.getColour(SWIFTCOLOUR_CONTROLFORE)
-170           DrawFocusRect UserControl.hdc, focusRect
-180       End If
-          
-190       If m_state = bsNormal Then
-200           SetTextColor UserControl.hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFORE)
-210       ElseIf m_state = bsMouseover Then
-220           SetTextColor UserControl.hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFOREOVER)
-230       ElseIf m_state = bsMouseDown Then
-240           textRect.left = 7
-250           textRect.top = 7
-260           SetTextColor UserControl.hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFOREOVER)
-270       End If
-          
-280       swiftDrawText UserControl.hdc, m_caption, VarPtr(textRect), DT_SINGLELINE Or DT_VCENTER Or _
-              DT_CENTER Or DT_END_ELLIPSIS
-              
-290       SelectObject UserControl.hdc, oldBrush
-300       SelectObject UserControl.hdc, oldPen
+    Dim textRect As RECT
+    
+    textRect.left = 3
+    textRect.top = 3
+    textRect.right = UserControl.ScaleWidth - 3
+    textRect.bottom = UserControl.ScaleHeight - 3
+    
+    Dim focusRect As RECT
+    
+    focusRect.left = 2
+    focusRect.top = 2
+    focusRect.right = UserControl.ScaleWidth - 2
+    focusRect.bottom = UserControl.ScaleHeight - 2
+    
+    If m_hasFocus Then
+        SetTextColor UserControl.hdc, Not colourManager.getColour(SWIFTCOLOUR_CONTROLFORE)
+        DrawFocusRect UserControl.hdc, focusRect
+    End If
+    
+    If m_state = bsNormal Then
+        SetTextColor UserControl.hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFORE)
+    ElseIf m_state = bsMouseover Then
+        SetTextColor UserControl.hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFOREOVER)
+    ElseIf m_state = bsMouseDown Then
+        textRect.left = 7
+        textRect.top = 7
+        SetTextColor UserControl.hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFOREOVER)
+    End If
+    
+    swiftDrawText UserControl.hdc, m_caption, VarPtr(textRect), DT_SINGLELINE Or DT_VCENTER Or _
+        DT_CENTER Or DT_END_ELLIPSIS
+        
+    SelectObject UserControl.hdc, oldBrush
+    SelectObject UserControl.hdc, oldPen
 End Sub

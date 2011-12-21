@@ -17,14 +17,14 @@ Private m_mode As String
 Private m_symbol As String
 
 Public Sub init(mode As String, symbol As String)
-10        m_mode = mode
-20        m_symbol = symbol
+    m_mode = mode
+    m_symbol = symbol
 End Sub
 
 Public Property Get mode() As String
-10        mode = m_mode
+    mode = m_mode
 End Property
 
 Public Property Get symbol() As String
-10        symbol = m_symbol
+    symbol = m_symbol
 End Property

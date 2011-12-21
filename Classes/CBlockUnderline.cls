@@ -23,11 +23,11 @@ Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, w
 End Function
 
 Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
-10        drawingData.underline = underline
+    drawingData.underline = underline
 End Sub
 
 Private Property Get ITextRenderBlock_width() As Long
-10        ITextRenderBlock_width = 0
+    ITextRenderBlock_width = 0
 End Property
 
 Private Property Let ITextRenderBlock_width(RHS As Long)

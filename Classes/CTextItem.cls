@@ -17,17 +17,17 @@ Private m_name As String
 Private m_text As String
 
 Public Property Get name() As String
-10        name = m_name
+    name = m_name
 End Property
 
 Public Property Let name(newValue As String)
-10        m_name = newValue
+    m_name = newValue
 End Property
 
 Public Property Get text() As String
-10        text = m_text
+    text = m_text
 End Property
 
 Public Property Let text(newValue As String)
-10        m_text = newValue
+    m_text = newValue
 End Property

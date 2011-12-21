@@ -23,19 +23,19 @@ Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, w
 End Function
 
 Public Property Get reverse() As Boolean
-10        reverse = m_reverse
+    reverse = m_reverse
 End Property
 
 Public Property Let reverse(newValue As Boolean)
-10        m_reverse = newValue
+    m_reverse = newValue
 End Property
 
 Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
-10        drawingData.reverse = m_reverse
+    drawingData.reverse = m_reverse
 End Sub
 
 Private Property Get ITextRenderBlock_width() As Long
-10        ITextRenderBlock_width = 0
+    ITextRenderBlock_width = 0
 End Property
 
 Private Property Let ITextRenderBlock_width(RHS As Long)

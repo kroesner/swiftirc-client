@@ -16,9 +16,9 @@ Option Explicit
 Private m_userStyles As New cArrayList
 
 Public Function addUserStyle(text As String, image As CImage, foreColour As Byte) As CUserStyle
-          Dim newStyle As New CUserStyle
-          
-10        newStyle.init text, image, foreColour
-20        m_userStyles.Add newStyle
-30        Set addUserStyle = newStyle
+    Dim newStyle As New CUserStyle
+    
+    newStyle.init text, image, foreColour
+    m_userStyles.Add newStyle
+    Set addUserStyle = newStyle
 End Function

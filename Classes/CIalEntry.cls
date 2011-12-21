@@ -18,25 +18,25 @@ Private m_ident As String
 Private m_host As String
 
 Public Property Get nick() As String
-10        nick = m_nick
+    nick = m_nick
 End Property
 
 Public Property Let nick(newValue As String)
-10        m_nick = newValue
+    m_nick = newValue
 End Property
 
 Public Property Get ident() As String
-10        ident = m_ident
+    ident = m_ident
 End Property
 
 Public Property Let ident(newValue As String)
-10        m_ident = newValue
+    m_ident = newValue
 End Property
 
 Public Property Get host() As String
-10        host = m_host
+    host = m_host
 End Property
 
 Public Property Let host(newValue As String)
-10        m_host = newValue
+    m_host = newValue
 End Property

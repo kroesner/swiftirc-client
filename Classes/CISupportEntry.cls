@@ -17,14 +17,14 @@ Private m_name As String
 Private m_value As String
 
 Public Sub init(name As String, value As String)
-10        m_name = name
-20        m_value = value
+    m_name = name
+    m_value = value
 End Sub
 
 Public Property Get name() As String
-10        name = m_name
+    name = m_name
 End Property
 
 Public Property Get value() As String
-10        value = m_value
+    value = m_value
 End Property

@@ -44,64 +44,64 @@ Private m_perform As String
 Private m_cancel As Boolean
 
 Public Property Get cancelled() As Boolean
-10        cancelled = m_cancel
+    cancelled = m_cancel
 End Property
 
 Public Property Get perform() As String
-10        perform = textPerform.text
+    perform = textPerform.text
 End Property
 
 Public Property Let perform(newValue As String)
-10        m_perform = newValue
+    m_perform = newValue
 End Property
 
 Public Property Get enablePerform() As Boolean
-10        enablePerform = -m_checkEnablePerform.value
+    enablePerform = -m_checkEnablePerform.value
 End Property
 
 Public Property Let enablePerform(newValue As Boolean)
-10        m_enablePerform = newValue
+    m_enablePerform = newValue
 End Property
 
 Private Sub Form_Load()
-10        Me.BackColor = colourManager.getColour(SWIFTCOLOUR_WINDOW)
-20        initControls
-30        updateColours Controls
+    Me.BackColor = colourManager.getColour(SWIFTCOLOUR_WINDOW)
+    initControls
+    updateColours Controls
 End Sub
 
 Private Sub initControls()
-10        m_labelManager.addLabel "Reference your own nickname with $me", ltNormal, 20, Me.ScaleHeight - 50
+    m_labelManager.addLabel "Reference your own nickname with $me", ltNormal, 20, Me.ScaleHeight - 50
 
-20        textPerform.Move 20, 40, Me.ScaleWidth - 40, Me.ScaleHeight - 95
-          
-30        Set m_checkEnablePerform = addCheckBox(Controls, "Enable perform", 20, 15, 125, 20)
-          
-40        Set m_buttonSave = addButton(Controls, "&Save", Me.ScaleWidth - 175, Me.ScaleHeight - 35, 75, 20)
-50        Set m_buttonCancel = addButton(Controls, "&Cancel", Me.ScaleWidth - 95, Me.ScaleHeight - 35, 75, 20)
-          
-60        m_checkEnablePerform.value = -m_enablePerform
-70        textPerform.text = m_perform
+    textPerform.Move 20, 40, Me.ScaleWidth - 40, Me.ScaleHeight - 95
+    
+    Set m_checkEnablePerform = addCheckBox(Controls, "Enable perform", 20, 15, 125, 20)
+    
+    Set m_buttonSave = addButton(Controls, "&Save", Me.ScaleWidth - 175, Me.ScaleHeight - 35, 75, 20)
+    Set m_buttonCancel = addButton(Controls, "&Cancel", Me.ScaleWidth - 95, Me.ScaleHeight - 35, 75, 20)
+    
+    m_checkEnablePerform.value = -m_enablePerform
+    textPerform.text = m_perform
 End Sub
 
 Private Sub Form_Paint()
-10        SelectObject Me.hdc, colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
-20        RoundRect Me.hdc, 10, 10, Me.ScaleWidth - 10, Me.ScaleHeight - 10, 10, 10
-          
-30        SetBkColor Me.hdc, colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
-40        m_labelManager.renderLabels Me.hdc
+    SelectObject Me.hdc, colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
+    RoundRect Me.hdc, 10, 10, Me.ScaleWidth - 10, Me.ScaleHeight - 10, 10, 10
+    
+    SetBkColor Me.hdc, colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
+    m_labelManager.renderLabels Me.hdc
 End Sub
 
 Private Sub Form_QueryUnload(cancel As Integer, UnloadMode As Integer)
-10        m_cancel = True
+    m_cancel = True
 End Sub
 
 Private Sub m_buttonCancel_clicked()
-10        m_cancel = True
-20        Me.Hide
+    m_cancel = True
+    Me.Hide
 End Sub
 
 Private Sub m_buttonSave_clicked()
-10        Me.Hide
+    Me.Hide
 End Sub
 
 

@@ -38,247 +38,247 @@ Attribute m_textInput.VB_VarHelpID = -1
 Public Event textInput(text As String)
 
 Public Property Get hwnd() As Long
-10        hwnd = UserControl.hwnd
+    hwnd = UserControl.hwnd
 End Property
 
 Public Sub deInit()
-10        Set m_session = Nothing
-20        Set m_realWindow = Nothing
+    Set m_session = Nothing
+    Set m_realWindow = Nothing
 End Sub
 
 Public Property Get session() As CSession
-10        Set session = m_session
+    Set session = m_session
 End Property
 
 Public Property Let session(newValue As CSession)
-10        Set m_session = newValue
+    Set m_session = newValue
 End Property
 
 Public Property Get switchbartab() As CTab
-10        Set switchbartab = m_tab
+    Set switchbartab = m_tab
 End Property
 
 Public Property Let switchbartab(newValue As CTab)
-10        Set m_tab = newValue
+    Set m_tab = newValue
 End Property
 
 Private Sub IColourUser_coloursUpdated()
-10        updateColours Controls
+    updateColours Controls
 End Sub
 
 Private Property Get ITabWindow_getTab() As CTab
-10        Set ITabWindow_getTab = m_tab
+    Set ITabWindow_getTab = m_tab
 End Property
 
 Private Sub ITextWindow_addEvent(eventName As String, params() As String)
-10        m_textView.addEvent eventName, params
-20        m_session.client.switchbar.tabActivity m_tab, tasEvent
+    m_textView.addEvent eventName, params
+    m_session.client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
 Private Sub ITextWindow_addEventEx(eventName As String, userStyle As CUserStyle, username As String, _
     flags As Long, params() As String)
-          
-10        m_textView.addEventEx eventName, userStyle, username, flags, params
-20        m_session.client.switchbar.tabActivity m_tab, tasEvent
+    
+    m_textView.addEventEx eventName, userStyle, username, flags, params
+    m_session.client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
 Private Sub ITextWindow_addText(text As String)
-10        m_textView.addRawText "$0", makeStringArray(text)
-20        m_session.client.switchbar.tabActivity m_tab, tasEvent
+    m_textView.addRawText "$0", makeStringArray(text)
+    m_session.client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
 Private Sub ITextWindow_addTextEx(eventColour As CEventColour, foreColour As Byte, format As String, _
     userStyle As CUserStyle, username As String, flags As Long, params() As String)
-          
-10        m_textView.addRawTextEx eventColour, foreColour, format, userStyle, username, flags, params
-20        m_session.client.switchbar.tabActivity m_tab, tasEvent
+    
+    m_textView.addRawTextEx eventColour, foreColour, format, userStyle, username, flags, params
+    m_session.client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
 Private Sub ITextWindow_clear()
-10        m_textView.clear
+    m_textView.clear
 End Sub
 
 Private Property Let ITextWindow_enableLogging(RHS As Boolean)
-10        m_textView.enableLogging = RHS
+    m_textView.enableLogging = RHS
 End Property
 
 Private Property Get ITextWindow_enableLogging() As Boolean
-10        ITextWindow_enableLogging = m_textView.enableLogging
+    ITextWindow_enableLogging = m_textView.enableLogging
 End Property
 
 Private Property Let ITextWindow_eventManager(RHS As CEventManager)
-10        m_textView.eventManager = RHS
+    m_textView.eventManager = RHS
 End Property
 
 Private Sub ITextWindow_focusInput()
-10        If getRealWindow(m_textInput).visible Then
-20            getRealWindow(m_textInput).setFocus
-30        End If
+    If getRealWindow(m_textInput).visible Then
+        getRealWindow(m_textInput).setFocus
+    End If
 End Sub
 
 Private Property Let ITextWindow_inputText(RHS As String)
-10        m_textInput.text = RHS
+    m_textInput.text = RHS
 End Property
 
 Private Property Let ITextWindow_logFileName(RHS As String)
-10        m_textView.logName = RHS
+    m_textView.logName = RHS
 End Property
 
 Private Property Get ITextWindow_logFileName() As String
-10        ITextWindow_logFileName = m_textView.logName
+    ITextWindow_logFileName = m_textView.logName
 End Property
 
 Private Property Get ITextWindow_session() As CSession
-10        Set ITextWindow_session = m_session
+    Set ITextWindow_session = m_session
 End Property
 
 Private Property Get ITextWindow_textview() As ctlTextView
-10        Set ITextWindow_textview = m_textView
+    Set ITextWindow_textview = m_textView
 End Property
 
 Private Sub ITextWindow_Update()
-10        m_textView.updateVisibility
+    m_textView.updateVisibility
 End Sub
 
 Private Property Get IWindow_realWindow() As Object
-10        Set IWindow_realWindow = m_realWindow
+    Set IWindow_realWindow = m_realWindow
 End Property
 
 Private Property Let IWindow_realWindow(RHS As Object)
-10        Set m_realWindow = RHS
+    Set m_realWindow = RHS
 End Property
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-10        Set m_fontManager = RHS
+    Set m_fontManager = RHS
 End Property
 
 Private Sub IFontUser_fontsUpdated()
-10        fontsUpdated
+    fontsUpdated
 End Sub
 
 Private Function createNewWindow(progId As String, name As String) As IWindow
-          Dim newControl As VBControlExtender
-          
-10        Set newControl = Controls.Add(progId, name & m_nameCounter)
-          
-          Dim window As IWindow
-          
-20        Set window = newControl.object
-30        window.realWindow = newControl
-          
-40        m_children.Add newControl
-50        m_nameCounter = m_nameCounter + 1
-          
-60        If TypeOf window Is IFontUser Then
-70            If Not m_fontManager Is Nothing Then
-                  Dim fontUser As IFontUser
-                  
-80                Set fontUser = window
-90                fontUser.fontManager = m_fontManager
-100               fontUser.fontsUpdated
-110           End If
-120       End If
-          
-130       Set createNewWindow = window
+    Dim newControl As VBControlExtender
+    
+    Set newControl = Controls.Add(progId, name & m_nameCounter)
+    
+    Dim window As IWindow
+    
+    Set window = newControl.object
+    window.realWindow = newControl
+    
+    m_children.Add newControl
+    m_nameCounter = m_nameCounter + 1
+    
+    If TypeOf window Is IFontUser Then
+        If Not m_fontManager Is Nothing Then
+            Dim fontUser As IFontUser
+            
+            Set fontUser = window
+            fontUser.fontManager = m_fontManager
+            fontUser.fontsUpdated
+        End If
+    End If
+    
+    Set createNewWindow = window
 End Function
 
 Private Sub fontsUpdated()
-          Dim count As Integer
-          Dim fontUser As IFontUser
-          
-10        m_textInputHeight = m_fontManager.fontHeight + 5
-          
-20        For count = 1 To m_children.count
-30            If TypeOf m_children.item(count).object Is IFontUser Then
-40                Set fontUser = m_children.item(count).object
-50                fontUser.fontManager = m_fontManager
-60                fontUser.fontsUpdated
-70            End If
-80        Next count
-          
-90        UserControl_Resize
+    Dim count As Integer
+    Dim fontUser As IFontUser
+    
+    m_textInputHeight = m_fontManager.fontHeight + 5
+    
+    For count = 1 To m_children.count
+        If TypeOf m_children.item(count).object Is IFontUser Then
+            Set fontUser = m_children.item(count).object
+            fontUser.fontManager = m_fontManager
+            fontUser.fontsUpdated
+        End If
+    Next count
+    
+    UserControl_Resize
 End Sub
 
 Private Sub m_textInput_mouseWheel(delta As Long)
-10        m_textView.processMouseWheel delta
+    m_textView.processMouseWheel delta
 End Sub
 
 Private Sub m_textInput_pageDown()
-10        m_textView.pageDown
+    m_textView.pageDown
 End Sub
 
 Private Sub m_textInput_pageUp()
-10        m_textView.pageUp
+    m_textView.pageUp
 End Sub
 
 Private Sub m_textInput_tabbed(text As String, start As Long, Length As Long)
-10        If left$(text, 1) = "#" Then
-20            m_session.channelTabbing m_textInput, text, start, Length
-30            Exit Sub
-40        End If
+    If left$(text, 1) = "#" Then
+        m_session.channelTabbing m_textInput, text, start, Length
+        Exit Sub
+    End If
 End Sub
 
 Private Sub m_textInput_textSubmitted(text As String, ctrl As Boolean)
-10        If Not ctrl Then
-20            RaiseEvent textInput(text)
-30        End If
+    If Not ctrl Then
+        RaiseEvent textInput(text)
+    End If
 End Sub
 
 Private Sub m_textView_clickedUrl(url As String)
-10        If left$(url, 1) = "#" Then
-20            If InStr(url, ",0") = 0 Then
-30                m_session.joinChannel url
-40            End If
-50        Else
-60            m_session.client.visitUrl url, True
-70        End If
+    If left$(url, 1) = "#" Then
+        If InStr(url, ",0") = 0 Then
+            m_session.joinChannel url
+        End If
+    Else
+        m_session.client.visitUrl url, True
+    End If
 End Sub
 
 Private Sub m_textView_noLongerNeedFocus()
-10        If getRealWindow(m_textInput).visible Then
-20            getRealWindow(m_textInput).setFocus
-30        End If
+    If getRealWindow(m_textInput).visible Then
+        getRealWindow(m_textInput).setFocus
+    End If
 End Sub
 
 Private Sub UserControl_Initialize()
-10        m_textInputHeight = 30
-          
-          Dim window As IWindow
+    m_textInputHeight = 30
+    
+    Dim window As IWindow
 
-20        Set m_textView = createNewWindow("swiftirc.ctlTextView", "textView")
-30        Set window = m_textView
-40        window.realWindow.visible = True
-          
-50        Set m_textInput = createNewWindow("swiftirc.ctlTextInput", "textInput")
-60        Set window = m_textInput
-70        window.realWindow.visible = True
-          
-80        initEvents
+    Set m_textView = createNewWindow("swiftirc.ctlTextView", "textView")
+    Set window = m_textView
+    window.realWindow.visible = True
+    
+    Set m_textInput = createNewWindow("swiftirc.ctlTextInput", "textInput")
+    Set window = m_textInput
+    window.realWindow.visible = True
+    
+    initEvents
 End Sub
 
 Private Sub initEvents()
 End Sub
 
 Private Sub UserControl_Resize()
-          Dim window As IWindow
-          
-10        If UserControl.ScaleHeight <= m_textInputHeight Then
-20            Exit Sub
-30        End If
-          
-40        If Not m_textView Is Nothing Then
-50            Set window = m_textView
-60            window.realWindow.Move 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight - _
-                  m_textInputHeight
-70        End If
-          
-80        If Not m_textInput Is Nothing Then
-90            Set window = m_textInput
-100           window.realWindow.Move 0, UserControl.ScaleHeight - m_textInputHeight, _
-                  UserControl.ScaleWidth, m_textInputHeight
-110       End If
+    Dim window As IWindow
+    
+    If UserControl.ScaleHeight <= m_textInputHeight Then
+        Exit Sub
+    End If
+    
+    If Not m_textView Is Nothing Then
+        Set window = m_textView
+        window.realWindow.Move 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight - _
+            m_textInputHeight
+    End If
+    
+    If Not m_textInput Is Nothing Then
+        Set window = m_textInput
+        window.realWindow.Move 0, UserControl.ScaleHeight - m_textInputHeight, _
+            UserControl.ScaleWidth, m_textInputHeight
+    End If
 End Sub
 
 Private Sub UserControl_Terminate()
-10        debugLog "ctlWindowStatus terminating"
+    debugLog "ctlWindowStatus terminating"
 End Sub

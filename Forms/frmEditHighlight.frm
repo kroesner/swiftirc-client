@@ -42,35 +42,35 @@ Private m_buttonCancel As swiftIrc.ctlButton
 Private m_highlight As CHighlight
 
 Private Sub initControls()
-10        Set m_fieldHighlight = addField(Controls, "Highlight text:", 20, 20, Me.ScaleWidth - 40, 20)
-20        m_labelManager.addLabel "Match:", ltSubHeading, 20, 50
-30        m_labelManager.addLabel "Colour:", ltSubHeading, 20, 80
-          
-40        Set m_colourPalette = createControl(Controls, "swiftIrc.ctlColourPalette", "palette")
-          
-50        Set m_buttonSave = addButton(Controls, "&Save", Me.ScaleWidth - 165, Me.ScaleHeight - 40, 70, 20)
-60        Set m_buttonCancel = addButton(Controls, "&Cancel", Me.ScaleWidth - 90, Me.ScaleHeight - 40, 70, 20)
-          
-70        getRealWindow(m_colourPalette).Move 20, 95, Me.ScaleWidth - 40, 50
-80        m_colourPalette.setPalette colourThemes.currentTheme.getPalette
+    Set m_fieldHighlight = addField(Controls, "Highlight text:", 20, 20, Me.ScaleWidth - 40, 20)
+    m_labelManager.addLabel "Match:", ltSubHeading, 20, 50
+    m_labelManager.addLabel "Colour:", ltSubHeading, 20, 80
+    
+    Set m_colourPalette = createControl(Controls, "swiftIrc.ctlColourPalette", "palette")
+    
+    Set m_buttonSave = addButton(Controls, "&Save", Me.ScaleWidth - 165, Me.ScaleHeight - 40, 70, 20)
+    Set m_buttonCancel = addButton(Controls, "&Cancel", Me.ScaleWidth - 90, Me.ScaleHeight - 40, 70, 20)
+    
+    getRealWindow(m_colourPalette).Move 20, 95, Me.ScaleWidth - 40, 50
+    m_colourPalette.setPalette colourThemes.currentTheme.getPalette
 End Sub
 
 Private Sub Form_Load()
-10        Me.BackColor = colourManager.getColour(SWIFTCOLOUR_WINDOW)
-20        SetBkColor Me.hdc, colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
-30        initControls
-40        updateColours Controls
+    Me.BackColor = colourManager.getColour(SWIFTCOLOUR_WINDOW)
+    SetBkColor Me.hdc, colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
+    initControls
+    updateColours Controls
 End Sub
 
 Private Sub Form_Paint()
-10        SelectObject Me.hdc, colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
-20        RoundRect Me.hdc, 10, 10, Me.ScaleWidth - 10, Me.ScaleHeight - 10, 10, 10
-          
-30        m_labelManager.renderLabels Me.hdc
+    SelectObject Me.hdc, colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
+    RoundRect Me.hdc, 10, 10, Me.ScaleWidth - 10, Me.ScaleHeight - 10, 10, 10
+    
+    m_labelManager.renderLabels Me.hdc
 End Sub
 
 Private Sub Form_Resize()
-10        comboHighlightType.top = 50
-20        comboHighlightType.left = Me.ScaleWidth - (Me.ScaleWidth / 2)
-30        comboHighlightType.width = ((Me.ScaleWidth - 40) / 2)
+    comboHighlightType.top = 50
+    comboHighlightType.left = Me.ScaleWidth - (Me.ScaleWidth / 2)
+    comboHighlightType.width = ((Me.ScaleWidth - 40) / 2)
 End Sub

@@ -18,25 +18,25 @@ Private m_confName As String
 Private m_colour As Byte
 
 Public Property Get name() As String
-10        name = m_name
+    name = m_name
 End Property
 
 Public Property Let name(newValue As String)
-10        m_name = newValue
+    m_name = newValue
 End Property
 
 Public Property Get confName() As String
-10        confName = m_confName
+    confName = m_confName
 End Property
 
 Public Property Let confName(newValue As String)
-10        m_confName = newValue
+    m_confName = newValue
 End Property
 
 Public Property Get colour() As Byte
-10        colour = m_colour
+    colour = m_colour
 End Property
 
 Public Property Let colour(newValue As Byte)
-10        m_colour = newValue
+    m_colour = newValue
 End Property

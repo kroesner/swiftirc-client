@@ -21,16 +21,16 @@ Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, w
 End Function
 
 Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
-10        drawingData.bold = False
-20        drawingData.italic = False
-30        drawingData.underline = False
-40        drawingData.reverse = False
-50        drawingData.hasForeColour = False
-60        drawingData.hasBackColour = False
+    drawingData.bold = False
+    drawingData.italic = False
+    drawingData.underline = False
+    drawingData.reverse = False
+    drawingData.hasForeColour = False
+    drawingData.hasBackColour = False
 End Sub
 
 Private Property Get ITextRenderBlock_width() As Long
-10        ITextRenderBlock_width = 0
+    ITextRenderBlock_width = 0
 End Property
 
 Private Property Let ITextRenderBlock_width(RHS As Long)

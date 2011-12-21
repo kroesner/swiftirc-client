@@ -17,16 +17,16 @@ Private m_mode As String
 Private m_type As eChannelModeType
 
 Public Sub init(mode As String, modeType As eChannelModeType)
-10        m_mode = mode
-20        m_type = modeType
+    m_mode = mode
+    m_type = modeType
 End Sub
 
 Public Property Get mode() As String
-10        mode = m_mode
+    mode = m_mode
 End Property
 
 Public Property Get modeType() As eChannelModeType
-10        modeType = m_type
+    modeType = m_type
 End Property
 
 

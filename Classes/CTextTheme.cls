@@ -17,20 +17,20 @@ Private m_name As String
 Private m_events As New cArrayList
 
 Public Property Get name() As String
-10        name = m_name
+    name = m_name
 End Property
 
 Public Property Get eventCount() As String
-10        eventCount = m_events.count
+    eventCount = m_events.count
 End Property
 
 Public Property Get getEvent(index As Long) As CEvent
-10        Set getEvent = m_events.item(index)
+    Set getEvent = m_events.item(index)
 End Property
 
 Public Sub addEvent(name As String, format As String, eventColour As CEventColour, flags As Long)
-          Dim newEvent As New CEvent
-          
-10        newEvent.init name, format, eventColour, flags
-20        m_events.Add newEvent
+    Dim newEvent As New CEvent
+    
+    newEvent.init name, format, eventColour, flags
+    m_events.Add newEvent
 End Sub

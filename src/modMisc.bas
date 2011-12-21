@@ -2,278 +2,278 @@ Attribute VB_Name = "modMisc"
 Option Explicit
 
 Public Function stripFormattingCodes(ByRef text As String) As String
-          Dim wChar As Long
-          Dim count As Long
-          Dim output As String
-          
-10        For count = 1 To Len(text)
-20            wChar = AscW(Mid$(text, count, 1))
-              
-30            Select Case wChar
-                  Case 2
-40                Case 4
-50                Case 15
-60                Case 22
-70                Case 31
-80                Case 3
-90                    If count = Len(text) Then
-100                       Exit For
-110                   End If
+    Dim wChar As Long
+    Dim count As Long
+    Dim output As String
+    
+    For count = 1 To Len(text)
+        wChar = AscW(Mid$(text, count, 1))
+        
+        Select Case wChar
+            Case 2
+            Case 4
+            Case 15
+            Case 22
+            Case 31
+            Case 3
+                If count = Len(text) Then
+                    Exit For
+                End If
 
-120                   count = findColourCodeEnd(text, count + 1) - 1
-130               Case Else
-140                   output = output & ChrW$(wChar)
-150           End Select
-160       Next count
-          
-170       stripFormattingCodes = output
+                count = findColourCodeEnd(text, count + 1) - 1
+            Case Else
+                output = output & ChrW$(wChar)
+        End Select
+    Next count
+    
+    stripFormattingCodes = output
 End Function
 
 Private Function findColourCodeEnd(ByRef text As String, start As Integer) As Long
-          Dim colourCount As Integer
-          Dim digits As Byte
-          Dim currentColour As Byte
-          Dim hasColour As Boolean
-          
-          Dim wChar As Integer
+    Dim colourCount As Integer
+    Dim digits As Byte
+    Dim currentColour As Byte
+    Dim hasColour As Boolean
+    
+    Dim wChar As Integer
 
-10        For colourCount = start To Len(text)
-20            wChar = AscW(Mid$(text, colourCount, 1))
-              
-30            If wChar > 47 And wChar < 58 Then
-40                If digits = 0 Then
-50                    hasColour = True
-60                    digits = 1
-70                    start = start + 1
-80                ElseIf digits = 1 Then
-90                    digits = 2
-100                   start = start + 1
-110               Else
-120                   Exit For
-130               End If
-140           ElseIf wChar = AscW(",") Then
-150               If Not hasColour Then
-160                   Exit For
-170               End If
-                  
-180               hasColour = False
-190               digits = 0
-200               start = start + 1
-210           Else
-220               Exit For
-230           End If
-240       Next colourCount
-          
-250       findColourCodeEnd = start
+    For colourCount = start To Len(text)
+        wChar = AscW(Mid$(text, colourCount, 1))
+        
+        If wChar > 47 And wChar < 58 Then
+            If digits = 0 Then
+                hasColour = True
+                digits = 1
+                start = start + 1
+            ElseIf digits = 1 Then
+                digits = 2
+                start = start + 1
+            Else
+                Exit For
+            End If
+        ElseIf wChar = AscW(",") Then
+            If Not hasColour Then
+                Exit For
+            End If
+            
+            hasColour = False
+            digits = 0
+            start = start + 1
+        Else
+            Exit For
+        End If
+    Next colourCount
+    
+    findColourCodeEnd = start
 End Function
 
 'Case insensitive wildcard matching
 Public Function swiftMatch(ByVal pattern As String, ByVal text As String) As Boolean
-          Dim char As Long
-          Dim tempText As String
-          Dim tempText2 As String
-          
-10        If LenB(pattern) = 0 Then
-20            Exit Function
-30        End If
-          
-40        pattern = LCase$(pattern)
-50        tempText = LCase$(text)
-          
-60        Do While LenB(pattern) <> 0
-70            char = AscW(left$(pattern, 1))
-80            pattern = Mid$(pattern, 2)
-              
-90            If char = 92 Then '\
-100               If left$(tempText, 1) <> left$(pattern, 1) Then
-110                   Exit Function
-120               End If
-                  
-130               pattern = Mid$(pattern, 2)
-140               tempText = Mid$(tempText, 2)
-150           ElseIf char = 63 Then '?
-160               If LenB(tempText) = 0 Then
-170                   Exit Function
-180               End If
-                  
-190               tempText = Mid$(tempText, 2)
-200           ElseIf char = 42 Then '*
-210               If LenB(pattern) = 0 Then
-220                   swiftMatch = True
-230                   Exit Function
-240               End If
-                  
-250               tempText2 = tempText
-                  
-260               Do While LenB(tempText2) <> 0
-270                   If left$(tempText2, 1) = left$(pattern, 1) Then
-280                       If swiftMatch(pattern, tempText2) Then
-290                           swiftMatch = True
-300                           Exit Function
-310                       End If
-320                   End If
-                      
-330                   tempText2 = Mid$(tempText2, 2)
-340               Loop
-350           Else
-360               If LenB(tempText) = 0 Then
-370                   Exit Function
-380               End If
-                  
-390               If AscW(left$(tempText, 1)) <> char Then
-400                   Exit Function
-410               End If
-                  
-420               tempText = Mid$(tempText, 2)
-430           End If
-440       Loop
-          
-450       If LenB(tempText) = 0 Then
-460           swiftMatch = True
-470       End If
+    Dim char As Long
+    Dim tempText As String
+    Dim tempText2 As String
+    
+    If LenB(pattern) = 0 Then
+        Exit Function
+    End If
+    
+    pattern = LCase$(pattern)
+    tempText = LCase$(text)
+    
+    Do While LenB(pattern) <> 0
+        char = AscW(left$(pattern, 1))
+        pattern = Mid$(pattern, 2)
+        
+        If char = 92 Then '\
+            If left$(tempText, 1) <> left$(pattern, 1) Then
+                Exit Function
+            End If
+            
+            pattern = Mid$(pattern, 2)
+            tempText = Mid$(tempText, 2)
+        ElseIf char = 63 Then '?
+            If LenB(tempText) = 0 Then
+                Exit Function
+            End If
+            
+            tempText = Mid$(tempText, 2)
+        ElseIf char = 42 Then '*
+            If LenB(pattern) = 0 Then
+                swiftMatch = True
+                Exit Function
+            End If
+            
+            tempText2 = tempText
+            
+            Do While LenB(tempText2) <> 0
+                If left$(tempText2, 1) = left$(pattern, 1) Then
+                    If swiftMatch(pattern, tempText2) Then
+                        swiftMatch = True
+                        Exit Function
+                    End If
+                End If
+                
+                tempText2 = Mid$(tempText2, 2)
+            Loop
+        Else
+            If LenB(tempText) = 0 Then
+                Exit Function
+            End If
+            
+            If AscW(left$(tempText, 1)) <> char Then
+                Exit Function
+            End If
+            
+            tempText = Mid$(tempText, 2)
+        End If
+    Loop
+    
+    If LenB(tempText) = 0 Then
+        swiftMatch = True
+    End If
 End Function
 
 Public Sub saveIgnoreFile()
-10        ignoreManager.saveIgnoreList g_userPath & "swiftirc_ignore_list.xml"
+    ignoreManager.saveIgnoreList g_userPath & "swiftirc_ignore_list.xml"
 End Sub
 
 Public Function sanitizeFilename(filename As String) As String
-          Dim count As Long
-          Dim char As String
-          Dim output As String
-          
-          Const DISALLOWED_FILENAME_CHARACTERS = "\/:*?""<>|"
-          Const DISALLOWED_CHARACTER_SUBSTITUTE = "_"
-          
-10        For count = 1 To Len(filename)
-20            char = Mid$(filename, count, 1)
-              
-30            If InStr(DISALLOWED_FILENAME_CHARACTERS, char) <> 0 Then
-40                output = output & DISALLOWED_CHARACTER_SUBSTITUTE
-50            Else
-60                output = output & char
-70            End If
-80        Next count
-          
-90        sanitizeFilename = output
+    Dim count As Long
+    Dim char As String
+    Dim output As String
+    
+    Const DISALLOWED_FILENAME_CHARACTERS = "\/:*?""<>|"
+    Const DISALLOWED_CHARACTER_SUBSTITUTE = "_"
+    
+    For count = 1 To Len(filename)
+        char = Mid$(filename, count, 1)
+        
+        If InStr(DISALLOWED_FILENAME_CHARACTERS, char) <> 0 Then
+            output = output & DISALLOWED_CHARACTER_SUBSTITUTE
+        Else
+            output = output & char
+        End If
+    Next count
+    
+    sanitizeFilename = output
 End Function
 
 Public Function swiftFormatTime(timestamp As Date, theFormat As String) As String
-          Dim count As Long
-          Dim char As String
-          Dim nextChar As String
-          Dim formatStr As String
-          
-10        For count = 1 To Len(theFormat)
-20            char = Mid$(theFormat, count, 1)
-              
-30            If count < Len(theFormat) Then
-40                nextChar = LCase$(Mid$(theFormat, count + 1, 1))
-50            Else
-60                nextChar = vbNullString
-70            End If
-              
-80            If char = "h" Or char = "H" Then
-90                formatStr = "h"
-                  
-100               If nextChar = "h" Then
-110                   formatStr = formatStr & "h"
-120                   count = count + 1
-130               End If
-                  
-140               swiftFormatTime = swiftFormatTime & format(timestamp, formatStr)
-150           ElseIf char = "m" Or char = "M" Then
-160               If nextChar = "m" Then
-170                   count = count + 1
-180               End If
-                  
-190               swiftFormatTime = swiftFormatTime & format(timestamp, "nn")
-200           ElseIf char = "s" Or char = "S" Then
-210               If nextChar = "s" Then
-220                   count = count + 1
-230               End If
-                  
-240               swiftFormatTime = swiftFormatTime & format(timestamp, "ss")
-250           Else
-260               swiftFormatTime = swiftFormatTime & char
-270           End If
-280       Next count
+    Dim count As Long
+    Dim char As String
+    Dim nextChar As String
+    Dim formatStr As String
+    
+    For count = 1 To Len(theFormat)
+        char = Mid$(theFormat, count, 1)
+        
+        If count < Len(theFormat) Then
+            nextChar = LCase$(Mid$(theFormat, count + 1, 1))
+        Else
+            nextChar = vbNullString
+        End If
+        
+        If char = "h" Or char = "H" Then
+            formatStr = "h"
+            
+            If nextChar = "h" Then
+                formatStr = formatStr & "h"
+                count = count + 1
+            End If
+            
+            swiftFormatTime = swiftFormatTime & format(timestamp, formatStr)
+        ElseIf char = "m" Or char = "M" Then
+            If nextChar = "m" Then
+                count = count + 1
+            End If
+            
+            swiftFormatTime = swiftFormatTime & format(timestamp, "nn")
+        ElseIf char = "s" Or char = "S" Then
+            If nextChar = "s" Then
+                count = count + 1
+            End If
+            
+            swiftFormatTime = swiftFormatTime & format(timestamp, "ss")
+        Else
+            swiftFormatTime = swiftFormatTime & char
+        End If
+    Next count
 End Function
 
 Public Function encrypt(pass As String, text As String) As String
-          Dim aes As New cRijndael
-          Dim plain() As Byte
-          Dim crypt() As Byte
-          Dim realPass() As Byte
-          
-10        realPass = StrConv(pass, vbFromUnicode)
-20        ReDim Preserve realPass(31)
-          
-30        aes.SetCipherKey realPass, 256
-          
-40        plain = StrConv(text, vbFromUnicode)
-          
-50        aes.ArrayEncrypt plain, crypt, 0
+    Dim aes As New cRijndael
+    Dim plain() As Byte
+    Dim crypt() As Byte
+    Dim realPass() As Byte
+    
+    realPass = StrConv(pass, vbFromUnicode)
+    ReDim Preserve realPass(31)
+    
+    aes.SetCipherKey realPass, 256
+    
+    plain = StrConv(text, vbFromUnicode)
+    
+    aes.ArrayEncrypt plain, crypt, 0
 
-60        encrypt = HexDisplay(crypt, UBound(crypt) + 1, 16)
+    encrypt = HexDisplay(crypt, UBound(crypt) + 1, 16)
 End Function
 
 Public Function decrypt(pass As String, text As String) As String
-          Dim aes As New cRijndael
-          
-          Dim crypt() As Byte
-          Dim plain() As Byte
-          Dim realPass() As Byte
-          
-10        realPass = StrConv(pass, vbFromUnicode)
-20        ReDim Preserve realPass(31)
-          
-30        aes.SetCipherKey realPass, 256
-          
-40        If HexDisplayRev(text, crypt) = 0 Then
-50            decrypt = text
-60            Exit Function
-70        End If
-          
-80        aes.ArrayDecrypt plain, crypt, 0
-90        decrypt = StrConv(plain, vbUnicode)
+    Dim aes As New cRijndael
+    
+    Dim crypt() As Byte
+    Dim plain() As Byte
+    Dim realPass() As Byte
+    
+    realPass = StrConv(pass, vbFromUnicode)
+    ReDim Preserve realPass(31)
+    
+    aes.SetCipherKey realPass, 256
+    
+    If HexDisplayRev(text, crypt) = 0 Then
+        decrypt = text
+        Exit Function
+    End If
+    
+    aes.ArrayDecrypt plain, crypt, 0
+    decrypt = StrConv(plain, vbUnicode)
 End Function
 
 'Returns a String containing Hex values of data(0 ... n-1) in groups of k
 Private Function HexDisplay(data() As Byte, n As Long, k As Long) As String
-          Dim i As Long
-          Dim j As Long
-          Dim c As Long
-          Dim data2() As Byte
+    Dim i As Long
+    Dim j As Long
+    Dim c As Long
+    Dim data2() As Byte
 
-10        If LBound(data) = 0 Then
-20            ReDim data2(n * 4 - 1 + ((n - 1) \ k) * 4)
-30            j = 0
-40            For i = 0 To n - 1
-50                If i Mod k = 0 Then
-60                    If i <> 0 Then
-70                        data2(j) = 32
-80                        data2(j + 2) = 32
-90                        j = j + 4
-100                   End If
-110               End If
-120               c = data(i) \ 16&
-130               If c < 10 Then
-140                   data2(j) = c + 48     ' "0"..."9"
-150               Else
-160                   data2(j) = c + 55     ' "A"..."F"
-170               End If
-180               c = data(i) And 15&
-190               If c < 10 Then
-200                   data2(j + 2) = c + 48 ' "0"..."9"
-210               Else
-220                   data2(j + 2) = c + 55 ' "A"..."F"
-230               End If
-240               j = j + 4
-250           Next i
-260   Debug.Assert j = UBound(data2) + 1
-270           HexDisplay = data2
-280       End If
+    If LBound(data) = 0 Then
+        ReDim data2(n * 4 - 1 + ((n - 1) \ k) * 4)
+        j = 0
+        For i = 0 To n - 1
+            If i Mod k = 0 Then
+                If i <> 0 Then
+                    data2(j) = 32
+                    data2(j + 2) = 32
+                    j = j + 4
+                End If
+            End If
+            c = data(i) \ 16&
+            If c < 10 Then
+                data2(j) = c + 48     ' "0"..."9"
+            Else
+                data2(j) = c + 55     ' "A"..."F"
+            End If
+            c = data(i) And 15&
+            If c < 10 Then
+                data2(j + 2) = c + 48 ' "0"..."9"
+            Else
+                data2(j + 2) = c + 55 ' "A"..."F"
+            End If
+            j = j + 4
+        Next i
+Debug.Assert j = UBound(data2) + 1
+        HexDisplay = data2
+    End If
 
 End Function
 
@@ -281,57 +281,57 @@ End Function
 'Reverse of HexDisplay.  Given a String containing Hex values, convert to byte array data()
 'Returns number of bytes n in data(0 ... n-1)
 Private Function HexDisplayRev(TheString As String, data() As Byte) As Long
-          Dim i As Long
-          Dim j As Long
-          Dim c As Long
-          Dim d As Long
-          Dim n As Long
-          Dim data2() As Byte
+    Dim i As Long
+    Dim j As Long
+    Dim c As Long
+    Dim d As Long
+    Dim n As Long
+    Dim data2() As Byte
 
-10        n = 2 * Len(TheString)
-20        data2 = TheString
+    n = 2 * Len(TheString)
+    data2 = TheString
 
-30        ReDim data(n \ 4 - 1)
+    ReDim data(n \ 4 - 1)
 
-40        d = 0
-50        i = 0
-60        j = 0
-70        Do While j < n
-80            c = data2(j)
-90            Select Case c
-              Case 48 To 57    '"0" ... "9"
-100               If d = 0 Then   'high
-110                   d = c
-120               Else            'low
-130                   data(i) = (c - 48) Or ((d - 48) * 16&)
-140                   i = i + 1
-150                   d = 0
-160               End If
-170           Case 65 To 70   '"A" ... "F"
-180               If d = 0 Then   'high
-190                   d = c - 7
-200               Else            'low
-210                   data(i) = (c - 55) Or ((d - 48) * 16&)
-220                   i = i + 1
-230                   d = 0
-240               End If
-250           Case 97 To 102  '"a" ... "f"
-260               If d = 0 Then   'high
-270                   d = c - 39
-280               Else            'low
-290                   data(i) = (c - 87) Or ((d - 48) * 16&)
-300                   i = i + 1
-310                   d = 0
-320               End If
-330           End Select
-340           j = j + 2
-350       Loop
-360       n = i
-370       If n = 0 Then
-380           Erase data
-390       Else
-400           ReDim Preserve data(n - 1)
-410       End If
-420       HexDisplayRev = n
+    d = 0
+    i = 0
+    j = 0
+    Do While j < n
+        c = data2(j)
+        Select Case c
+        Case 48 To 57    '"0" ... "9"
+            If d = 0 Then   'high
+                d = c
+            Else            'low
+                data(i) = (c - 48) Or ((d - 48) * 16&)
+                i = i + 1
+                d = 0
+            End If
+        Case 65 To 70   '"A" ... "F"
+            If d = 0 Then   'high
+                d = c - 7
+            Else            'low
+                data(i) = (c - 55) Or ((d - 48) * 16&)
+                i = i + 1
+                d = 0
+            End If
+        Case 97 To 102  '"a" ... "f"
+            If d = 0 Then   'high
+                d = c - 39
+            Else            'low
+                data(i) = (c - 87) Or ((d - 48) * 16&)
+                i = i + 1
+                d = 0
+            End If
+        End Select
+        j = j + 2
+    Loop
+    n = i
+    If n = 0 Then
+        Erase data
+    Else
+        ReDim Preserve data(n - 1)
+    End If
+    HexDisplayRev = n
 
 End Function

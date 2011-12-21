@@ -17,17 +17,17 @@ Private m_control As VBControlExtender
 Private m_id As String
 
 Public Property Get control() As VBControlExtender
-10        Set control = m_control
+    Set control = m_control
 End Property
 
 Public Property Let control(newValue As VBControlExtender)
-10        Set m_control = newValue
+    Set m_control = newValue
 End Property
 
 Public Property Get id() As String
-10        id = m_id
+    id = m_id
 End Property
 
 Public Property Let id(newValue As String)
-10        m_id = newValue
+    m_id = newValue
 End Property

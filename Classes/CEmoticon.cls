@@ -17,15 +17,15 @@ Private m_text As String
 Private m_icon As CImage
 
 Public Sub init(text As String, icon As CImage)
-10        m_text = text
-20        Set m_icon = icon
+    m_text = text
+    Set m_icon = icon
 End Sub
 
 Public Property Get text() As String
-10        text = m_text
+    text = m_text
 End Property
 
 Public Property Get icon() As CImage
-10        Set icon = m_icon
+    Set icon = m_icon
 End Property
 

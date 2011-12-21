@@ -20,28 +20,28 @@ Private m_nicknameStyles As ctlNicknameStyleList
 Private m_client As SwiftIrcClient
 
 Public Property Let client(newValue As SwiftIrcClient)
-10        Set m_client = newValue
-20        m_nicknameStyles.client = m_client
+    Set m_client = newValue
+    m_nicknameStyles.client = m_client
 End Property
 
 Private Property Let IWindow_realWindow(RHS As Object)
-10        Set m_realWindow = RHS
+    Set m_realWindow = RHS
 End Property
 
 Private Property Get IWindow_realWindow() As Object
-10        Set IWindow_realWindow = m_realWindow
+    Set IWindow_realWindow = m_realWindow
 End Property
 
 Private Sub UserControl_Initialize()
-10        UserControl.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
-20        initControls
+    UserControl.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
+    initControls
 End Sub
 
 Private Sub initControls()
-10        Set m_nicknameStyles = createControl(Controls, "swiftIrc.ctlNicknameStyleList", "nickstyle")
-20        getRealWindow(m_nicknameStyles).Move 5, 5, 300, 175
+    Set m_nicknameStyles = createControl(Controls, "swiftIrc.ctlNicknameStyleList", "nickstyle")
+    getRealWindow(m_nicknameStyles).Move 5, 5, 300, 175
 End Sub
 
 Friend Sub saveSettings()
-10        m_nicknameStyles.saveSettings
+    m_nicknameStyles.saveSettings
 End Sub

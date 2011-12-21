@@ -16,28 +16,28 @@ Option Explicit
 Private m_emoticonGroups As New cArrayList
 
 Public Sub addEmoticon(text As String, icon As CImage)
-          Dim emoticonGroup As CEmoticonGroup
-          
-10        Set emoticonGroup = findEmoticonGroup(left$(text, 1))
-          
-20        If Not emoticonGroup Is Nothing Then
-30            emoticonGroup.addEmoticon text, icon
-40        Else
-50            Set emoticonGroup = New CEmoticonGroup
-              
-60            emoticonGroup.prefix = left$(text, 1)
-70            emoticonGroup.addEmoticon text, icon
-80            m_emoticonGroups.Add emoticonGroup
-90        End If
+    Dim emoticonGroup As CEmoticonGroup
+    
+    Set emoticonGroup = findEmoticonGroup(left$(text, 1))
+    
+    If Not emoticonGroup Is Nothing Then
+        emoticonGroup.addEmoticon text, icon
+    Else
+        Set emoticonGroup = New CEmoticonGroup
+        
+        emoticonGroup.prefix = left$(text, 1)
+        emoticonGroup.addEmoticon text, icon
+        m_emoticonGroups.Add emoticonGroup
+    End If
 End Sub
 
 Public Function findEmoticonGroup(prefix As String) As CEmoticonGroup
-          Dim count As Integer
-          
-10        For count = 1 To m_emoticonGroups.count
-20            If m_emoticonGroups.item(count).prefix = prefix Then
-30                Set findEmoticonGroup = m_emoticonGroups.item(count)
-40                Exit Function
-50            End If
-60        Next count
+    Dim count As Integer
+    
+    For count = 1 To m_emoticonGroups.count
+        If m_emoticonGroups.item(count).prefix = prefix Then
+            Set findEmoticonGroup = m_emoticonGroups.item(count)
+            Exit Function
+        End If
+    Next count
 End Function

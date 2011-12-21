@@ -20,13 +20,13 @@ Private m_realWindow As VBControlExtender
 Implements IWindow
 
 Private Property Let IWindow_realWindow(RHS As Object)
-10        Set m_realWindow = RHS
+    Set m_realWindow = RHS
 End Property
 
 Private Property Get IWindow_realWindow() As Object
-10        Set IWindow_realWindow = m_realWindow
+    Set IWindow_realWindow = m_realWindow
 End Property
 
 Private Sub UserControl_Initialize()
-10        UserControl.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
+    UserControl.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
 End Sub
