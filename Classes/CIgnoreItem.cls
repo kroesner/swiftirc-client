@@ -12,7 +12,8 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Public Enum ignoreFlags
-    IGNORE_NONE = 0
+    IGNORE_ANY = &H0
+    IGNORE_NONE = &H0
     IGNORE_PRIVATE = &H1
     IGNORE_CHANNEL = &H2
     IGNORE_NOTICE = &H4

@@ -75,12 +75,6 @@ Begin VB.UserControl ctlWindowChannel
       End
       Begin VB.Menu menuIgnore 
          Caption         =   "Ignore"
-         Begin VB.Menu menuIgnorePublic 
-            Caption         =   "Public"
-         End
-         Begin VB.Menu menuIgnorePrivate 
-            Caption         =   "Private"
-         End
       End
    End
 End
@@ -286,18 +280,12 @@ End Sub
 Private Sub m_nicklist_rightClicked(item As CNicklistItem)
     Set m_selectedNick = item
     
-    If ignoreManager.isIgnored(m_session.getIal(m_selectedNick.text, ialAll), IGNORE_CHANNEL) Then
-        menuIgnorePublic.Checked = True
+    If ignoreManager.isIgnored(m_session.getIal(m_selectedNick.text, ialAll), IGNORE_ANY) Then
+        menuIgnore.Checked = True
     Else
-        menuIgnorePublic.Checked = False
+        menuIgnore.Checked = False
     End If
-    
-    If ignoreManager.isIgnored(m_session.getIal(m_selectedNick.text, ialAll), IGNORE_PRIVATE) Then
-        menuIgnorePrivate.Checked = True
-    Else
-        menuIgnorePrivate.Checked = False
-    End If
-    
+
     PopupMenu menuNicklist
 End Sub
 
@@ -400,81 +388,23 @@ Private Sub menuHuggle_Click()
     m_channel.sendEmote "huggles " & m_selectedNick.text
 End Sub
 
-Private Sub menuIgnorePrivate_Click()
+Private Sub menuIgnore_Click()
     Dim ignore As CIgnoreItem
     Dim mask As String
     
     mask = m_session.getIal(m_selectedNick.text, ialAll)
 
-    If ignoreManager.isIgnored(mask, IGNORE_PRIVATE) Then
-        Set ignore = ignoreManager.getIgnoreByMask(mask)
-        
-        If Not ignore Is Nothing Then
-            ignore.flags = ignore.flags And (ALL_BITS - IGNORE_PRIVATE_EXTENDED)
-            
-            If ignore.flags = IGNORE_NONE Then
-                mask = ignore.mask
-                ignoreManager.removeIgnoreByMask mask
-                ITextWindow_addEvent "IGNORE_REMOVED", makeStringArray(mask)
-            Else
-                ITextWindow_addEvent "IGNORE_UPDATED", makeStringArray(ignore.mask, ignore.flagChars)
-            End If
-        End If
+    If ignoreManager.isIgnored(mask, IGNORE_ANY) Then
+        ignoreManager.removeIgnoreByMask mask
+        ITextWindow_addEvent "IGNORE_REMOVED", makeStringArray(mask)
     Else
-        Set ignore = ignoreManager.getIgnoreByMask(m_session.getIal(m_selectedNick.text, ialAll))
+        Set ignore = New CIgnoreItem
         
-        If Not ignore Is Nothing Then
-            ignore.flags = ignore.flags Or IGNORE_PRIVATE_EXTENDED
-            ITextWindow_addEvent "IGNORE_UPDATED", makeStringArray(ignore.mask, ignore.flagChars)
-        Else
-            Set ignore = New CIgnoreItem
-        
-            ignore.mask = m_session.getIal(m_selectedNick.text, ialHost)
-            ignore.flags = IGNORE_PRIVATE_EXTENDED
-            ignoreManager.addIgnore ignore
+        ignore.mask = m_session.getIal(m_selectedNick.text, ialHost)
+        ignore.flags = IGNORE_ALL
+        ignoreManager.addIgnore ignore
             
-            ITextWindow_addEvent "IGNORE_ADDED", makeStringArray(ignore.mask, ignore.flagChars)
-        End If
-    End If
-    
-    saveIgnoreFile
-End Sub
-
-Private Sub menuIgnorePublic_Click()
-    Dim ignore As CIgnoreItem
-    Dim mask As String
-    
-    mask = m_session.getIal(m_selectedNick.text, ialAll)
-
-    If ignoreManager.isIgnored(mask, IGNORE_CHANNEL) Then
-        Set ignore = ignoreManager.getIgnoreByMask(mask)
-        
-        If Not ignore Is Nothing Then
-            ignore.flags = ignore.flags And (ALL_BITS - IGNORE_CHANNEL)
-            
-            If ignore.flags = IGNORE_NONE Then
-                mask = ignore.mask
-                ignoreManager.removeIgnoreByMask mask
-                ITextWindow_addEvent "IGNORE_REMOVED", makeStringArray(mask)
-            Else
-                ITextWindow_addEvent "IGNORE_UPDATED", makeStringArray(ignore.mask, ignore.flagChars)
-            End If
-        End If
-    Else
-        Set ignore = ignoreManager.getIgnoreByMask(mask)
-        
-        If Not ignore Is Nothing Then
-            ignore.flags = ignore.flags Or IGNORE_CHANNEL
-            ITextWindow_addEvent "IGNORE_UPDATED", makeStringArray(ignore.mask, ignore.flagChars)
-        Else
-            Set ignore = New CIgnoreItem
-        
-            ignore.mask = m_session.getIal(m_selectedNick.text, ialHost)
-            ignore.flags = IGNORE_CHANNEL
-            ignoreManager.addIgnore ignore
-            
-            ITextWindow_addEvent "IGNORE_ADDED", makeStringArray(ignore.mask, ignore.flagChars)
-        End If
+        ITextWindow_addEvent "IGNORE_ADDED", makeStringArray(ignore.mask, ignore.flagChars)
     End If
     
     saveIgnoreFile
