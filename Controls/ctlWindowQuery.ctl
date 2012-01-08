@@ -263,6 +263,3 @@ Private Sub m_textInput_tabbed(text As String, start As Long, Length As Long)
     End If
 End Sub
 
-Private Sub UserControl_Terminate()
-    debugLog "ctlWindowQuery terminated"
-End Sub

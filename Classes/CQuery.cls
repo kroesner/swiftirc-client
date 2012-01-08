@@ -88,6 +88,3 @@ Public Sub sendEmote(text As String)
     m_windowText.addEvent "EMOTE", makeStringArray(m_session.currentNickname, text)
 End Sub
 
-Private Sub Class_Terminate()
-    debugLog "CQuery terminated"
-End Sub

@@ -116,7 +116,6 @@ End Sub
 
 Private Sub UserControl_Terminate()
     deInitMessages
-    debugLog "ctlButton terminating: " & m_caption
 End Sub
 
 Private Sub UserControl_LostFocus()

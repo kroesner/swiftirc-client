@@ -253,6 +253,3 @@ Private Sub UserControl_Resize()
 End Sub
 
 
-Private Sub UserControl_Terminate()
-    debugLog "ctlWindowGenericText terminating"
-End Sub

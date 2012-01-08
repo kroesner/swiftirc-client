@@ -697,10 +697,6 @@ Friend Sub changeFont(fontName As String, fontSize As Integer, fontBold As Boole
     settings.saveSettings
 End Sub
 
-Private Sub UserControl_Terminate()
-    debugLog "swiftIrcClient terminating"
-End Sub
-
 Public Function getTimer() As Object
     Set getTimer = Controls.Add("VB.Timer", "timer" & m_timerCounter)
     m_timerCounter = m_timerCounter + 1
@@ -801,58 +797,40 @@ End Property
 Public Sub init()
     On Error GoTo init_error:
 
-    debugLogEx "Init() called"
-
     g_clientCount = g_clientCount + 1
 
     If Not g_initialized Then
-        debugLogEx "First time initialization"
-    
         If LenB(Dir(g_AssetPath & "hand.cur", vbNormal)) <> 0 Then
-            debugLogEx "Found hand cursor, loading"
             Set g_handCursor = LoadPicture(assetPath & "hand.cur")
         End If
         
-        debugLogEx "Init settings object"
         Set settings = New CSettings
         Set colourManager = New CColourManager
     
-        debugLogEx "Loading settings..."
         settings.loadSettings
         
-        debugLogEx "Init UI fonts"
         initUIFonts UserControl.hdc
         
         g_initialized = True
     
         Randomize
         
-        debugLogEx "Init event colours object"
         Set eventColours = New CEventColours
         
-        debugLogEx "Init text manager object"
         Set textManager = New CTextManager
-        debugLogEx "Init server profiles object"
         Set serverProfiles = New CServerProfileManager
-        debugLogEx "Init colour theme manager object"
         Set colourThemes = New CColourThemeManager
-        debugLogEx "Init highlight manager object"
         Set highlights = New CHighlightManager
         Set ignoreManager = New CIgnoreManager
         
-        debugLogEx "Load colour themes"
         colourThemes.loadThemes
-        debugLogEx "Load server profiles"
         serverProfiles.loadProfiles
-        debugLogEx "Load text"
         textManager.loadText
         
-        debugLogEx "Load current theme."
         eventColours.loadTheme colourThemes.currentTheme
         
         ignoreManager.loadIgnoreList
         
-        debugLogEx "Set custom control colours."
         g_textViewBack = colourThemes.currentTheme.backgroundColour
         g_textViewFore = eventColours.normalText.colour
         
@@ -865,48 +843,36 @@ Public Sub init()
         g_channelListBack = colourThemes.currentTheme.backgroundColour
         g_channelListFore = eventColours.normalText.colour
         
-        debugLogEx "Load highlights"
         highlights.load
         
-        debugLogEx "Init images"
         initImages
-        debugLogEx "Init user styles"
         initUserStyles
         
-        debugLogEx "App wide init done."
     End If
     
-    debugLogEx "Init client fonts"
     initFonts
     
-    debugLogEx "Init events"
     initEvents
-    debugLogEx "Init logging"
     initLogging
     
     Dim window As IWindow
 
-    debugLogEx "Create switchbar"
     Set m_switchBar = createNewWindow("swiftIrc.ctlSwitchbar", "switchbar")
     Set m_switchbarControl = getRealWindow(m_switchBar)
 
     m_switchbarControl.visible = True
     m_switchbarControl.Move 0, 0, UserControl.ScaleWidth, m_switchBar.getRequiredHeight
 
-    debugLogEx "Init start page"
     initStartPage
     
-    debugLogEx "Force resize."
     UserControl_Resize
     
-    debugLogEx "Set switchbar position"
     If StrComp(settings.setting("switchbarPosition", estString), "bottom", vbTextCompare) = 0 Then
         m_switchBar.position = sbpBottom
     Else
         m_switchBar.position = sbpTop
     End If
     
-    debugLogEx "Set switchbar rows"
     m_switchBar.rows = settings.setting("switchbarRows", estNumber)
     
     registerForOptionsUpdates Me
@@ -914,7 +880,6 @@ Public Sub init()
     Exit Sub
     
 init_error:
-    debugLogEx "Error: " & Err.Number & " (" & Err.Description & ") on line " & Erl
     Resume Next
 End Sub
 
@@ -933,12 +898,9 @@ Public Sub deInit()
     
     settings.saveSettings
 
-    debugLog "Entering deInit()"
-
     Dim count As Long
     
     For count = m_sessions.count To 1 Step -1
-        debugLog "Trying to deInit and remove session named " & m_sessions.item(count).networkName
         removeSession m_sessions.item(count)
     Next count
     
@@ -946,10 +908,7 @@ Public Sub deInit()
     
     Set m_activeIWindow = Nothing
     Set m_activeWindow = Nothing
-    
-    debugLog "Done clearing sessions.  m_sessions.count = " & m_sessions.count
-    debugLog CStr(m_switchBar.tabCount)
-    
+
     g_clientCount = g_clientCount - 1
     
     If g_clientCount = 0 Then

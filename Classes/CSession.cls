@@ -391,10 +391,6 @@ Private Sub connectFailed()
     End If
 End Sub
 
-Private Sub Class_Terminate()
-    debugLog "CSession terminating"
-End Sub
-
 Private Sub m_channelJoinTimer_Timer()
     joinChannels
     m_channelJoinTimer.enabled = False
@@ -1954,8 +1950,6 @@ Private Function createQuery(name As String) As CQuery
 End Function
 
 Private Sub destroyChannel(channel As CChannel)
-    debugLog "Destroying channel " & channel.name
-
     m_client.removeTab channel.window.switchbartab
     m_client.destroyWindow channel.window
     m_channels.Remove LCase$(channel.name)
@@ -1963,8 +1957,6 @@ Private Sub destroyChannel(channel As CChannel)
 End Sub
 
 Private Sub destroyQuery(query As CQuery)
-    debugLog "Destroying query " & query.name
-
     m_client.removeTab query.window.switchbartab
     m_client.destroyWindow query.window
     m_queries.Remove LCase$(query.name)
@@ -3143,18 +3135,12 @@ Private Sub Class_Initialize()
 End Sub
 
 Public Sub deInit()
-    debugLog "Trying to deInit() CSession"
-
     Dim channel As CChannel
     Dim query As CQuery
-    
-    debugLog "Destroying channels"
     
     For Each channel In m_channels
         destroyChannel channel
     Next channel
-    
-    debugLog "Destroying queries"
     
     For Each query In m_queries
         destroyQuery query

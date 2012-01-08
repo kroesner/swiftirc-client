@@ -124,7 +124,6 @@ Public g_userPath As String
 
 Public Const LOG_DIR = "logs\"
 
-
 Public g_errorShown As Boolean
 Public g_hideErrors As Boolean
 
@@ -314,22 +313,6 @@ End Function
 Public Function getFileNameDate() As String
     getFileNameDate = format(Now, "yyyy-mm-dd")
 End Function
-
-Public Sub debugLog(text As String)
-    #If debugmode Then
-        Open App.path & "\debug.log" For Append As #1
-            Print #1, text
-        Close #1
-    #End If
-End Sub
-
-Public Sub debugLogEx(text As String)
-    If g_debugModeEx Then
-        Open g_userPath & "\debugEx.log" For Append As #1
-            Print #1, text
-        Close #1
-    End If
-End Sub
 
 Public Function launchDefaultBrowser(url As String)
     If osVersion.dwMajorVersion >= 5 Then

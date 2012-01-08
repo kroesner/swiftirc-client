@@ -192,6 +192,3 @@ Private Sub changeColour(index As Long)
     End If
 End Sub
 
-Private Sub UserControl_Terminate()
-    debugLog "ctlColourPalette terminating"
-End Sub

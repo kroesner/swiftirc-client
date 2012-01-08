@@ -225,6 +225,3 @@ Private Sub UserControl_Paint()
     reDraw
 End Sub
 
-Private Sub UserControl_Terminate()
-    debugLog "ctlTabStrip terminating"
-End Sub

@@ -660,8 +660,4 @@ Public Sub clearNicklist()
     m_nicklist.clearItems
 End Sub
 
-Private Sub UserControl_Terminate()
-    debugLog "ctlWindowChannel terminated"
-End Sub
-
 

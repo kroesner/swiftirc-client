@@ -721,10 +721,6 @@ Public Sub sendEmote(text As String)
         m_session.currentNickname, TVE_NONE, makeStringArray(text)
 End Sub
 
-Private Sub Class_Terminate()
-    debugLog "CChannel terminated"
-End Sub
-
 Private Sub m_rejoinTimer_Timer()
     m_rejoinTimer.enabled = False
     m_session.rejoinChannel Me

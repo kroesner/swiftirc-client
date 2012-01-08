@@ -279,6 +279,3 @@ Private Sub UserControl_Resize()
     End If
 End Sub
 
-Private Sub UserControl_Terminate()
-    debugLog "ctlWindowStatus terminating"
-End Sub

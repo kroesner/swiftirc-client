@@ -82,6 +82,3 @@ Private Sub UserControl_Paint()
     DeleteObject brush
 End Sub
 
-Private Sub UserControl_Terminate()
-    debugLog "ctlSingleColourSelector terminating"
-End Sub

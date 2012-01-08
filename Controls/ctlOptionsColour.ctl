@@ -596,5 +596,4 @@ End Sub
 
 Private Sub UserControl_Terminate()
     DetachMessage Me, UserControl.hwnd, WM_TIMER
-    debugLog "ctlOptionsColour terminating"
 End Sub

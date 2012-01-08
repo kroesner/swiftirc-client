@@ -134,7 +134,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 4
         Next j
         Nr = 10
-'Debug.Assert i = (Nr + 1) * 4
 #If SUPPORT_LEVEL = 2 Then
     Case 160
         i = 5
@@ -156,7 +155,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 11
-'Debug.Assert i + 3 = (Nr + 1) * 4
 #End If
     Case 192
         i = 6
@@ -179,7 +177,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 12
-'Debug.Assert i + 4 = (Nr + 1) * 4
 #If SUPPORT_LEVEL = 2 Then
     Case 224
         i = 7
@@ -204,7 +201,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 7
         Next j
         Nr = 13
-'Debug.Assert i = (Nr + 1) * 4
 #End If
     Case 256
         i = 8
@@ -233,7 +229,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 14
-'Debug.Assert i + 4 = (Nr + 1) * 4
     Case Else
         Err.Raise 1, , "cRijndael.SetCipherKey - Illegal KeyBits Value"
         SetCipherKey = 1
@@ -263,7 +258,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 4
         Next j
         Nr = 11
-'Debug.Assert i = (Nr + 1) * 5
     Case 160
         i = 5
         CopyMemory fkey(0), pass(0), 4& * i
@@ -281,7 +275,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 5
         Next j
         Nr = 11
-'Debug.Assert i = (Nr + 1) * 5
     Case 192
         i = 6
         j = 0
@@ -303,7 +296,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 12
-'Debug.Assert i + 5 = (Nr + 1) * 5
     Case 224
         i = 7
         CopyMemory fkey(0), pass(0), 4& * i
@@ -327,7 +319,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 7
         Next j
         Nr = 13
-'Debug.Assert i = (Nr + 1) * 5
     Case 256
         i = 8
         j = 0
@@ -355,7 +346,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 14
-'Debug.Assert i + 3 = (Nr + 1) * 5
     Case Else
         Err.Raise 1, , "cRijndael.SetCipherKey - Illegal KeyBits Value"
         SetCipherKey = 1
@@ -386,7 +376,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 12
-'Debug.Assert i + 2 = (Nr + 1) * 6
 #If SUPPORT_LEVEL = 2 Then
     Case 160
         i = 5
@@ -408,7 +397,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 12
-'Debug.Assert i + 3 = (Nr + 1) * 6
 #End If
     Case 192
         i = 6
@@ -428,7 +416,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 6
         Next j
         Nr = 12
-'Debug.Assert i = (Nr + 1) * 6
 #If SUPPORT_LEVEL = 2 Then
     Case 224 '(Nr+1)*Nb/Nk  (when to exit)
         i = 7
@@ -453,7 +440,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 7
         Next j
         Nr = 13
-'Debug.Assert i = (Nr + 1) * 6
 #End If
     Case 256
         i = 8
@@ -482,7 +468,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 14
-'Debug.Assert i + 2 = (Nr + 1) * 6
     Case Else
         Err.Raise 1, , "cRijndael.SetCipherKey - Illegal KeyBits Value"
         SetCipherKey = 1
@@ -514,7 +499,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 13
-'Debug.Assert i + 2 = (Nr + 1) * 7
     Case 160
         i = 5
         j = 0
@@ -535,7 +519,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 13
-'Debug.Assert i + 3 = (Nr + 1) * 7
     Case 192
         i = 6
         j = 0
@@ -557,7 +540,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 13
-'Debug.Assert i + 2 = (Nr + 1) * 7
     Case 224
         i = 7
         CopyMemory fkey(0), pass(0), 4& * i
@@ -581,7 +563,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 7
         Next j
         Nr = 13
-'Debug.Assert i = (Nr + 1) * 7
     Case 256
         i = 8
         j = 0
@@ -609,7 +590,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 14
-'Debug.Assert i + 1 = (Nr + 1) * 7
     Case Else
         Err.Raise 1, , "cRijndael.SetCipherKey - Illegal KeyBits Value"
         SetCipherKey = 1
@@ -638,7 +618,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 4
         Next j
         Nr = 14
-'Debug.Assert i = (Nr + 1) * 8
 #If SUPPORT_LEVEL = 2 Then
     Case 160
         i = 5
@@ -657,7 +636,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 5
         Next j
         Nr = 14
-'Debug.Assert i = (Nr + 1) * 8
 #End If
     Case 192
         i = 6
@@ -677,7 +655,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 6
         Next j
         Nr = 14
-'Debug.Assert i = (Nr + 1) * 8
 #If SUPPORT_LEVEL = 2 Then
     Case 224
         i = 7
@@ -705,7 +682,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             j = j + 1
         Loop
         Nr = 14
-'Debug.Assert i + 1 = (Nr + 1) * 8
 #End If
     Case 256
         i = 8
@@ -731,7 +707,6 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
             i = i + 8
         Next j
         Nr = 14
-'Debug.Assert i = (Nr + 1) * 8
     Case Else
         Err.Raise 1, , "cRijndael.SetCipherKey - Illegal KeyBits Value"
         SetCipherKey = 1
@@ -1588,16 +1563,10 @@ Public Function ArrayDecrypt(plaintext() As Byte, ciphertext() As Byte, appendsi
                 n = n - BlockSize + plaintext(n - 1)
                 If n > 0 Then ReDim Preserve plaintext(n - 1)
             Else
-                #If debugmode Then
-                MsgBox "warning - incorrect length field"
-                #End If
                 ArrayDecrypt = 1
             End If
         End If
     Else
-        #If debugmode Then
-        MsgBox "ciphertext size not a multiple of block size"
-        #End If
         ArrayDecrypt = -1
     End If
 
@@ -1768,9 +1737,6 @@ Public Function FileDecrypt(PlaintextFileName As String, CiphertextFileName As S
 #Else
     If (m = 0) Or ((m And (BlockSize - 1)) <> 0) Then 'BlockSize=16 specific
 #End If
-        #If debugmode Then
-        MsgBox "File Size Error - ciphertext file not a multiple of block size"
-        #End If
         FileDecrypt = 1
     Else
         FileNum = FreeFile
@@ -1851,15 +1817,6 @@ Public Function FileDecrypt(PlaintextFileName As String, CiphertextFileName As S
         If data(m - 1) < BlockSize Then
             n = m - BlockSize + CLng(data(m - 1))
         Else
-#If debugmode Then
-#If SUPPORT_LEVEL Then
-    
-            MsgBox "warning - incorrect length field in decrypted file." & vbCrLf & "Wrong key, keysize, or blocksize?"
-            
-#Else
-            MsgBox "warning - incorrect length field in decrypted file." & vbCrLf & "Wrong key or keysize?"
-#End If
-#End If
             n = m
         End If
         If n > 0 Then
