@@ -18,6 +18,8 @@ Private m_currentTheme As CColourTheme
 Private m_currentSettingsTheme As CColourTheme
 Private m_defaultTheme As CColourTheme
 
+Private Const THEMES_FILENAME  As String = "swiftirc_themes.xml"
+
 Friend Property Get currentSettingsTheme() As CColourTheme
     Set currentSettingsTheme = m_currentSettingsTheme
 End Property
@@ -70,7 +72,7 @@ Friend Sub clear()
     Loop
 End Sub
 
-Friend Sub loadThemes(file As String)
+Friend Sub loadThemes()
     Dim xml As New DOMDocument30
     Dim paletteNode As IXMLDOMNode
     Dim themeNode As IXMLDOMNode
@@ -79,6 +81,10 @@ Friend Sub loadThemes(file As String)
     Dim theme As CColourTheme
     Dim colourIndex As Long
     Dim eventCount As Long
+    
+    Dim file As String
+    
+    file = combinePath(g_userPath, THEMES_FILENAME)
     
     If Not xml.load(file) Then
         Set m_currentTheme = addDefaultTheme
@@ -140,7 +146,7 @@ Friend Sub loadThemes(file As String)
     End If
 End Sub
 
-Friend Sub saveThemes(file As String)
+Friend Sub saveThemes()
     Dim xml As New DOMDocument30
     Dim themeNode As IXMLDOMNode
     Dim paletteNode As IXMLDOMNode
@@ -151,6 +157,10 @@ Friend Sub saveThemes(file As String)
     Dim paletteCount As Long
     Dim eventCount As Long
     Dim theme As CColourTheme
+    
+    Dim file As String
+    
+    file = combinePath(g_userPath, THEMES_FILENAME)
     
     Set xml.documentElement = xml.createNode(NODE_ELEMENT, "themes", "")
 

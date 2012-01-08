@@ -13,6 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Private m_ignoreList As New cArrayList
 Private m_ignoreConfNames(6) As ignoreConfName
+Private Const IGNORES_FILENAME As String = "swiftirc_ignore_list.xml"
 
 Private Type ignoreConfName
     flag As ignoreFlags
@@ -77,8 +78,11 @@ Public Function isIgnored(mask As String, flag As Long)
     Next count
 End Function
 
-Public Sub loadIgnoreList(filename As String)
+Public Sub loadIgnoreList()
     Dim xml As New DOMDocument30
+    Dim filename As String
+    
+    filename = combinePath(g_userPath, IGNORES_FILENAME)
     
     If Not xml.load(filename) Then
         Exit Sub
@@ -111,13 +115,17 @@ Public Sub loadIgnoreList(filename As String)
     Next ignoreNode
 End Sub
 
-Public Sub saveIgnoreList(filename As String)
+Public Sub saveIgnoreList()
     Dim xml As New DOMDocument30
     Dim count As Long
     Dim optionCount As Long
     Dim ignoreNode As IXMLDOMNode
     Dim optionsNode As IXMLDOMNode
     Dim ignore As CIgnoreItem
+    
+    Dim filename As String
+    
+    filename = combinePath(g_userPath, IGNORES_FILENAME)
     
     Set xml.documentElement = xml.createNode(NODE_ELEMENT, "ignoreList", vbNullString)
     

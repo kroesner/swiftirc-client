@@ -31,7 +31,7 @@ Private m_realWindow As VBControlExtender
 Private m_listbox As ListBox
 Private m_list As New cArrayList
 
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 Private m_itemHeight As Long
 
 Private m_resizing As Boolean
@@ -61,7 +61,7 @@ Private Sub IColourUser_coloursUpdated()
 End Sub
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+    Set m_fontmanager = RHS
 End Property
 
 Private Sub IFontUser_fontsUpdated()
@@ -69,7 +69,7 @@ Private Sub IFontUser_fontsUpdated()
 End Sub
 
 Private Sub fontsUpdated()
-    m_itemHeight = m_fontManager.fontHeight
+    m_itemHeight = m_fontmanager.fontHeight
     
     If Not m_listbox Is Nothing Then
         SendMessage m_listbox.hwnd, LB_SETITEMHEIGHT, 0, ByVal m_itemHeight
@@ -282,9 +282,9 @@ Private Function drawItem(item As DRAWITEMSTRUCT) As Long
     Dim newFont As Long
     
     If settings.setting("boldNicks", estBoolean) Then
-        newFont = m_fontManager.getFont(True, False, False)
+        newFont = m_fontmanager.getFont(True, False, False)
     Else
-        newFont = m_fontManager.getDefaultFont
+        newFont = m_fontmanager.getDefaultFont
     End If
     
     If newFont <> 0 Then
@@ -295,9 +295,9 @@ Private Function drawItem(item As DRAWITEMSTRUCT) As Long
     
     If Not userStyle Is Nothing Then
         If Not userStyle.image Is Nothing And settings.setting("nicknameIcons", estBoolean) Then
-            userStyle.image.draw item.hdc, textRect.left, textRect.top, m_fontManager.fontHeight, _
-                m_fontManager.fontHeight
-            textRect.left = textRect.left + m_fontManager.fontHeight + 1
+            userStyle.image.draw item.hdc, textRect.left, textRect.top, m_fontmanager.fontHeight, _
+                m_fontmanager.fontHeight
+            textRect.left = textRect.left + m_fontmanager.fontHeight + 1
             drewImage = True
         End If
     End If

@@ -63,14 +63,12 @@ Attribute m_buttonDefaultFont.VB_VarHelpID = -1
 
 Private m_labelFontInfo As CLabel
 
-Private m_client As swiftIrc.SwiftIrcClient
-
 Private m_fontName As String
 Private m_fontSize As Integer
 Private m_fontBold As Boolean
 Private m_fontItalic As Boolean
 
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 
 Private m_buttonSbEventColour As swiftIrc.ctlButton
 Private m_buttonSbMessageColour As swiftIrc.ctlButton
@@ -101,14 +99,6 @@ Private m_trans As Boolean
 
 Private m_themes As New Collection
 Private m_currentTheme As CColourTheme
-
-Public Property Get client() As swiftIrc.SwiftIrcClient
-    Set client = m_client
-End Property
-
-Public Property Let client(newValue As swiftIrc.SwiftIrcClient)
-    Set m_client = newValue
-End Property
 
 Private Sub comboTheme_Click()
     Set m_currentTheme = m_themes.item(comboTheme.ListIndex + 1)
@@ -284,7 +274,7 @@ Private Sub m_buttonChangeFont_clicked()
     Dim lf As LOGFONT
     Dim result As Long
     
-    lf = m_fontManager.fontStruct
+    lf = m_fontmanager.fontStruct
     
     cf.lpLogFont = VarPtr(lf)
     
@@ -317,7 +307,7 @@ Private Sub m_buttonChangeFont_clicked()
         m_fontItalic = False
     End If
     
-    m_fontManager.changeFont UserControl.hdc, m_fontName, m_fontSize, m_fontBold, m_fontItalic
+    m_fontmanager.changeFont UserControl.hdc, m_fontName, m_fontSize, m_fontBold, m_fontItalic
     m_labelFontInfo.caption = "Current font: " & m_fontName & " size " & _
         CStr(m_fontSize)
     UserControl_Paint
@@ -451,14 +441,14 @@ Private Sub UserControl_Initialize()
     SetTimer UserControl.hwnd, m_transTimer, 500, 0
     AttachMessage Me, UserControl.hwnd, WM_TIMER
 
-    Set m_fontManager = New CFontManager
+    Set m_fontmanager = New CFontManager
     
     m_fontName = settings.fontName
     m_fontSize = settings.fontSize
     m_fontBold = settings.setting("fontBold", estBoolean)
     m_fontItalic = settings.setting("fontItalic", estBoolean)
     
-    m_fontManager.changeFont UserControl.hdc, m_fontName, m_fontSize, m_fontBold, m_fontItalic
+    m_fontmanager.changeFont UserControl.hdc, m_fontName, m_fontSize, m_fontBold, m_fontItalic
 
     UserControl.BackColor = colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
     initControls
@@ -511,7 +501,7 @@ Public Sub saveSettings()
     Next theme
     
     colourThemes.currentTheme = m_currentTheme
-    colourThemes.saveThemes g_userPath & "\swiftirc_themes.xml"
+    colourThemes.saveThemes
     
     eventColours.loadTheme colourThemes.currentTheme
     g_textViewBack = colourThemes.currentTheme.backgroundColour
@@ -541,22 +531,10 @@ Public Sub saveSettings()
     
     settings.setting("switchbarRows", estNumber) = comboSwitchbarRows.ListIndex + 1
     
-    m_client.coloursUpdated
-    
     settings.fontName = m_fontName
     settings.fontSize = m_fontSize
     settings.setting("fontBold", estBoolean) = m_fontBold
     settings.setting("fontItalic", estBoolean) = m_fontItalic
-    
-    m_client.changeFont m_fontName, m_fontSize, m_fontBold, m_fontItalic
-    
-    If StrComp(settings.setting("switchbarPosition", estString), "Top", vbTextCompare) = 0 Then
-        m_client.switchbar.position = sbpTop
-    ElseIf StrComp(settings.setting("switchbarPosition", estString), "Bottom", vbTextCompare) = 0 Then
-        m_client.switchbar.position = sbpBottom
-    End If
-    
-    m_client.switchbar.rows = settings.setting("switchbarRows", estNumber)
 End Sub
 
 Private Sub UserControl_Paint()

@@ -16,6 +16,8 @@ Option Explicit
 Private m_serverProfiles As New Collection
 Private m_quickConnectProfile As CServerProfile
 
+Private Const PROFILES_FILENAME As String = "swiftirc_servers.xml"
+
 Public Event profilesChanged()
 
 Public Property Get quickConnectProfile() As CServerProfile
@@ -55,9 +57,12 @@ Public Function profileCount() As Long
     profileCount = m_serverProfiles.count
 End Function
 
-Public Sub loadProfiles(filename As String)
+Public Sub loadProfiles()
     Dim xml As New DOMDocument30
     Dim profileNode As IXMLDOMNode
+    Dim filename As String
+    
+    filename = combinePath(g_userPath, PROFILES_FILENAME)
     
     If Not xml.load(filename) Then
         Exit Sub
@@ -108,12 +113,16 @@ Public Sub loadProfiles(filename As String)
     RaiseEvent profilesChanged
 End Sub
 
-Public Sub saveProfiles(filename As String)
+Public Sub saveProfiles()
     Dim profile As CServerProfile
     Dim xml As New DOMDocument30
     Dim profileNode As IXMLDOMNode
     Dim node As IXMLDOMNode
     Dim attrib As IXMLDOMAttribute
+    
+    Dim filename As String
+    
+    filename = combinePath(g_userPath, PROFILES_FILENAME)
     
     Set xml.documentElement = xml.createNode(NODE_ELEMENT, "profiles", "")
     

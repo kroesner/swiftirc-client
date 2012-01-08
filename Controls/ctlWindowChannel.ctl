@@ -103,7 +103,7 @@ Attribute m_textInput.VB_VarHelpID = -1
 
 Private m_nameCounter As Long
 
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 
 Private m_children As New cArrayList
 
@@ -230,7 +230,7 @@ Private Sub ITextWindow_addTextEx(eventColour As CEventColour, foreColour As Byt
 End Sub
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+    Set m_fontmanager = RHS
 End Property
 
 Private Sub IFontUser_fontsUpdated()
@@ -364,7 +364,7 @@ Private Sub m_textView_doubleClick()
     Dim fontUser As IFontUser
     
     Set fontUser = channelCentral
-    fontUser.fontManager = m_fontManager
+    fontUser.fontManager = m_fontmanager
     
     channelCentral.channel = m_channel
     
@@ -407,7 +407,7 @@ Private Sub menuIgnore_Click()
         ITextWindow_addEvent "IGNORE_ADDED", makeStringArray(ignore.mask, ignore.flagChars)
     End If
     
-    saveIgnoreFile
+    ignoreManager.saveIgnoreList
 End Sub
 
 Private Sub menuKick_Click()
@@ -579,12 +579,12 @@ Private Sub fontsChanged()
     Dim count As Integer
     Dim fontUser As IFontUser
     
-    m_textInputHeight = m_fontManager.fontHeight + 5
+    m_textInputHeight = m_fontmanager.fontHeight + 5
     
     For count = 1 To m_children.count
         If TypeOf m_children.item(count).object Is IFontUser Then
             Set fontUser = m_children.item(count).object
-            fontUser.fontManager = m_fontManager
+            fontUser.fontManager = m_fontmanager
             fontUser.fontsUpdated
         End If
     Next count
@@ -606,11 +606,11 @@ Private Function createNewWindow(progId As String, name As String) As IWindow
     m_nameCounter = m_nameCounter + 1
     
     If TypeOf window Is IFontUser Then
-        If Not m_fontManager Is Nothing Then
+        If Not m_fontmanager Is Nothing Then
             Dim fontUser As IFontUser
             
             Set fontUser = window
-            fontUser.fontManager = m_fontManager
+            fontUser.fontManager = m_fontmanager
             fontUser.fontsUpdated
         End If
     End If

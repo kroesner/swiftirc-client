@@ -26,7 +26,6 @@ Option Explicit
 Implements IWindow
 Implements IColourUser
 
-
 Public Event newSession()
 Public Event profileConnect(profile As CServerProfile)
 
@@ -132,12 +131,7 @@ Private Sub m_buttonNewServerWindow_clicked()
 End Sub
 
 Private Sub m_buttonOptions_clicked()
-    Dim options As New frmOptions
-    
-    options.client = m_client
-    options.Show vbModal, Me
-    
-    Unload options
+    openOptionsDialog m_client
 End Sub
 
 Private Sub setProfile()

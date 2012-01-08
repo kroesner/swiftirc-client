@@ -2502,7 +2502,7 @@ End Sub
 
 Public Sub commandOptions(Source As ITextWindow, command As String, paramCount As Byte, params() As _
     String)
-    openOptions m_client, Me
+    openOptionsDialog m_client
 End Sub
 
 Public Sub commandDebug(Source As ITextWindow, command As String, paramCount As Byte, params() As _
@@ -2789,7 +2789,7 @@ Private Sub processIgnoreCommand(Source As ITextWindow, commandFlags As String, 
                 Source.addEvent "IGNORE_ADDED", makeStringArray(ignore.mask, ignore.flagChars)
             End If
             
-            saveIgnoreFile
+            ignoreManager.saveIgnoreList
         End If
     ElseIf commandFlags = "l" Or commandFlags = "list" Then
         listIgnores Source
@@ -2805,7 +2805,7 @@ Private Sub processIgnoreCommand(Source As ITextWindow, commandFlags As String, 
             
             If removed Then
                 Source.addEvent "IGNORE_REMOVED", makeStringArray(ignore.mask)
-                saveIgnoreFile
+                ignoreManager.saveIgnoreList
             Else
                 Source.addEvent "IGNORE_REMOVE_NOTFOUND", makeStringArray(mask)
             End If
@@ -2813,7 +2813,7 @@ Private Sub processIgnoreCommand(Source As ITextWindow, commandFlags As String, 
     ElseIf commandFlags = "c" Or commandFlags = "clear" Then
         ignoreManager.clearIgnores
         Source.addEvent "IGNORE_LIST_CLEARED", makeStringArray("")
-        saveIgnoreFile
+        ignoreManager.saveIgnoreList
     Else
         Source.addEvent "IGNORE_INVALID_COMMAND", makeStringArray(commandFlags)
     End If

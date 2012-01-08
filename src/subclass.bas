@@ -476,7 +476,7 @@ Function IsWindowLocal(ByVal hwnd As Long) As Boolean
 End Function
 
 Private Sub logMessage(ByVal sMsg As String)
-   Debug.Print sMsg
+   'Debug.Print sMsg
 End Sub
 
 

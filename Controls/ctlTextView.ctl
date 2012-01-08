@@ -106,7 +106,7 @@ Private m_url As String
 
 Private m_scrollbarEnabled As Boolean
 
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 
 Private Sub scrolled()
     If m_currentRealLine >= m_realLineCount Then
@@ -432,13 +432,13 @@ Private Sub IColourUser_coloursUpdated()
 End Sub
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+    Set m_fontmanager = RHS
 End Property
 
 Private Sub IFontUser_fontsUpdated()
-    m_fontHeight = m_fontManager.fontHeight
+    m_fontHeight = m_fontmanager.fontHeight
     m_drawingData.fontHeight = m_fontHeight
-    m_drawingData.fontManager = m_fontManager
+    m_drawingData.fontManager = m_fontmanager
     refresh
 End Sub
 
@@ -524,7 +524,7 @@ Private Sub UserControl_Initialize()
 
     m_drawingData.setPalette colourThemes.currentTheme.getPalette
     m_drawingData.fontHeight = m_fontHeight
-    m_drawingData.fontManager = m_fontManager
+    m_drawingData.fontManager = m_fontmanager
 
     initScrollBar
     initMessages
@@ -1167,7 +1167,7 @@ Private Sub UserControl_Paint()
 End Sub
 
 Private Sub drawLines(first As Long, y As Long, height As Integer)
-    If m_fontManager Is Nothing Then
+    If m_fontmanager Is Nothing Then
         Exit Sub
     End If
     
@@ -1281,8 +1281,8 @@ Private Sub updateBackbuffer()
     
     SetBkMode m_backBuffer, OPAQUE
     
-    If Not m_fontManager Is Nothing Then
-        SelectObject m_backBuffer, m_fontManager.getFont(False, False, False)
+    If Not m_fontmanager Is Nothing Then
+        SelectObject m_backBuffer, m_fontmanager.getFont(False, False, False)
     End If
     
     m_drawingData.Dc = m_backBuffer
@@ -1295,7 +1295,7 @@ Private Sub displayBackBuffer()
 End Sub
 
 Private Sub reDraw()
-    If m_fontManager Is Nothing Then
+    If m_fontmanager Is Nothing Then
         Exit Sub
     End If
 

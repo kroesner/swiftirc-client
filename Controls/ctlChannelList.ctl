@@ -62,7 +62,7 @@ Private m_channels As New cArrayList
 
 Private m_sortBy As eSortType
 
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 Private m_realWindow As VBControlExtender
 
 Private m_switchbarTab As CTab
@@ -100,7 +100,7 @@ Private Sub IColourUser_coloursUpdated()
 End Sub
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+    Set m_fontmanager = RHS
 End Property
 
 Private Sub IFontUser_fontsUpdated()
@@ -108,7 +108,7 @@ Private Sub IFontUser_fontsUpdated()
 End Sub
 
 Private Sub fontsUpdated()
-    m_itemHeight = m_fontManager.fontHeight
+    m_itemHeight = m_fontmanager.fontHeight
     UserControl_Resize
     
     If Not m_listbox = 0 Then
@@ -286,7 +286,7 @@ Private Function drawItem(item As DRAWITEMSTRUCT) As Long
         DeleteObject fillBrush
     End If
     
-    SelectObject item.hdc, m_fontManager.getDefaultFont
+    SelectObject item.hdc, m_fontmanager.getDefaultFont
     
     Dim textRect As RECT
     
@@ -363,15 +363,15 @@ Private Function drawTopic(hdc As Long, textRect As RECT, selected As Boolean, t
         ElseIf TypeOf block Is CBlockBold Then
             Set blockBold = block
             bold = blockBold.bold
-            SelectObject hdc, m_fontManager.getFont(bold, italic, underline)
+            SelectObject hdc, m_fontmanager.getFont(bold, italic, underline)
         ElseIf TypeOf block Is CBlockItalic Then
             Set blockItalic = block
             italic = blockItalic.italic
-            SelectObject hdc, m_fontManager.getFont(bold, italic, underline)
+            SelectObject hdc, m_fontmanager.getFont(bold, italic, underline)
         ElseIf TypeOf block Is CBlockUnderline Then
             Set blockUnderline = block
             underline = blockUnderline.underline
-            SelectObject hdc, m_fontManager.getFont(bold, italic, underline)
+            SelectObject hdc, m_fontmanager.getFont(bold, italic, underline)
         ElseIf TypeOf block Is CBlockReverse Then
             If Not selected Then
                 Set blockReverse = block
@@ -431,7 +431,7 @@ Private Function drawTopic(hdc As Long, textRect As RECT, selected As Boolean, t
             foreColour = g_channelListFore
             backColour = g_channelListBack
             
-            SelectObject hdc, m_fontManager.getDefaultFont
+            SelectObject hdc, m_fontmanager.getDefaultFont
             
             If Not selected Then
                 SetBkColor hdc, getPaletteEntry(backColour)
@@ -923,7 +923,7 @@ Private Sub UserControl_Paint()
     SetTextColor UserControl.hdc, getPaletteEntry(g_channelListFore)
     
     UserControl.BackColor = getPaletteEntry(g_channelListBack)
-    SelectObject UserControl.hdc, m_fontManager.getDefaultFont
+    SelectObject UserControl.hdc, m_fontmanager.getDefaultFont
     
     Dim fillBrush As Long
     

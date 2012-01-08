@@ -39,7 +39,7 @@ Implements IFontUser
 
 Private m_realWindow As VBControlExtender
 Private m_labelManager As New CLabelManager
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 
 Private m_textviewTopicPreview As swiftIrc.ctlTextView
 
@@ -84,7 +84,7 @@ Private Sub IColourUser_coloursUpdated()
 End Sub
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+    Set m_fontmanager = RHS
     
     Dim fontUser As IFontUser
     

@@ -81,7 +81,7 @@ Private m_overTab As CTab
 Private m_selectedTab As CTab
 Private m_contextTab As CTab 'Tab associated with right click menu
 
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 
 Public Event changeHeight(newHeight As Long)
 Public Event moveRequest(x As Single, y As Single)
@@ -167,7 +167,7 @@ Public Property Let position(newValue As eSwitchbarPosition)
 End Property
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+    Set m_fontmanager = RHS
 End Property
 
 Friend Function addTab(parent As IWindow, window As IWindow, order As eSwitchbarOrder, _

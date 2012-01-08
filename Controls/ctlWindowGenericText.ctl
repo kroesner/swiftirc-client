@@ -24,7 +24,7 @@ Implements IColourUser
 Private m_textInputHeight As Long
 Private m_children As New cArrayList
 Private m_nameCounter As Long
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 Private m_tab As CTab
 
 Private m_name As String
@@ -114,19 +114,19 @@ Public Property Get session() As CSession
 End Property
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+    Set m_fontmanager = RHS
 End Property
 
 Private Sub IFontUser_fontsUpdated()
     Dim count As Long
     Dim fontUser As IFontUser
     
-    m_textInputHeight = m_fontManager.fontHeight + 5
+    m_textInputHeight = m_fontmanager.fontHeight + 5
     
     For count = 1 To m_children.count
         If TypeOf m_children.item(count).object Is IFontUser Then
             Set fontUser = m_children.item(count).object
-            fontUser.fontManager = m_fontManager
+            fontUser.fontManager = m_fontmanager
             fontUser.fontsUpdated
         End If
     Next count
@@ -199,11 +199,11 @@ Private Function createNewWindow(progId As String, name As String) As IWindow
     m_nameCounter = m_nameCounter + 1
     
     If TypeOf window Is IFontUser Then
-        If Not m_fontManager Is Nothing Then
+        If Not m_fontmanager Is Nothing Then
             Dim fontUser As IFontUser
             
             Set fontUser = window
-            fontUser.fontManager = m_fontManager
+            fontUser.fontManager = m_fontmanager
             fontUser.fontsUpdated
         End If
     End If

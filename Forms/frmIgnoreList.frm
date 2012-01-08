@@ -216,7 +216,7 @@ Private Sub saveIgnores()
         ignoreManager.addIgnore ignore
     Next count
     
-    saveIgnoreFile
+    ignoreManager.saveIgnoreList
 End Sub
 
 Private Sub m_buttonOk_clicked()

@@ -312,7 +312,3 @@ Private Sub UserControl_Paint()
         
     m_labelManager.renderLabels UserControl.hdc
 End Sub
-
-Private Sub UserControl_Terminate()
-    debugLog "ctlOptionsIrc terminating"
-End Sub

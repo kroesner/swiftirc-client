@@ -20,9 +20,8 @@ Implements ISubclass
 
 Private m_realWindow As VBControlExtender
 Private m_labelManager As New CLabelManager
+Private m_fontmanager As New CFontManager
 Private m_listbox As Long
-
-Private m_client As SwiftIrcClient
 
 Private WithEvents m_colourPalette As ctlColourPalette
 Attribute m_colourPalette.VB_VarHelpID = -1
@@ -49,10 +48,6 @@ Private m_drawIcons As Boolean
 
 Private m_fillbrush As Long
 Private m_itemHeight As Long
-
-Public Property Let client(newValue As SwiftIrcClient)
-    Set m_client = newValue
-End Property
 
 Private Property Let ISubclass_MsgResponse(ByVal RHS As EMsgResponse)
 
@@ -97,6 +92,16 @@ Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, By
             
             ISubclass_WindowProc = m_fillbrush
     End Select
+End Function
+
+Private Function getNicklistFont() As Long
+    m_fontmanager.changeFont UserControl.hdc, settings.fontName, settings.fontSize, settings.setting("fontBold", estBoolean), settings.setting("fontItalic", estBoolean)
+    
+    If m_checkBoldNicks.value Then
+        getNicklistFont = m_fontmanager.getFont(True, False, False)
+    Else
+        getNicklistFont = m_fontmanager.getDefaultFont
+    End If
 End Function
 
 Private Function drawItem(item As DRAWITEMSTRUCT) As Long
@@ -152,22 +157,11 @@ Private Function drawItem(item As DRAWITEMSTRUCT) As Long
         SetTextColor item.hdc, textColour
     End If
     
+    Dim oldFont As Long
     Dim textRect As RECT
     
+    oldFont = SelectObject(item.hdc, getNicklistFont)
     textRect = item.rcItem
-    
-    'SelectObject item.hdc, GetCurrentObject(UserControl.hdc, OBJ_FONT)
-    
-    Dim newFont As Long
-    Dim oldFont As Long
-    
-    If m_checkBoldNicks.value Then
-        newFont = m_client.fontManager.getFont(True, False, False)
-    Else
-        newFont = m_client.fontManager.getDefaultFont
-    End If
-    
-    oldFont = SelectObject(item.hdc, newFont)
     
     If Not icon Is Nothing And m_drawIcons Then
         icon.draw item.hdc, item.rcItem.left, item.rcItem.top, m_itemHeight, m_itemHeight

@@ -36,6 +36,8 @@ Private m_highlightNickname As Boolean
 
 Private m_settings As New Collection
 
+Private Const SETTINGS_FILENAME  As String = "swiftirc_settings.xml"
+
 Public Property Get setting(name As String, Optional settingType As eSettingType) As Variant
     Dim settingItem As CSettingItem
     
@@ -163,7 +165,7 @@ Public Sub loadSettings()
     Dim xml As New DOMDocument30
     Dim node As IXMLDOMNode
     
-    If Not xml.load(g_userPath & "swiftirc_settings.xml") Then
+    If Not xml.load(combinePath(g_userPath, SETTINGS_FILENAME)) Then
         Exit Sub
     End If
     
@@ -249,7 +251,7 @@ Public Sub saveSettings()
     
     On Error GoTo SettingsSave_Error
     
-    saveXml xml, g_userPath & "swiftirc_settings.xml"
+    saveXml xml, combinePath(g_userPath, SETTINGS_FILENAME)
     
 Exit Sub
 SettingsSave_Error:

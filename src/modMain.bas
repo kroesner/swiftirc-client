@@ -203,9 +203,13 @@ Public Sub Main()
     #If debugmode Then
         Dim count As Long
         Dim testContainer As frmTestContainer
+        Dim testContainer2 As frmTestContainer
         
         Set testContainer = New frmTestContainer
+        Set testContainer2 = New frmTestContainer
+        
         testContainer.Show
+        testContainer2.Show
     #End If
 End Sub
 
@@ -306,9 +310,6 @@ Public Function formatTime(ByVal time As Long) As String
     
     formatTime = format(aDate, "ddd, d MMM yyyy HH:mm:ss ") & timeZone
 End Function
-
-
-
 
 Public Function getFileNameDate() As String
     getFileNameDate = format(Now, "yyyy-mm-dd")

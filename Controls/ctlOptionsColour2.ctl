@@ -17,12 +17,6 @@ Implements IWindow
 
 Private m_realWindow As VBControlExtender
 Private m_nicknameStyles As ctlNicknameStyleList
-Private m_client As SwiftIrcClient
-
-Public Property Let client(newValue As SwiftIrcClient)
-    Set m_client = newValue
-    m_nicknameStyles.client = m_client
-End Property
 
 Private Property Let IWindow_realWindow(RHS As Object)
     Set m_realWindow = RHS

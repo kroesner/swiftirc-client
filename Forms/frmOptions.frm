@@ -46,11 +46,13 @@ Private m_wndColour As swiftIrc.ctlOptionsColour
 Private m_wndColour2 As swiftIrc.ctlOptionsColour2
 Private m_wndIrc As swiftIrc.ctlOptionsIrc
 
+Friend Property Get parent() As SwiftIrcClient
+    Set parent = m_client
+End Property
+
 Public Property Let client(newValue As swiftIrc.SwiftIrcClient)
     Set m_client = newValue
     m_wndConnection.client = m_client
-    m_wndColour.client = m_client
-    m_wndColour2.client = m_client
 End Property
 
 Private Sub colourUpdate()
@@ -89,18 +91,24 @@ Private Sub Form_Initialize()
     colourUpdate
 End Sub
 
+Private Sub Form_QueryUnload(cancel As Integer, UnloadMode As Integer)
+    If UnloadMode <> vbFormCode Then
+        cancel = 1
+        closeOptionsDialog
+    End If
+End Sub
+
 Private Sub m_buttonApply_clicked()
-    applySettings
+    saveAllSettings
 End Sub
 
 Private Sub m_buttonCancel_clicked()
-    debugLog "Options cancelled"
-    Me.Hide
+    closeOptionsDialog
 End Sub
 
 Private Sub m_buttonOk_clicked()
-    applySettings
-    Me.Hide
+    saveAllSettings
+    closeOptionsDialog
 End Sub
 
 Private Sub m_tabStrip_tabSelected(selectedTab As CTabStripItem)
@@ -127,12 +135,8 @@ Private Sub m_tabStrip_tabSelected(selectedTab As CTabStripItem)
     End If
 End Sub
 
-Private Sub applySettings()
-    m_wndConnection.saveSettings
+Friend Sub saveSettings()
     m_wndColour.saveSettings
     m_wndColour2.saveSettings
     m_wndIrc.saveSettings
-    
-    settings.saveSettings
-    m_client.coloursUpdated
 End Sub

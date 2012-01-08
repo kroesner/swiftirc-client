@@ -14,6 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private m_highlights As New cArrayList
+Private Const HIGHLIGHTS_FILENAME As String = "swiftirc_highlights.xml"
 
 Public Sub addHighlight(text As String)
     Dim highlight As New CHighlight
@@ -57,7 +58,7 @@ Public Sub save()
 
     On Error GoTo HighlightsSave_Error
     
-    saveXml xml, g_userPath & "swiftirc_highlights.xml"
+    saveXml xml, combinePath(g_userPath, HIGHLIGHTS_FILENAME)
     
 Exit Sub
 HighlightsSave_Error:
@@ -67,7 +68,7 @@ End Sub
 Public Sub load()
     Dim xml As New DOMDocument30
     
-    If Not xml.load(g_userPath & "swiftirc_highlights.xml") Then
+    If Not xml.load(combinePath(g_userPath, HIGHLIGHTS_FILENAME)) Then
         Exit Sub
     End If
     

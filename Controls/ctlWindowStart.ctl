@@ -19,7 +19,7 @@ Implements IWindow
 Implements ITabWindow
 Implements IColourUser
 
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 
 Private m_realWindow As VBControlExtender
 Private m_tab As CTab

@@ -30,7 +30,7 @@ Implements ISubclass
 Implements IColourUser
 
 Private m_realWindow As VB.VBControlExtender
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 
 Private m_inputHistory As New Collection
 Private m_inputHistoryIndex As Long
@@ -57,12 +57,12 @@ Private Sub updateColours()
 End Sub
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+    Set m_fontmanager = RHS
 End Property
 
 Private Sub IFontUser_fontsUpdated()
     If Not m_textBox Is Nothing Then
-        SendMessage m_textBox.hwnd, WM_SETFONT, m_fontManager.getDefaultFont, True
+        SendMessage m_textBox.hwnd, WM_SETFONT, m_fontmanager.getDefaultFont, True
     End If
     
     UserControl_Paint

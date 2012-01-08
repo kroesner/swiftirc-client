@@ -27,7 +27,7 @@ Option Explicit
 
 Private m_firstUseDialog As frmFirstUseDisclaimer
 
-Private m_fontManager As New CFontManager
+Private m_fontmanager As New CFontManager
 Private m_activeIWindow As IWindow
 Private m_activeWindow As VBControlExtender
 Private m_nameCounter As Long
@@ -73,7 +73,7 @@ Friend Sub agreementAccepted()
 End Sub
 
 Friend Property Get fontManager() As CFontManager
-    Set fontManager = m_fontManager
+    Set fontManager = m_fontmanager
 End Property
 
 Friend Property Get switchbar() As ctlSwitchbar
@@ -156,7 +156,7 @@ Friend Function createNewWindow(progId As String, name As String) As IWindow
         Dim fontUser As IFontUser
         
         Set fontUser = window
-        fontUser.fontManager = m_fontManager
+        fontUser.fontManager = m_fontmanager
         fontUser.fontsUpdated
     End If
     
@@ -676,7 +676,7 @@ Private Sub initEvents()
 End Sub
 
 Friend Sub changeFont(fontName As String, fontSize As Integer, fontBold As Boolean, fontItalic As Boolean)
-    m_fontManager.changeFont UserControl.hdc, fontName, fontSize, fontBold, fontItalic
+    m_fontmanager.changeFont UserControl.hdc, fontName, fontSize, fontBold, fontItalic
 
     Dim aControl As control
     Dim fontUser As IFontUser
@@ -841,16 +841,16 @@ Public Sub init()
         Set ignoreManager = New CIgnoreManager
         
         debugLogEx "Load colour themes"
-        colourThemes.loadThemes g_userPath & "swiftirc_themes.xml"
+        colourThemes.loadThemes
         debugLogEx "Load server profiles"
-        serverProfiles.loadProfiles g_userPath & "swiftirc_servers.xml"
+        serverProfiles.loadProfiles
         debugLogEx "Load text"
-        textManager.loadText g_AssetPath & "swiftirc_text.xml"
+        textManager.loadText
         
         debugLogEx "Load current theme."
         eventColours.loadTheme colourThemes.currentTheme
         
-        ignoreManager.loadIgnoreList g_userPath & "swiftirc_ignore_list.xml"
+        ignoreManager.loadIgnoreList
         
         debugLogEx "Set custom control colours."
         g_textViewBack = colourThemes.currentTheme.backgroundColour
@@ -909,6 +909,8 @@ Public Sub init()
     debugLogEx "Set switchbar rows"
     m_switchBar.rows = settings.setting("switchbarRows", estNumber)
     
+    registerForOptionsUpdates Me
+    
     Exit Sub
     
 init_error:
@@ -925,6 +927,10 @@ Public Sub initLogging()
 End Sub
 
 Public Sub deInit()
+    If isOptionsFormParent(Me) Then
+        closeOptionsDialog
+    End If
+    
     settings.saveSettings
 
     debugLog "Entering deInit()"
@@ -949,6 +955,8 @@ Public Sub deInit()
     If g_clientCount = 0 Then
         g_initialized = False
     End If
+    
+    unregisterForOptionsUpdates Me
 End Sub
 
 Public Function getVersion() As String
@@ -968,6 +976,20 @@ End Function
 
 Friend Sub coloursUpdated()
     updateColours Controls
+End Sub
+
+Friend Sub refreshFontSettings()
+    Me.changeFont settings.fontName, settings.fontSize, settings.setting("fontBold", estBoolean), settings.setting("fontItalic", estBoolean)
+End Sub
+
+Friend Sub refreshSwitchbarSettings()
+    If StrComp(settings.setting("switchbarPosition", estString), "Top", vbTextCompare) = 0 Then
+        m_switchBar.position = sbpTop
+    ElseIf StrComp(settings.setting("switchbarPosition", estString), "Bottom", vbTextCompare) = 0 Then
+        m_switchBar.position = sbpBottom
+    End If
+    
+    m_switchBar.rows = settings.setting("switchbarRows", estNumber)
 End Sub
 
 Friend Sub visitUrl(url As String, Optional unSafe As Boolean = True)

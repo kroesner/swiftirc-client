@@ -1,6 +1,83 @@
 Attribute VB_Name = "modMisc"
 Option Explicit
 
+Private optionsForm As frmOptions
+Private optionsListeningClients As New cArrayList
+
+Public Sub registerForOptionsUpdates(client As SwiftIrcClient)
+    optionsListeningClients.Add client
+End Sub
+
+Public Sub unregisterForOptionsUpdates(client As SwiftIrcClient)
+    Dim count As Long
+
+    For count = optionsListeningClients.count To 1 Step -1
+        If optionsListeningClients.item(count) Is client Then
+            optionsListeningClients.Remove count
+        End If
+    Next count
+End Sub
+
+Public Function isOptionsFormParent(parent As SwiftIrcClient)
+    If optionsForm Is Nothing Then
+        Exit Function
+    End If
+    
+    If optionsForm.parent Is parent Then
+        isOptionsFormParent = True
+    End If
+End Function
+
+Public Sub openOptionsDialog(parent As swiftIrc.SwiftIrcClient)
+    If Not optionsForm Is Nothing Then
+        optionsForm.Show vbModeless, parent
+        Exit Sub
+    End If
+    
+    Set optionsForm = New frmOptions
+    optionsForm.client = parent
+    optionsForm.Show vbModeless, parent
+End Sub
+
+Public Sub closeOptionsDialog()
+    If optionsForm Is Nothing Then
+        Exit Sub
+    End If
+    
+    optionsForm.Hide
+    Unload optionsForm
+    Set optionsForm = Nothing
+End Sub
+
+Public Sub saveAllSettings()
+    optionsForm.saveSettings
+    serverProfiles.saveProfiles
+    settings.saveSettings
+    
+    applyAllSettings
+End Sub
+
+Private Sub applyAllSettings()
+    Dim count As Long
+    Dim client As SwiftIrcClient
+    
+    For count = 1 To optionsListeningClients.count
+        Set client = optionsListeningClients.item(count)
+        
+        client.coloursUpdated
+        client.refreshFontSettings
+        client.refreshSwitchbarSettings
+    Next count
+End Sub
+
+Public Function combinePath(folderPath As String, filename As String)
+    If right$(folderPath, 1) = "\" Or right$(folderPath, 1) = "/" Then
+        combinePath = folderPath & filename
+    Else
+        combinePath = folderPath & "\" & filename
+    End If
+End Function
+
 Public Function stripFormattingCodes(ByRef text As String) As String
     Dim wChar As Long
     Dim count As Long
@@ -132,10 +209,6 @@ Public Function swiftMatch(ByVal pattern As String, ByVal text As String) As Boo
         swiftMatch = True
     End If
 End Function
-
-Public Sub saveIgnoreFile()
-    ignoreManager.saveIgnoreList g_userPath & "swiftirc_ignore_list.xml"
-End Sub
 
 Public Function sanitizeFilename(filename As String) As String
     Dim count As Long

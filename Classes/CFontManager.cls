@@ -32,8 +32,8 @@ Friend Property Get fontStruct() As LOGFONT
     fontStruct = m_logFont
 End Property
 
-Public Function changeFont(hdc As Long, fontName As String, fontSize As Integer, fontBold As _
-    Boolean, fontItalic As Boolean) As Integer
+Public Sub changeFont(hdc As Long, fontName As String, fontSize As Integer, fontBold As _
+    Boolean, fontItalic As Boolean)
     
     releaseFonts
     
@@ -108,10 +108,8 @@ Public Function changeFont(hdc As Long, fontName As String, fontSize As Integer,
     SelectObject hdc, oldFont
     
     m_fontHeight = tm.tmHeight
-    changeFont = tm.tmHeight
-    
     m_logFont = fontInfo
-End Function
+End Sub
 
 Public Function getFont(bold As Boolean, italic As Boolean, underline As Boolean) As Long
     If bold Then
@@ -127,7 +125,6 @@ Public Function getFont(bold As Boolean, italic As Boolean, underline As Boolean
             getFont = m_bold
         End If
     ElseIf italic Then
-
         If underline Then
             getFont = m_underlineItalic
         Else

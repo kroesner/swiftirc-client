@@ -68,7 +68,7 @@ Private Sub m_buttonAddServer_clicked()
     
     editServer.Show vbModal, UserControl.parent
     updateServerProfileList
-    saveSettings
+    'saveSettings
 End Sub
 
 Private Sub m_buttonConnect_clicked()
@@ -91,7 +91,8 @@ Private Sub m_buttonConnect_clicked()
         session.connect
     End If
     
-    UserControl.parent.Hide
+    saveAllSettings
+    closeOptionsDialog
 End Sub
 
 Private Sub m_buttonEditServer_clicked()
@@ -104,7 +105,7 @@ Private Sub m_buttonEditServer_clicked()
     editServer.editProfile = serverProfiles.profileItem(m_listServerProfiles.ListIndex + 1)
     editServer.Show vbModal, Me
     updateServerProfileList
-    saveSettings
+    'saveSettings
 End Sub
 
 Private Sub m_buttonRemoveServer_clicked()
@@ -114,7 +115,7 @@ Private Sub m_buttonRemoveServer_clicked()
     
     serverProfiles.removeProfileIndex m_listServerProfiles.ListIndex + 1
     updateServerProfileList
-    saveSettings
+    'saveSettings
 End Sub
 
 Private Sub UserControl_Initialize()
@@ -158,10 +159,3 @@ Private Sub UserControl_Paint()
     reDraw
 End Sub
 
-Public Sub saveSettings()
-    serverProfiles.saveProfiles g_userPath & "swiftirc_servers.xml"
-End Sub
-
-Private Sub UserControl_Terminate()
-    debugLog "ctlOptionsConnection terminating"
-End Sub

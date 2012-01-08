@@ -14,6 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private m_textEntries As New Collection
+Private Const TEXT_FILENAME As String = "swiftirc_text.xml"
 
 Private Sub addText(name As String, text As String)
     If Not getTextItem(name) Is Nothing Then
@@ -43,10 +44,10 @@ Public Function getText(name As String) As String
     End If
 End Function
 
-Public Sub loadText(filename As String)
+Public Sub loadText()
     Dim xml As New msxml2.DOMDocument30
     
-    If Not xml.load(filename) Then
+    If Not xml.load(combinePath(g_userPath, TEXT_FILENAME)) Then
         Exit Sub
     End If
     
