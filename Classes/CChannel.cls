@@ -13,6 +13,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+Implements IOptionsChangeListener
+
 Private m_name As String
 Private m_window As ctlWindowChannel
 Private m_windowText As ITextWindow
@@ -65,10 +67,8 @@ Public Sub init(name As String, window As ctlWindowChannel, session As CSession)
     
     Set m_rejoinTimer = m_session.client.getTimer
     
-    If settings.setting("enableLogging", estBoolean) And settings.setting("logChannel", estBoolean) Then
-        m_windowText.textview.logName = m_session.baseLogPath & sanitizeFilename(m_name)
-        m_windowText.textview.enableLogging = True
-    End If
+    refreshLogging
+    registerForOptionsChanges Me
 End Sub
 
 Public Sub deInit()
@@ -79,6 +79,8 @@ Public Sub deInit()
     Set m_window = Nothing
     Set m_windowText = Nothing
     Set m_session = Nothing
+    
+    unregisterForOptionsChanges Me
 End Sub
 
 Public Property Get IText() As ITextWindow
@@ -720,6 +722,20 @@ Public Sub sendEmote(text As String)
     m_windowText.addEventEx "CHANNEL_EMOTE", getUserStyle(m_session.currentNickname), _
         m_session.currentNickname, TVE_NONE, makeStringArray(text)
 End Sub
+
+Private Sub IOptionsChangeListener_optionsChanged()
+    refreshLogging
+End Sub
+
+Private Sub refreshLogging()
+    m_windowText.textview.logName = combinePath(m_session.baseLogPath, sanitizeFilename(m_name))
+    m_windowText.textview.enableLogging = shouldLog
+End Sub
+
+Private Function shouldLog() As Boolean
+    shouldLog = settings.setting("enableLogging", estBoolean) And settings.setting("logChannel", estBoolean)
+End Function
+
 
 Private Sub m_rejoinTimer_Timer()
     m_rejoinTimer.enabled = False

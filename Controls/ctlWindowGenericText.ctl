@@ -20,6 +20,7 @@ Implements ITextWindow
 Implements ITabWindow
 Implements IFontUser
 Implements IColourUser
+Implements IOptionsChangeListener
 
 Private m_textInputHeight As Long
 Private m_children As New cArrayList
@@ -46,7 +47,6 @@ End Sub
 Private Sub m_textInput_pageUp()
     m_textView.pageUp
 End Sub
-
 
 Private Property Get ITextWindow_textview() As ctlTextView
     Set ITextWindow_textview = m_textView
@@ -89,16 +89,17 @@ End Sub
 Public Sub init(session As CSession, name As String)
     Set m_session = session
     m_name = name
+        
+    refreshLogging
     
-    If settings.setting("enableLogging", estBoolean) And settings.setting("logGeneric", estBoolean) Then
-        m_textView.logName = m_session.baseLogPath & sanitizeFilename(m_name)
-        m_textView.enableLogging = True
-    End If
+    registerForOptionsChanges Me
 End Sub
 
 Public Sub deInit()
     Set m_session = Nothing
     Set m_realWindow = Nothing
+    
+    unregisterForOptionsChanges Me
 End Sub
 
 Public Property Get switchbartab() As CTab
@@ -251,5 +252,18 @@ Private Sub UserControl_Resize()
             UserControl.ScaleWidth, m_textInputHeight
     End If
 End Sub
+
+Private Sub IOptionsChangeListener_optionsChanged()
+    refreshLogging
+End Sub
+
+Private Function refreshLogging()
+    m_textView.logName = combinePath(m_session.baseLogPath, sanitizeFilename(m_name))
+    m_textView.enableLogging = shouldLog
+End Function
+
+Private Function shouldLog() As Boolean
+    shouldLog = settings.setting("enableLogging", estBoolean) And settings.setting("logGeneric", estBoolean)
+End Function
 
 

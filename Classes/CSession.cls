@@ -13,6 +13,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+Implements IOptionsChangeListener
+
 Private Const RECONNECT_DELAY As Long = 10000
 Private Const CHANNEL_JOIN_DELAY As Long = 1000
 
@@ -147,25 +149,7 @@ Public Property Let serverProfile(newValue As CServerProfile)
 
     m_client.switchbar.redrawTab m_statusWindow.switchbartab
     
-    If settings.setting("enableLogging", estBoolean) Then
-        If settings.setting("logDirectories", estBoolean) Then
-            If settings.setting("logDirectoriesProfile", estBoolean) _
-                And Not m_serverProfile Is serverProfiles.quickConnectProfile Then
-                
-                m_baseLogPath = g_userPath & LOG_DIR & sanitizeFilename(m_serverProfile.name) & "\"
-            
-                If Dir(m_baseLogPath, vbDirectory) = vbNullString Then
-                    MkDir m_baseLogPath
-                End If
-                
-                If settings.setting("logStatus", estBoolean) Then
-                    m_statusWindowText.textview.logName = m_baseLogPath & "status"
-                    m_statusWindowText.textview.enableLogging = True
-                    m_statusWindowText.textview.writeEntireBuffer
-                End If
-            End If
-        End If
-    End If
+    refreshLogging
 End Property
 
 Public Property Get client() As swiftIrc.SwiftIrcClient
@@ -184,12 +168,7 @@ Public Property Let statusWindow(newValue As ctlWindowStatus)
     Set m_statusWindow = newValue
     Set m_statusWindowText = newValue
     
-    If settings.setting("enableLogging", estBoolean) Then
-        If Not settings.setting("logDirectories", estBoolean) Then
-            m_statusWindowText.textview.logName = m_baseLogPath & "status"
-            m_statusWindowText.textview.enableLogging = True
-        End If
-    End If
+    refreshLogging
 End Property
 
 Public Property Get serverHost() As String
@@ -389,6 +368,10 @@ Private Sub connectFailed()
             m_reconnectTimer.enabled = True
         End If
     End If
+End Sub
+
+Private Sub IOptionsChangeListener_optionsChanged()
+    refreshLogging
 End Sub
 
 Private Sub m_channelJoinTimer_Timer()
@@ -787,24 +770,10 @@ Public Sub parserISupport(origin As COrigin, command As String, paramCount As By
             m_statusWindow.switchbartab.caption = m_networkName
             m_client.switchbar.redrawTab m_statusWindow.switchbartab
             
-            If settings.setting("enableLogging", estBoolean) Then
-                If settings.setting("logDirectories", estBoolean) Then
-                    If Not settings.setting("logDirectoriesProfile", estBoolean) Or _
-                        m_serverProfile Is Nothing Or m_serverProfile Is serverProfiles.quickConnectProfile Then
-                        
-                        m_baseLogPath = g_userPath & LOG_DIR & sanitizeFilename(m_networkName) & "\"
-                        
-                        If Dir(m_baseLogPath, vbDirectory) = vbNullString Then
-                            MkDir m_baseLogPath
-                        End If
-                        
-                        If settings.setting("logStatus", estBoolean) Then
-                            m_statusWindowText.textview.logName = m_baseLogPath & "status"
-                            m_statusWindowText.textview.enableLogging = True
-                            m_statusWindowText.textview.writeEntireBuffer
-                        End If
-                    End If
-                End If
+            refreshLogging
+            
+            If loggingWasDelayed Then
+                m_statusWindowText.textview.writeEntireBuffer
             End If
         End If
     End If
@@ -3125,6 +3094,8 @@ Public Sub init()
     Set m_socket = New CSwiftSocket
     
     m_socket.init m_statusWindow.hwnd
+    
+    registerForOptionsChanges Me
 End Sub
 
 Private Sub Class_Initialize()
@@ -3162,6 +3133,8 @@ Public Sub deInit()
     Set m_statusWindowText = Nothing
     Set m_whoisText = Nothing
     Set m_client = Nothing
+    
+    unregisterForOptionsChanges Me
 End Sub
 
 Private Sub m_socket_connected()
@@ -3500,3 +3473,47 @@ Public Function CCOpen() As Boolean
     CCOpen = result
 End Function
 
+Private Sub refreshLogging()
+    If settings.setting("enableLogging", estBoolean) Then
+        m_baseLogPath = combinePath(g_userPath, LOG_DIR)
+        
+        Dim haveDirectoryName As Boolean
+        
+        If settings.setting("logDirectories", estBoolean) Then
+            If settings.setting("logDirectoriesProfile", estBoolean) And haveValidProfile Then
+                m_baseLogPath = combinePath(m_baseLogPath, sanitizeFilename(m_serverProfile.name))
+                haveDirectoryName = True
+            ElseIf LenB(m_networkName) <> 0 Then
+                m_baseLogPath = combinePath(m_baseLogPath, sanitizeFilename(m_networkName))
+                haveDirectoryName = True
+            End If
+        End If
+        
+        If haveDirectoryName Then
+            If Dir(m_baseLogPath, vbDirectory) = vbNullString Then
+                MkDir m_baseLogPath
+            End If
+        End If
+        
+        If settings.setting("logStatus", estBoolean) And (Not settings.setting("logDirectories", estBoolean) Or haveDirectoryName) Then
+            m_statusWindowText.textview.logName = combinePath(m_baseLogPath, "status")
+            m_statusWindowText.textview.enableLogging = True
+        Else
+            m_statusWindowText.textview.enableLogging = False
+        End If
+    Else
+        m_statusWindowText.textview.enableLogging = False
+    End If
+End Sub
+
+Private Function loggingWasDelayed() As Boolean
+    If settings.setting("enableLogging", estBoolean) And settings.setting("logDirectories", estBoolean) Then
+        If Not settings.setting("logDirectoriesProfile", estBoolean) Or Not haveValidProfile Then
+            loggingWasDelayed = True
+        End If
+    End If
+End Function
+
+Private Function haveValidProfile() As Boolean
+    haveValidProfile = (Not m_serverProfile Is Nothing) And (Not m_serverProfile Is serverProfiles.quickConnectProfile)
+End Function

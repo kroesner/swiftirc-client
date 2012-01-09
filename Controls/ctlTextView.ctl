@@ -126,7 +126,14 @@ Public Property Get logName() As String
 End Property
 
 Public Property Let logName(newValue As String)
+    Dim oldName As String
+    
+    oldName = m_logBaseName
     m_logBaseName = newValue
+    
+    If m_logBaseName <> oldName And m_enableLogging Then
+        closeLog
+    End If
 End Property
 
 Public Property Get enableLogging() As Boolean
@@ -135,6 +142,10 @@ End Property
 
 Public Property Let enableLogging(newValue As Boolean)
     m_enableLogging = newValue
+    
+    If Not m_enableLogging Then
+        closeLog
+    End If
 End Property
 
 Public Property Get ignoreSeperators() As Boolean

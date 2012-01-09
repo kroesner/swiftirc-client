@@ -2,18 +2,18 @@ Attribute VB_Name = "modMisc"
 Option Explicit
 
 Private optionsForm As frmOptions
-Private optionsListeningClients As New cArrayList
+Private optionsChangeListeners As New cArrayList
 
-Public Sub registerForOptionsUpdates(client As SwiftIrcClient)
-    optionsListeningClients.Add client
+Public Sub registerForOptionsChanges(listener As IOptionsChangeListener)
+    optionsChangeListeners.Add listener
 End Sub
 
-Public Sub unregisterForOptionsUpdates(client As SwiftIrcClient)
+Public Sub unregisterForOptionsChanges(listener As IOptionsChangeListener)
     Dim count As Long
 
-    For count = optionsListeningClients.count To 1 Step -1
-        If optionsListeningClients.item(count) Is client Then
-            optionsListeningClients.Remove count
+    For count = optionsChangeListeners.count To 1 Step -1
+        If optionsChangeListeners.item(count) Is listener Then
+            optionsChangeListeners.Remove count
         End If
     Next count
 End Sub
@@ -54,19 +54,17 @@ Public Sub saveAllSettings()
     serverProfiles.saveProfiles
     settings.saveSettings
     
-    applyAllSettings
+    dispatchOptionsChangeNotice
 End Sub
 
-Private Sub applyAllSettings()
+Private Sub dispatchOptionsChangeNotice()
     Dim count As Long
-    Dim client As SwiftIrcClient
+    Dim listener As IOptionsChangeListener
     
-    For count = 1 To optionsListeningClients.count
-        Set client = optionsListeningClients.item(count)
+    For count = 1 To optionsChangeListeners.count
+        Set listener = optionsChangeListeners.item(count)
         
-        client.coloursUpdated
-        client.refreshFontSettings
-        client.refreshSwitchbarSettings
+        listener.optionsChanged
     Next count
 End Sub
 

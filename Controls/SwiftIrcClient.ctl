@@ -25,6 +25,8 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+Implements IOptionsChangeListener
+
 Private m_firstUseDialog As frmFirstUseDisclaimer
 
 Private m_fontmanager As New CFontManager
@@ -234,6 +236,8 @@ Friend Sub removeTab(aTab As CTab)
     m_switchBar.removeTab aTab
     aTab.window = Nothing
 End Sub
+
+
 
 Private Sub m_eventManager_themeUpdated()
     Dim aControl As control
@@ -720,17 +724,17 @@ End Property
 
 Public Property Let colourWindow(newValue As Long)
     colourManager.setColour SWIFTCOLOUR_WINDOW, newValue
-    coloursUpdated
+    refreshColours
 End Property
 
 Public Property Get colourControlBack() As Long
     colourControlBack = colourManager.getColour(SWIFTCOLOUR_CONTROLBACK)
-    coloursUpdated
+    refreshColours
 End Property
 
 Public Property Let colourControlBack(newValue As Long)
     colourManager.setColour SWIFTCOLOUR_CONTROLBACK, newValue
-    coloursUpdated
+    refreshColours
 End Property
 
 Public Property Get colourControlFore() As Long
@@ -739,7 +743,7 @@ End Property
 
 Public Property Let colourControlFore(newValue As Long)
     colourManager.setColour SWIFTCOLOUR_CONTROLFORE, newValue
-    coloursUpdated
+    refreshColours
 End Property
 
 Public Property Get colourControlForeOver() As Long
@@ -748,7 +752,7 @@ End Property
 
 Public Property Let colourControlForeOver(newValue As Long)
     colourManager.setColour SWIFTCOLOUR_CONTROLFOREOVER, newValue
-    coloursUpdated
+    refreshColours
 End Property
 
 Public Property Get colourControlBorder() As Long
@@ -757,7 +761,7 @@ End Property
 
 Public Property Let colourControlBorder(newValue As Long)
     colourManager.setColour SWIFTCOLOUR_CONTROLBORDER, newValue
-    coloursUpdated
+    refreshColours
 End Property
     
 Public Property Get colourFrameBack() As Long
@@ -767,7 +771,7 @@ End Property
 Public Property Let colourFrameBack(newValue As Long)
     colourManager.setColour SWIFTCOLOUR_FRAMEBACK, newValue
     colourManager.setColour SWIFTCOLOUR_FRAMEBORDER, newValue
-    coloursUpdated
+    refreshColours
 End Property
 
 Public Property Get assetPath() As String
@@ -875,7 +879,7 @@ Public Sub init()
     
     m_switchBar.rows = settings.setting("switchbarRows", estNumber)
     
-    registerForOptionsUpdates Me
+    registerForOptionsChanges Me
     
     Exit Sub
     
@@ -915,7 +919,7 @@ Public Sub deInit()
         g_initialized = False
     End If
     
-    unregisterForOptionsUpdates Me
+    unregisterForOptionsChanges Me
 End Sub
 
 Public Function getVersion() As String
@@ -933,15 +937,21 @@ Friend Function findSwiftIRCSession() As CSession
     Next count
 End Function
 
-Friend Sub coloursUpdated()
+Private Sub IOptionsChangeListener_optionsChanged()
+    refreshColours
+    refreshFontSettings
+    refreshSwitchbarSettings
+End Sub
+
+Private Sub refreshColours()
     updateColours Controls
 End Sub
 
-Friend Sub refreshFontSettings()
+Private Sub refreshFontSettings()
     Me.changeFont settings.fontName, settings.fontSize, settings.setting("fontBold", estBoolean), settings.setting("fontItalic", estBoolean)
 End Sub
 
-Friend Sub refreshSwitchbarSettings()
+Private Sub refreshSwitchbarSettings()
     If StrComp(settings.setting("switchbarPosition", estString), "Top", vbTextCompare) = 0 Then
         m_switchBar.position = sbpTop
     ElseIf StrComp(settings.setting("switchbarPosition", estString), "Bottom", vbTextCompare) = 0 Then
