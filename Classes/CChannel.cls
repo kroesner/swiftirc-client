@@ -142,8 +142,7 @@ Public Sub userJoined(origin As COrigin)
     End If
     
     addChannelMember origin.nickname
-    m_windowText.addEvent "USER_JOIN", makeStringArray(origin.nickname, m_name, origin.username, _
-        origin.hostname)
+    m_windowText.addEvent "USER_JOIN", makeStringArray(origin.nickname, m_name, origin.username, origin.hostname)
         
     m_session.client.switchbar.tabActivity Me.window.switchbartab, tasEvent
 End Sub
@@ -152,11 +151,9 @@ Public Sub userParted(origin As COrigin, Optional reason As String = vbNullStrin
     removeChannelMember origin.nickname
     
     If LenB(reason) = 0 Then
-        m_windowText.addEvent "USER_PART", makeStringArray(origin.nickname, m_name, origin.username, _
-            origin.hostname)
+        m_windowText.addEvent "USER_PART", makeStringArray(origin.nickname, m_name, origin.username, origin.hostname)
     Else
-        m_windowText.addEvent "USER_PART_REASON", makeStringArray(origin.nickname, m_name, reason, _
-            origin.username, origin.hostname)
+        m_windowText.addEvent "USER_PART_REASON", makeStringArray(origin.nickname, m_name, reason, origin.username, origin.hostname)
     End If
     
     m_session.client.switchbar.tabActivity Me.window.switchbartab, tasEvent
@@ -164,11 +161,9 @@ End Sub
 
 Public Sub userQuit(origin As COrigin, Optional reason As String = vbNullString)
     If LenB(reason) = 0 Then
-        m_windowText.addEventEx "USER_QUIT", getUserStyle(origin.nickname), origin.nickname, _
-            TVE_NONE, makeStringArray("")
+        m_windowText.addEventEx "USER_QUIT", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray("")
     Else
-        m_windowText.addEventEx "USER_QUIT_REASON", getUserStyle(origin.nickname), origin.nickname, _
-            TVE_NONE, makeStringArray(reason)
+        m_windowText.addEventEx "USER_QUIT_REASON", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(reason)
     End If
     
     removeChannelMember origin.nickname
@@ -520,8 +515,7 @@ Public Sub modeChange(origin As COrigin, modes As String, paramString As String)
         End If
     Next count
     
-    m_windowText.addEvent "CHANNEL_MODE_CHANGE", makeStringArray(origin.nickname, m_name, modes, _
-        paramString)
+    m_windowText.addEvent "CHANNEL_MODE_CHANGE", makeStringArray(origin.nickname, m_name, modes, paramString)
     m_session.client.switchbar.tabActivity Me.window.switchbartab, tasEvent
 End Sub
 
@@ -531,8 +525,7 @@ Private Sub memberModeChange(origin As COrigin, mode As String, modeOp As Boolea
     Set channelMember = findMember(member)
     
     If Not channelMember Is Nothing Then
-        m_window.removeNicklistItem channelMember.nickname, _
-            m_session.getEffectivePrefix(channelMember.modes)
+        m_window.removeNicklistItem channelMember.nickname, m_session.getEffectivePrefix(channelMember.modes)
             
         If modeOp Then
             channelMember.addMode mode
@@ -540,34 +533,27 @@ Private Sub memberModeChange(origin As COrigin, mode As String, modeOp As Boolea
             channelMember.removeMode mode
         End If
         
-        m_window.addNicklistItem channelMember.nickname, _
-            m_session.getEffectivePrefix(channelMember.modes)
+        m_window.addNicklistItem channelMember.nickname, m_session.getEffectivePrefix(channelMember.modes)
     End If
 End Sub
 
-Public Sub userMessage(origin As COrigin, text As String, Optional notice = False, Optional prefix _
-    As String = vbNullString, Optional highlight As Boolean = False)
+Public Sub userMessage(origin As COrigin, text As String, Optional notice = False, Optional prefix As String = vbNullString, Optional highlight As Boolean = False)
 
     If notice Then
         If LenB(prefix) <> 0 Then
-            m_windowText.addEventEx "WALLCHOP_NOTICE", getUserStyle(origin.nickname), _
-                origin.nickname, TVE_NONE, makeStringArray(prefix, m_name, text)
+            m_windowText.addEventEx "WALLCHOP_NOTICE", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(prefix, m_name, text)
         Else
-            m_windowText.addEventEx "CHANNEL_NOTICE", getUserStyle(origin.nickname), _
-                origin.nickname, TVE_NONE, makeStringArray(m_name, text)
+            m_windowText.addEventEx "CHANNEL_NOTICE", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(m_name, text)
         End If
     Else
         If LenB(prefix) <> 0 Then
-            m_windowText.addEventEx "WALLCHOP_PRIVMSG", getUserStyle(origin.nickname), _
-                origin.nickname, TVE_NONE, makeStringArray(prefix, m_name, text)
+            m_windowText.addEventEx "WALLCHOP_PRIVMSG", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(prefix, m_name, text)
         Else
             If highlight Then
-                m_windowText.addEventEx "CHANNEL_PRIVMSG_HIGHLIGHT", getUserStyle(origin.nickname), _
-                    origin.nickname, TVE_NONE, makeStringArray(text)
+                m_windowText.addEventEx "CHANNEL_PRIVMSG_HIGHLIGHT", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(text)
                     m_session.client.switchbar.tabActivity Me.window.switchbartab, tasHighlight
             Else
-                m_windowText.addEventEx "CHANNEL_PRIVMSG", getUserStyle(origin.nickname), _
-                    origin.nickname, TVE_NONE, makeStringArray(text)
+                m_windowText.addEventEx "CHANNEL_PRIVMSG", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(text)
             End If
         End If
     End If
@@ -577,30 +563,24 @@ End Sub
 
 Public Sub userEmote(origin As COrigin, text As String, Optional prefix As String = vbNullString, Optional highlight As Boolean = False)
     If LenB(prefix) <> 0 Then
-        m_windowText.addEventEx "WALLCHOP_EMOTE", getUserStyle(origin.nickname), origin.nickname, _
-            TVE_NONE, makeStringArray(prefix, m_name, text)
+        m_windowText.addEventEx "WALLCHOP_EMOTE", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(prefix, m_name, text)
     Else
         If highlight Then
-            m_windowText.addEventEx "CHANNEL_EMOTE_HIGHLIGHT", getUserStyle(origin.nickname), origin.nickname, _
-                TVE_NONE, makeStringArray(text)
+            m_windowText.addEventEx "CHANNEL_EMOTE_HIGHLIGHT", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(text)
         Else
-            m_windowText.addEventEx "CHANNEL_EMOTE", getUserStyle(origin.nickname), origin.nickname, _
-                TVE_NONE, makeStringArray(text)
+            m_windowText.addEventEx "CHANNEL_EMOTE", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(text)
         End If
     End If
     
     m_session.client.switchbar.tabActivity Me.window.switchbartab, tasMessage
 End Sub
 
-Public Sub userCtcp(origin As COrigin, command As String, param As String, Optional prefix As _
-    String = vbNullString)
+Public Sub userCtcp(origin As COrigin, command As String, param As String, Optional prefix As String = vbNullString)
     
     If LenB(prefix) <> 0 Then
-        m_windowText.addEventEx "WALLCHOP_CTCP", getUserStyle(origin.nickname), origin.nickname, _
-            TVE_NONE, makeStringArray(prefix, m_name, command, param)
+        m_windowText.addEventEx "WALLCHOP_CTCP", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(prefix, m_name, command, param)
     Else
-        m_windowText.addEventEx "CHANNEL_CTCP", getUserStyle(origin.nickname), origin.nickname, _
-            TVE_NONE, makeStringArray(m_name, command, param)
+        m_windowText.addEventEx "CHANNEL_CTCP", getUserStyle(origin.nickname), origin.nickname, TVE_NONE, makeStringArray(m_name, command, param)
     End If
     
     m_session.client.switchbar.tabActivity Me.window.switchbartab, tasMessage
@@ -713,14 +693,12 @@ End Function
 
 Public Sub textEntered(text As String)
     m_session.sendLine "PRIVMSG " & m_name & " :" & text
-    m_windowText.addEventEx "ME_PRIVMSG", getUserStyle(m_session.currentNickname), _
-        m_session.currentNickname, TVE_NONE, makeStringArray(text)
+    m_windowText.addEventEx "ME_PRIVMSG", getUserStyle(m_session.currentNickname), m_session.currentNickname, TVE_NONE, makeStringArray(text)
 End Sub
 
 Public Sub sendEmote(text As String)
     m_session.sendLine "PRIVMSG " & m_name & " :" & Chr$(1) & "ACTION " & text & Chr$(1)
-    m_windowText.addEventEx "CHANNEL_EMOTE", getUserStyle(m_session.currentNickname), _
-        m_session.currentNickname, TVE_NONE, makeStringArray(text)
+    m_windowText.addEventEx "CHANNEL_EMOTE", getUserStyle(m_session.currentNickname), m_session.currentNickname, TVE_NONE, makeStringArray(text)
 End Sub
 
 Private Sub IOptionsChangeListener_optionsChanged()

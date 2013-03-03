@@ -48,8 +48,7 @@ Public Function getBestDefaultFont() As String
     End If
 End Function
 
-Public Function requestInput(title As String, request As String, Optional defaultValue As String = _
-    vbNullString, Optional parent As Object = Nothing, Optional password As Boolean = False) As Variant
+Public Function requestInput(title As String, request As String, Optional defaultValue As String = vbNullString, Optional parent As Object = Nothing, Optional password As Boolean = False) As Variant
     If g_requestInputLocked Then
         'Events could trigger another requestInput(), which will cause
         'problems because of the modal display.  Return a cancel
@@ -114,8 +113,7 @@ Public Function createControl(container As Object, progId As String, name As Str
     Set createControl = newControl
 End Function
 
-Public Function addField(container As Object, caption As String, x As Long, y As Long, width As _
-    Long, height As Long) As ctlField
+Public Function addField(container As Object, caption As String, x As Long, y As Long, width As Long, height As Long) As ctlField
     
     Dim newField As ctlField
     
@@ -126,8 +124,7 @@ Public Function addField(container As Object, caption As String, x As Long, y As
     Set addField = newField
 End Function
 
-Public Function addButton(container As Object, caption As String, x As Long, y As Long, width As _
-    Long, height As Long) As ctlButton
+Public Function addButton(container As Object, caption As String, x As Long, y As Long, width As Long, height As Long) As ctlButton
 
     Dim newButton As ctlButton
     
@@ -138,8 +135,7 @@ Public Function addButton(container As Object, caption As String, x As Long, y A
     Set addButton = newButton
 End Function
 
-Public Function addCheckBox(container As Object, caption As String, x As Long, y As Long, width As _
-    Long, height As Long) As VB.CheckBox
+Public Function addCheckBox(container As Object, caption As String, x As Long, y As Long, width As Long, height As Long) As VB.CheckBox
     
     Dim newCheckBox As VB.CheckBox
     
@@ -153,8 +149,7 @@ Public Function addCheckBox(container As Object, caption As String, x As Long, y
     Set addCheckBox = newCheckBox
 End Function
 
-Public Function addFrame(container As Object, x As Long, y As Long, width As Long, height As Long) _
-    As VB.Frame
+Public Function addFrame(container As Object, x As Long, y As Long, width As Long, height As Long) As VB.Frame
     Dim newFrame As VB.Frame
     
     Set newFrame = createControl(container, "VB.Frame", "frame")
@@ -165,8 +160,7 @@ Public Function addFrame(container As Object, x As Long, y As Long, width As Lon
     Set addFrame = newFrame
 End Function
 
-Public Function addComboList(container As Object, x As Long, y As Long, width As Long) As _
-    VB.ComboBox
+Public Function addComboList(container As Object, x As Long, y As Long, width As Long) As VB.ComboBox
     Dim newCombo As VB.ComboBox
     
     Set newCombo = createControl(container, "VB.ComboBox", "comboBox")
@@ -179,8 +173,7 @@ Public Function addComboList(container As Object, x As Long, y As Long, width As
 End Function
 
 Public Sub moveFrameChild(window As IWindow, x As Long, y As Long, width As Long, height As Long)
-    window.realWindow.Move x * Screen.TwipsPerPixelX, y * Screen.TwipsPerPixelY, width * _
-        Screen.TwipsPerPixelX, height * Screen.TwipsPerPixelY
+    window.realWindow.Move x * Screen.TwipsPerPixelX, y * Screen.TwipsPerPixelY, width * Screen.TwipsPerPixelX, height * Screen.TwipsPerPixelY
 End Sub
 
 'Private Function addField(caption As String, x As Long, y As Long, width As Long, height As Long) As ctlField

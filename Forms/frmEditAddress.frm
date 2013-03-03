@@ -55,8 +55,7 @@ Private Sub initControls()
     Set m_fieldAddress = addField(Controls, "Edit address:", 20, 20, Me.ScaleWidth - 40, 20)
     m_fieldAddress.setFieldWidth 100, 195
     Set m_buttonOk = addButton(Controls, "Ok", Me.ScaleWidth - 175, Me.ScaleHeight - 40, 75, 20)
-    Set m_buttonCancel = addButton(Controls, "Cancel", Me.ScaleWidth - 95, Me.ScaleHeight - 40, 75, _
-        20)
+    Set m_buttonCancel = addButton(Controls, "Cancel", Me.ScaleWidth - 95, Me.ScaleHeight - 40, 75, 20)
 End Sub
 
 Private Sub Form_Paint()

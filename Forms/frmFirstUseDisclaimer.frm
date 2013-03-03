@@ -62,15 +62,7 @@ Private Sub initControls()
     textAgreement.fontName = getBestDefaultFont
     textAgreement.fontSize = 10
     
-    textAgreement.text = "By using this IRC client you agree that:" & vbCrLf & vbCrLf _
-        & "* You are 13 or more years old" & vbCrLf & vbCrLf _
-        & "* You Will not use this software for any illegal or immoral purpose" & vbCrLf & vbCrLf _
-        & "* You will remain security conscious when communicating with others over IRC" & vbCrLf & vbCrLf _
-        & "* You Will follow the rules outlined at http://www.swiftirc.net/index.php?page=rules" & vbCrLf & vbCrLf _
-        & "* You will not hold SwiftIRC responsible for any loss, perceived or otherwise, that you may suffer " _
-        & "from your use of this IRC client." & vbCrLf & vbCrLf _
-        & "If you agree to these terms, please type ""I agree"" in the field provided below and then press " _
-        & "the Ok button"
+    textAgreement.text = "By using this IRC client you agree that:" & vbCrLf & vbCrLf & "* You are 13 or more years old" & vbCrLf & vbCrLf & "* You Will not use this software for any illegal or immoral purpose" & vbCrLf & vbCrLf & "* You will remain security conscious when communicating with others over IRC" & vbCrLf & vbCrLf & "* You Will follow the rules outlined at http://www.swiftirc.net/index.php?page=rules" & vbCrLf & vbCrLf & "* You will not hold SwiftIRC responsible for any loss, perceived or otherwise, that you may suffer " & "from your use of this IRC client." & vbCrLf & vbCrLf & "If you agree to these terms, please type ""I agree"" in the field provided below and then press " & "the Ok button"
     
 End Sub
 

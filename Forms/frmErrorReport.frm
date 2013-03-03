@@ -78,9 +78,7 @@ Private Sub Form_Paint()
     textRect.top = 20
     textRect.bottom = 100
     
-    labelText = "An error has occured in the SwiftIRC client.  " _
-        & "The client may be able to continue running, but unexpected behavior may result." & vbCrLf & vbCrLf _
-        & "Please report the following error text to help improve SwiftIRC."
+    labelText = "An error has occured in the SwiftIRC client.  " & "The client may be able to continue running, but unexpected behavior may result." & vbCrLf & vbCrLf & "Please report the following error text to help improve SwiftIRC."
         
     swiftDrawText Me.hdc, labelText, VarPtr(textRect), DT_WORDBREAK
 End Sub

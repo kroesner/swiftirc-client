@@ -99,8 +99,7 @@ Private Property Get ISubclass_MsgResponse() As EMsgResponse
     End Select
 End Property
 
-Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, _
-    ByVal lParam As Long) As Long
+Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
     Select Case iMsg
         Case WM_MOUSEWHEEL
             RaiseEvent mouseWheel(HiWord(wParam))
@@ -123,8 +122,7 @@ Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, By
             'TranslateAccelerator calls
             Set pOleObject = Me
             Set pOleInPlaceSite = pOleObject.GetClientSite
-            pOleInPlaceSite.GetWindowContext pOleInPlaceFrame, pOleInPlaceUIWindow, VarPtr(PosRect), _
-                VarPtr(ClipRect), VarPtr(FrameInfo)
+            pOleInPlaceSite.GetWindowContext pOleInPlaceFrame, pOleInPlaceUIWindow, VarPtr(PosRect), VarPtr(ClipRect), VarPtr(FrameInfo)
             CopyMemory pOleInPlaceActiveObject, m_IPAOHookStruct.ThisPointer, 4
             pOleInPlaceFrame.SetActiveObject pOleInPlaceActiveObject, vbNullString
             If Not pOleInPlaceUIWindow Is Nothing Then
@@ -222,8 +220,7 @@ Private Sub processPaste()
     Dim line As Variant
     
     If lines.count > 5 Then
-        If MsgBox("Are you sure you want to paste " & lines.count & " line" & IIf(lines.count = 1, "", _
-            "s") & " of text?", vbQuestion Or vbYesNo, "Pasting") = vbYes Then
+        If MsgBox("Are you sure you want to paste " & lines.count & " line" & IIf(lines.count = 1, "", "s") & " of text?", vbQuestion Or vbYesNo, "Pasting") = vbYes Then
             
             For Each line In lines
                 lineEntered CStr(line), False
@@ -402,8 +399,7 @@ Private Sub UserControl_KeyDown(KeyCode As Integer, Shift As Integer)
             tabStart = InStrRev(m_textBox.text, Chr$(32), tabEnd - 1)
             
             If tabEnd - tabStart > 1 Then
-                RaiseEvent tabbed(Mid$(m_textBox.text, tabStart + 1, (tabEnd - tabStart) - 1), _
-                    tabStart, (tabEnd - tabStart) - 1)
+                RaiseEvent tabbed(Mid$(m_textBox.text, tabStart + 1, (tabEnd - tabStart) - 1), tabStart, (tabEnd - tabStart) - 1)
             End If
     End Select
 End Sub
@@ -417,8 +413,7 @@ Private Sub UserControl_Paint()
     
     brush = CreateSolidBrush(colourThemes.currentTheme.paletteEntry(g_textInputFore))
 
-    FrameRect UserControl.hdc, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
-        brush
+    FrameRect UserControl.hdc, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), brush
         
     DeleteObject brush
 End Sub

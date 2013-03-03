@@ -283,7 +283,6 @@ Private Sub initControls()
 End Sub
 
 Private Sub UserControl_Paint()
-    FillRect UserControl.hdc, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
-        colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
+    FillRect UserControl.hdc, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
     m_labelManager.renderLabels UserControl.hdc
 End Sub

@@ -107,8 +107,7 @@ Private Property Get ISubclass_MsgResponse() As EMsgResponse
     End Select
 End Property
 
-Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, _
-    ByVal lParam As Long) As Long
+Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
     Dim count As Long
     Dim coordY As Long
     Dim coordX As Long
@@ -295,8 +294,7 @@ Private Function drawItem(item As DRAWITEMSTRUCT) As Long
     
     If Not userStyle Is Nothing Then
         If Not userStyle.image Is Nothing And settings.setting("nicknameIcons", estBoolean) Then
-            userStyle.image.draw item.hdc, textRect.left, textRect.top, m_fontmanager.fontHeight, _
-                m_fontmanager.fontHeight
+            userStyle.image.draw item.hdc, textRect.left, textRect.top, m_fontmanager.fontHeight, m_fontmanager.fontHeight
             textRect.left = textRect.left + m_fontmanager.fontHeight + 1
             drewImage = True
         End If
@@ -305,8 +303,7 @@ Private Function drawItem(item As DRAWITEMSTRUCT) As Long
     If drewImage Then
         swiftTextOut item.hdc, textRect.left, textRect.top, 0, VarPtr(textRect), listItem.text
     Else
-        swiftTextOut item.hdc, textRect.left + 5, textRect.top, 0, VarPtr(textRect), listItem.prefix & _
-            listItem.text
+        swiftTextOut item.hdc, textRect.left + 5, textRect.top, 0, VarPtr(textRect), listItem.prefix & listItem.text
     End If
         
     drawItem = True

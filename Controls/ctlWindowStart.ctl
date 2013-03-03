@@ -91,6 +91,5 @@ Private Sub UserControl_Resize()
     If x < 0 Then x = 0
     If y < 0 Then y = 0
     
-    getRealWindow(m_ctlStartPanel).Move x, y, getRealWindow(m_ctlStartPanel).width, _
-        getRealWindow(m_ctlStartPanel).height
+    getRealWindow(m_ctlStartPanel).Move x, y, getRealWindow(m_ctlStartPanel).width, getRealWindow(m_ctlStartPanel).height
 End Sub

@@ -301,14 +301,11 @@ Friend Sub saveSettings()
 End Sub
 
 Private Sub UserControl_Paint()
-    FillRect UserControl.hdc, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
-        colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
+    FillRect UserControl.hdc, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
         
-    FrameRect UserControl.hdc, makeRect(5, 245, 5, UserControl.ScaleHeight - 120), _
-        colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
+    FrameRect UserControl.hdc, makeRect(5, 245, 5, UserControl.ScaleHeight - 120), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
         
-    FrameRect UserControl.hdc, makeRect(255, UserControl.ScaleWidth - 5, 5, UserControl.ScaleHeight - 120), _
-        colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
+    FrameRect UserControl.hdc, makeRect(255, UserControl.ScaleWidth - 5, 5, UserControl.ScaleHeight - 120), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
         
     m_labelManager.renderLabels UserControl.hdc
 End Sub

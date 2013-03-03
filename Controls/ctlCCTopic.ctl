@@ -139,8 +139,7 @@ Private Sub textTopicBuilder_Change()
     m_textviewTopicPreview.clear
     
     If LenB(textTopicBuilder.text) <> 0 Then
-        m_textviewTopicPreview.addRawTextEx eventColours.topicChange, 0, "$0", Nothing, _
-            vbNullString, 0, makeStringArray(textTopicBuilder.text)
+        m_textviewTopicPreview.addRawTextEx eventColours.topicChange, 0, "$0", Nothing, vbNullString, 0, makeStringArray(textTopicBuilder.text)
     End If
 End Sub
 

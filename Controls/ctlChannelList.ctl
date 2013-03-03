@@ -205,8 +205,7 @@ Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, By
             'TranslateAccelerator calls
             Set pOleObject = Me
             Set pOleInPlaceSite = pOleObject.GetClientSite
-            pOleInPlaceSite.GetWindowContext pOleInPlaceFrame, pOleInPlaceUIWindow, VarPtr(PosRect), _
-                VarPtr(ClipRect), VarPtr(FrameInfo)
+            pOleInPlaceSite.GetWindowContext pOleInPlaceFrame, pOleInPlaceUIWindow, VarPtr(PosRect), VarPtr(ClipRect), VarPtr(FrameInfo)
             CopyMemory pOleInPlaceActiveObject, m_IPAOHookStruct.ThisPointer, 4
             pOleInPlaceFrame.SetActiveObject pOleInPlaceActiveObject, vbNullString
             If Not pOleInPlaceUIWindow Is Nothing Then
@@ -568,8 +567,7 @@ Private Sub parseIrcFormatting(text As String, ByRef blocks As cArrayList)
     End If
 End Sub
 
-Private Function parseColourCode(text As String, start As Integer, ByRef fore As Byte, ByRef back _
-    As Byte) As Integer
+Private Function parseColourCode(text As String, start As Integer, ByRef fore As Byte, ByRef back As Byte) As Integer
     
     Dim colourCount As Integer
     Dim digits As Byte
@@ -691,11 +689,7 @@ Private Sub UserControl_Initialize()
        .ThisPointer = VarPtr(m_IPAOHookStruct)
     End With
 
-    m_listbox = CreateWindowEx(0, "LISTBOX", 0&, WS_CHILD Or _
-        WS_VISIBLE Or WS_VSCROLL Or WS_HSCROLL Or LBS_HASSTRINGS _
-        Or LBS_OWNERDRAWFIXED Or LBS_NOINTEGRALHEIGHT, _
-        0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, _
-        UserControl.hwnd, 0&, App.hInstance, 0&)
+    m_listbox = CreateWindowEx(0, "LISTBOX", 0&, WS_CHILD Or WS_VISIBLE Or WS_VSCROLL Or WS_HSCROLL Or LBS_HASSTRINGS Or LBS_OWNERDRAWFIXED Or LBS_NOINTEGRALHEIGHT, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, UserControl.hwnd, 0&, App.hInstance, 0&)
     
     AttachMessage Me, m_listbox, WM_MOUSEWHEEL
     AttachMessage Me, m_listbox, WM_LBUTTONDBLCLK
@@ -940,8 +934,7 @@ Private Sub UserControl_Paint()
 
     swiftTextOut UserControl.hdc, 0, 0, 0, ByVal 0, "Channel name"
     swiftTextOut UserControl.hdc, COLUMN_NAME + COLUMN_SPACING, 0, 0, ByVal 0, "User count"
-    swiftTextOut UserControl.hdc, COLUMN_NAME + COLUMN_USERS + (COLUMN_SPACING * 2), 0, 0, _
-        ByVal 0, "Channel Topic"
+    swiftTextOut UserControl.hdc, COLUMN_NAME + COLUMN_USERS + (COLUMN_SPACING * 2), 0, 0, ByVal 0, "Channel Topic"
     
     drawChannelCount
 End Sub

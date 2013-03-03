@@ -121,8 +121,7 @@ Private Function OnDocWindowActivate(This As IPAOHookStructChannelList, ByVal fA
    OnDocWindowActivate = This.IPAOReal.OnDocWindowActivate(fActivate)
 End Function
 
-Private Function ResizeBorder(This As IPAOHookStructChannelList, prcBorder As RECT, ByVal puiWindow As _
-    IOleInPlaceUIWindow, ByVal fFrameWindow As Long) As Long
+Private Function ResizeBorder(This As IPAOHookStructChannelList, prcBorder As RECT, ByVal puiWindow As IOleInPlaceUIWindow, ByVal fFrameWindow As Long) As Long
    ' Call the user control's ResizeBorder interface
    ResizeBorder = This.IPAOReal.ResizeBorder(VarPtr(prcBorder), puiWindow, fFrameWindow)
 End Function

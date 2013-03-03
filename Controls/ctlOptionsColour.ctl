@@ -243,11 +243,9 @@ Private Sub initControls()
         comboSwitchbarRows.ListIndex = 0
     End If
     
-    Set m_labelFontInfo = m_labelManager.addLabel("Current font: " & m_fontName & " size " & _
-        CStr(m_fontSize), ltNormal, 320, 35)
+    Set m_labelFontInfo = m_labelManager.addLabel("Current font: " & m_fontName & " size " & CStr(m_fontSize), ltNormal, 320, 35)
 
-    Set m_ctlEventColourEditor = createControl(Controls, "swiftIrc.ctlEventColourEditor", _
-        "eventColourEditor")
+    Set m_ctlEventColourEditor = createControl(Controls, "swiftIrc.ctlEventColourEditor", "eventColourEditor")
     Set m_ctlColourPalette = createControl(Controls, "swiftIrc.ctlColourPalette", "colourPalette")
     
     getRealWindow(m_ctlEventColourEditor).Move 10, 100, 280, 155
@@ -308,8 +306,7 @@ Private Sub m_buttonChangeFont_clicked()
     End If
     
     m_fontmanager.changeFont UserControl.hdc, m_fontName, m_fontSize, m_fontBold, m_fontItalic
-    m_labelFontInfo.caption = "Current font: " & m_fontName & " size " & _
-        CStr(m_fontSize)
+    m_labelFontInfo.caption = "Current font: " & m_fontName & " size " & CStr(m_fontSize)
     UserControl_Paint
 End Sub
 
@@ -319,8 +316,7 @@ Private Sub m_buttonDefaultFont_clicked()
     m_fontBold = False
     m_fontItalic = False
     
-    m_labelFontInfo.caption = "Current font: " & m_fontName & " size " & _
-        m_fontSize
+    m_labelFontInfo.caption = "Current font: " & m_fontName & " size " & m_fontSize
         
     UserControl_Paint
 End Sub
@@ -552,26 +548,21 @@ Private Sub UserControl_Paint()
     
     oldFont = SelectObject(backBuffer, GetCurrentObject(UserControl.hdc, OBJ_FONT))
 
-    FillRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
-        colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
+    FillRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
     
     m_labelManager.renderLabels backBuffer
     
-    FrameRect backBuffer, makeRect(5, 305, 5, UserControl.ScaleHeight - 5), _
-        colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
-    FrameRect backBuffer, makeRect(315, UserControl.ScaleWidth - 5, 5, 80), _
-        colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
+    FrameRect backBuffer, makeRect(5, 305, 5, UserControl.ScaleHeight - 5), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
+    FrameRect backBuffer, makeRect(315, UserControl.ScaleWidth - 5, 5, 80), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
     
-    FrameRect backBuffer, makeRect(315, UserControl.ScaleWidth - 5, 85, UserControl.ScaleHeight - 5), _
-        colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
+    FrameRect backBuffer, makeRect(315, UserControl.ScaleWidth - 5, 85, UserControl.ScaleHeight - 5), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
     
     m_sbTabEvent.render backBuffer, 320, 115, 100, 20
     m_sbTabMessage.render backBuffer, 320, 140, 100, 20
     m_sbTabAlert.render backBuffer, 320, 165, 100, 20
     m_sbTabHighlight.render backBuffer, 320, 190, 100, 20
     
-    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, _
-        backBuffer, 0, 0, vbSrcCopy
+    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, vbSrcCopy
     
     SelectObject backBuffer, oldBitmap
     SelectObject backBuffer, oldFont

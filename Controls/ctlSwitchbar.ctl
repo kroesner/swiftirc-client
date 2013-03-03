@@ -170,8 +170,7 @@ Private Property Let IFontUser_fontManager(RHS As CFontManager)
     Set m_fontmanager = RHS
 End Property
 
-Friend Function addTab(parent As IWindow, window As IWindow, order As eSwitchbarOrder, _
-    caption As String, icon As CImage) As CTab
+Friend Function addTab(parent As IWindow, window As IWindow, order As eSwitchbarOrder, caption As String, icon As CImage) As CTab
     
     Dim parentIndex As Long
     Dim tabOrder As eSwitchbarOrder
@@ -366,8 +365,7 @@ Private Sub reDraw()
     Dim oldFont As Long
     
     backBuffer = CreateCompatibleDC(UserControl.hdc)
-    backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth, _
-        UserControl.ScaleHeight)
+    backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth, UserControl.ScaleHeight)
     
     oldBitmap = SelectObject(backBuffer, backBitmap)
     oldFont = SelectObject(backBuffer, GetCurrentObject(UserControl.hdc, OBJ_FONT))
@@ -392,13 +390,11 @@ Private Sub reDraw()
     
     For count = 1 To m_tabs.count
         If m_tabs.item(count).visible Then
-            m_tabs.item(count).render backBuffer, m_tabs.item(count).left, m_tabs.item(count).top, _
-                m_tabWidth, m_tabHeight
+            m_tabs.item(count).render backBuffer, m_tabs.item(count).left, m_tabs.item(count).top, m_tabWidth, m_tabHeight
         End If
     Next count
     
-    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, _
-        vbSrcCopy
+    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, vbSrcCopy
         
     SelectObject backBuffer, oldBitmap
     SelectObject backBuffer, oldFont
@@ -441,8 +437,7 @@ Private Sub UserControl_MouseMove(Button As Integer, Shift As Integer, x As Sing
     
         Select Case m_position
             Case sbpTop
-                If y >= UserControl.ScaleHeight - MARGIN_BOTTOM And y <= UserControl.ScaleHeight _
-                    Then
+                If y >= UserControl.ScaleHeight - MARGIN_BOTTOM And y <= UserControl.ScaleHeight Then
                     
                     UserControl.MousePointer = vbSizeNS
                     Exit Sub
@@ -473,8 +468,7 @@ Private Sub UserControl_MouseMove(Button As Integer, Shift As Integer, x As Sing
     
     UserControl.MousePointer = vbNormal
     
-    If x < MARGIN_LEFT Or x > UserControl.ScaleWidth - MARGIN_RIGHT Or y < MARGIN_TOP Or y > _
-        UserControl.ScaleHeight - MARGIN_BOTTOM Then
+    If x < MARGIN_LEFT Or x > UserControl.ScaleWidth - MARGIN_RIGHT Or y < MARGIN_TOP Or y > UserControl.ScaleHeight - MARGIN_BOTTOM Then
             
         If Not m_overTab Is Nothing Then
             clearMouseOver
@@ -573,8 +567,7 @@ Public Sub selectTab(aTab As CTab, events As Boolean)
 
     If Not m_selectedTab Is Nothing Then
         m_selectedTab.state = stsNormal
-        m_selectedTab.render UserControl.hdc, m_selectedTab.left, m_selectedTab.top, m_tabWidth, _
-            m_tabHeight
+        m_selectedTab.render UserControl.hdc, m_selectedTab.left, m_selectedTab.top, m_tabWidth, m_tabHeight
     End If
     
     Set m_selectedTab = aTab
@@ -624,8 +617,7 @@ Private Sub processResize(x As Single, y As Single)
                 updateRowCount rows
             End If
         Case sbpBottom
-            rows = Fix(((UserControl.ScaleHeight + -y) - (MARGIN_TOP + MARGIN_BOTTOM)) / _
-                (m_tabHeight + TAB_SPACING_Y))
+            rows = Fix(((UserControl.ScaleHeight + -y) - (MARGIN_TOP + MARGIN_BOTTOM)) / (m_tabHeight + TAB_SPACING_Y))
             
             If rows <> m_rows Then
                 updateRowCount rows
@@ -634,8 +626,7 @@ Private Sub processResize(x As Single, y As Single)
 End Sub
 
 Public Function getRequiredHeight() As Long
-    getRequiredHeight = (m_rows * (m_tabHeight + TAB_SPACING_Y)) - TAB_SPACING_Y + MARGIN_TOP + _
-        MARGIN_BOTTOM
+    getRequiredHeight = (m_rows * (m_tabHeight + TAB_SPACING_Y)) - TAB_SPACING_Y + MARGIN_TOP + MARGIN_BOTTOM
 End Function
 
 
@@ -652,8 +643,7 @@ Private Sub updateRowCount(rows As Long)
     
     Dim newHeight As Long
     
-    newHeight = (m_rows * (m_tabHeight + TAB_SPACING_Y)) - TAB_SPACING_Y + MARGIN_TOP + _
-        MARGIN_BOTTOM
+    newHeight = (m_rows * (m_tabHeight + TAB_SPACING_Y)) - TAB_SPACING_Y + MARGIN_TOP + MARGIN_BOTTOM
     
     settings.setting("switchbarRows", estNumber) = m_rows
         

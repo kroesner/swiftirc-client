@@ -202,8 +202,7 @@ Public Sub addEvent(eventName As String, params() As String)
     addEventEx eventName, Nothing, vbNullString, TVE_NONE, params
 End Sub
 
-Public Sub addEventEx(eventName As String, userStyle As CUserStyle, username As String, flags As _
-    Long, params() As String)
+Public Sub addEventEx(eventName As String, userStyle As CUserStyle, username As String, flags As Long, params() As String)
     Dim line As New CLine
     Dim aEvent As CEvent
     
@@ -270,15 +269,13 @@ Public Sub addRawText(format As String, params() As String)
     addRawTextEx eventColours.otherText, 0, format, Nothing, vbNullString, TVE_NONE, params
 End Sub
 
-Public Sub addRawTextEx(eventColour As CEventColour, foreColour As Byte, format As String, _
-    userStyle As CUserStyle, username As String, flags As Long, params() As String)
+Public Sub addRawTextEx(eventColour As CEventColour, foreColour As Byte, format As String, userStyle As CUserStyle, username As String, flags As Long, params() As String)
     
     Dim line As New CLine
     
     On Error GoTo addRawTextEx_Error
 
-    line.initEx eventColour, foreColour, format, userStyle, username, flags Or TVE_NOEVENT Or _
-        TVE_VISIBLE, params
+    line.initEx eventColour, foreColour, format, userStyle, username, flags Or TVE_NOEVENT Or TVE_VISIBLE, params
     
     m_allLines.Add line
     m_lines.Add line
@@ -466,8 +463,7 @@ Private Property Get ISubclass_MsgResponse() As EMsgResponse
     End Select
 End Property
 
-Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, _
-    ByVal lParam As Long) As Long
+Private Function ISubclass_WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
     Select Case iMsg
         Case WM_VSCROLL
             Dim scrollCode As Integer
@@ -671,8 +667,7 @@ Private Sub scrollUp(lines As Long)
     copyHeight = m_fontHeight * (visibleLines - lines)
     copyY = topMargin + (m_fontHeight * lines)
     
-    BitBlt m_backBuffer, 0, copyY, UserControl.ScaleWidth - SB_WIDTH, copyHeight, m_backBuffer, 0, topMargin, _
-        vbSrcCopy
+    BitBlt m_backBuffer, 0, copyY, UserControl.ScaleWidth - SB_WIDTH, copyHeight, m_backBuffer, 0, topMargin, vbSrcCopy
     
     drawLines lastVisibleLine, 0, CInt(copyY)
     displayBackBuffer
@@ -729,8 +724,7 @@ Private Sub scrollDown(lines As Long)
     scrollDist = m_fontHeight * lines
     copyHeight = UserControl.ScaleHeight - scrollDist
     
-    BitBlt m_backBuffer, 0, 0, UserControl.ScaleWidth - SB_WIDTH, copyHeight, m_backBuffer, 0, scrollDist, _
-        vbSrcCopy
+    BitBlt m_backBuffer, 0, 0, UserControl.ScaleWidth - SB_WIDTH, copyHeight, m_backBuffer, 0, scrollDist, vbSrcCopy
     
     For count = 1 To m_visibleLines.count
         m_visibleLines.item(count).shiftedUp scrollDist
@@ -913,8 +907,7 @@ Private Sub bigScroll(diff As Long)
 End Sub
 
 Private Sub initScrollBar()
-    m_hScrollBar = CreateWindowEx(0, "SCROLLBAR", "", WS_CHILD Or SBS_VERT, UserControl.ScaleWidth _
-        - SB_WIDTH, 0, SB_WIDTH, UserControl.ScaleHeight, UserControl.hwnd, 0, App.hInstance, ByVal 0&)
+    m_hScrollBar = CreateWindowEx(0, "SCROLLBAR", "", WS_CHILD Or SBS_VERT, UserControl.ScaleWidth - SB_WIDTH, 0, SB_WIDTH, UserControl.ScaleHeight, UserControl.hwnd, 0, App.hInstance, ByVal 0&)
     ShowScrollBar m_hScrollBar, SB_CTL, 1
     
     m_scrollbarEnabled = True
@@ -1113,10 +1106,8 @@ Private Sub processSelection()
     Dim count As Integer
 
     For count = 1 To m_visibleLines.count
-        If m_visibleLines.item(count).bottom >= m_selectStartY And m_visibleLines.item(count).top _
-            <= m_selectEndY Then
-            m_visibleLines.item(count).setSelection m_selectStartY, m_selectEndY, m_selectStartX, _
-                m_selectEndX, m_realSelectStartX, m_realSelectStartY, m_moveX
+        If m_visibleLines.item(count).bottom >= m_selectStartY And m_visibleLines.item(count).top <= m_selectEndY Then
+            m_visibleLines.item(count).setSelection m_selectStartY, m_selectEndY, m_selectStartX, m_selectEndX, m_realSelectStartX, m_realSelectStartY, m_moveX
         Else
             If m_visibleLines.item(count).selected Then
                 m_visibleLines.item(count).unSelect
@@ -1285,8 +1276,7 @@ Private Sub updateBackbuffer()
     End If
     
     m_backBuffer = CreateCompatibleDC(UserControl.hdc)
-    m_backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth - SB_WIDTH, _
-        UserControl.ScaleHeight)
+    m_backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth - SB_WIDTH, UserControl.ScaleHeight)
         
     SelectObject m_backBuffer, m_backBitmap
     
@@ -1301,8 +1291,7 @@ Private Sub updateBackbuffer()
 End Sub
 
 Private Sub displayBackBuffer()
-    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth - SB_WIDTH, UserControl.ScaleHeight, _
-        m_backBuffer, 0, 0, vbSrcCopy
+    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth - SB_WIDTH, UserControl.ScaleHeight, m_backBuffer, 0, 0, vbSrcCopy
 End Sub
 
 Private Sub reDraw()
@@ -1422,8 +1411,7 @@ End Sub
 
 Private Sub openLog()
     m_logFilename = m_logBaseName & "." & getFileNameDate & ".log"
-    m_logHandle = CreateFile(StrPtr(m_logFilename), GENERIC_WRITE, _
-        FILE_SHARE_READ Or FILE_SHARE_WRITE, ByVal 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, ByVal 0)
+    m_logHandle = CreateFile(StrPtr(m_logFilename), GENERIC_WRITE, FILE_SHARE_READ Or FILE_SHARE_WRITE, ByVal 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, ByVal 0)
 
     If m_logHandle = -1 Then
         Exit Sub
@@ -1456,8 +1444,7 @@ Private Sub logWrite(line As CLine)
     
    On Error GoTo logWrite_Error
 
-    text = line.getText(settings.setting("logIncludeCodes", estBoolean), _
-        settings.setting("logIncludeTimestamp", estBoolean), m_drawingData.ignoreSeperators)
+    text = line.getText(settings.setting("logIncludeCodes", estBoolean), settings.setting("logIncludeTimestamp", estBoolean), m_drawingData.ignoreSeperators)
     logRealWrite text
 
    On Error GoTo 0

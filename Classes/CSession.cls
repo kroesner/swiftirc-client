@@ -96,12 +96,7 @@ Private m_lastChannelTabMatch As String
 
 Private m_waitingOnUserAgreement As Boolean
 
-Private Declare Function mciSendString Lib "winmm.dll" _
-  Alias "mciSendStringA" ( _
-  ByVal lpszCommand As String, _
-  ByVal lpszReturnString As String, _
-  ByVal cchReturnLength As Long, _
-  ByVal hwndCallback As Long) As Long
+Private Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpszCommand As String, ByVal lpszReturnString As String, ByVal cchReturnLength As Long, ByVal hwndCallback As Long) As Long
   
 
 Public Property Get baseLogPath() As String
@@ -342,8 +337,7 @@ Private Sub disconnected()
     If Not m_expectingDisconnect Then
         If Not m_serverProfile Is Nothing Then
             If m_serverProfile.enableReconnect Then
-                m_statusWindowText.addEvent "RECONNECTING_IN", makeStringArray(RECONNECT_DELAY / _
-                    1000)
+                m_statusWindowText.addEvent "RECONNECTING_IN", makeStringArray(RECONNECT_DELAY / 1000)
                 m_reconnectTimer.enabled = True
             End If
         End If
@@ -564,8 +558,7 @@ Private Function extractIrcParams(ByRef line As String, maxParams As Byte, ByRef
     extractIrcParams = paramCount
 End Function
 
-Private Function addParser(ByVal name As String, ByVal minParams As Byte, ByVal maxParams As Byte, _
-    ByVal func As String)
+Private Function addParser(ByVal name As String, ByVal minParams As Byte, ByVal maxParams As Byte, ByVal func As String)
     
     Dim parser As CParser
     
@@ -705,13 +698,11 @@ Public Sub parserKill(origin As COrigin, command As String, paramCount As Byte, 
     m_statusWindowText.addEvent "KILLED", makeStringArray(origin.nickname, params(1))
 End Sub
 
-Public Sub parserNotice(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserNotice(origin As COrigin, command As String, paramCount As Byte, params() As String)
     processMessage origin, True, paramCount, params
 End Sub
 
-Public Sub parserWelcome(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWelcome(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_registered = True
 
     m_currentNickname = params(0)
@@ -725,8 +716,7 @@ Public Sub parserWelcome(origin As COrigin, command As String, paramCount As Byt
     registered
 End Sub
 
-Public Sub parserNicknameInUse(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserNicknameInUse(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_registered Then
         If m_triedBackupNickname Then
             m_statusWindowText.addEvent "NICKNAME_IN_USE_PREREG2", makeStringArray(params(1))
@@ -742,8 +732,7 @@ Public Sub parserNicknameInUse(origin As COrigin, command As String, paramCount 
     End If
 End Sub
 
-Public Sub parserNoSuchNick(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserNoSuchNick(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim activeText As ITextWindow
     
     Set activeText = m_client.activeTextWindow
@@ -755,8 +744,7 @@ Public Sub parserNoSuchNick(origin As COrigin, command As String, paramCount As 
     End If
 End Sub
 
-Public Sub parserISupport(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserISupport(origin As COrigin, command As String, paramCount As Byte, params() As String)
     parseISupport params(1)
     
     If m_prefixModes.count = 0 Then
@@ -916,8 +904,7 @@ Public Sub parserNames(origin As COrigin, command As String, paramCount As Byte,
     End If
 End Sub
 
-Public Sub parserEndOfNames(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfNames(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -927,8 +914,7 @@ Public Sub parserEndOfNames(origin As COrigin, command As String, paramCount As 
     End If
 End Sub
 
-Public Sub parserWhoisUser(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhoisUser(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Set m_whoisText = m_client.activeTextWindow
     
     If Not m_whoisText.session Is Me Then
@@ -936,84 +922,71 @@ Public Sub parserWhoisUser(origin As COrigin, command As String, paramCount As B
     End If
     
     If Not m_whoisText Is Nothing Then
-        m_whoisText.addEvent "WHOIS_USER", makeStringArray(params(1), params(2), params(3), _
-            params(5))
+        m_whoisText.addEvent "WHOIS_USER", makeStringArray(params(1), params(2), params(3), params(5))
     End If
 End Sub
 
-Public Sub parserWhoisChannels(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserWhoisChannels(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_CHANNELS", makeStringArray(params(1), params(2))
     End If
 End Sub
 
-Public Sub parserWhoisServer(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhoisServer(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_SERVER", makeStringArray(params(1), params(2), params(3))
     End If
 End Sub
 
-Public Sub parserWhoisRegNick(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhoisRegNick(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_REGNICK", makeStringArray(params(1), params(2))
     End If
 End Sub
 
-Public Sub parserWhoisOperator(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserWhoisOperator(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_OPERATOR", makeStringArray(params(1), params(2))
     End If
 End Sub
 
-Public Sub parserWhoisHelpOp(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhoisHelpOp(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_OPERATOR", makeStringArray(params(1), params(2))
     End If
 End Sub
 
-Public Sub parserWhoisSecure(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhoisSecure(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_GENERIC", makeStringArray(params(1), params(2))
     End If
 End Sub
 
-Public Sub parserWhoisBot(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhoisBot(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_GENERIC", makeStringArray(params(1), params(2))
     End If
 End Sub
 
-Public Sub parserWhoisFilter(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhoisFilter(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_GENERIC", makeStringArray(params(1), params(2))
     End If
 End Sub
 
-Public Sub parserWhoisFilterOver(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserWhoisFilterOver(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_GENERIC", makeStringArray(params(1), params(2))
     End If
 End Sub
 
-Public Sub parserWhoisIdle(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhoisIdle(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
-        m_whoisText.addEvent "WHOIS_IDLE", makeStringArray(params(1), timeString(Val(params(2))), _
-            formatTime(Val(params(3))))
+        m_whoisText.addEvent "WHOIS_IDLE", makeStringArray(params(1), timeString(Val(params(2))), formatTime(Val(params(3))))
     End If
 End Sub
 
-Public Sub parserEndOfWhois(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfWhois(origin As COrigin, command As String, paramCount As Byte, params() As String)
     If Not m_whoisText Is Nothing Then
         m_whoisText.addEvent "WHOIS_END", makeStringArray(params(1), params(2))
         Set m_whoisText = Nothing
@@ -1036,8 +1009,7 @@ Public Sub parserAway(origin As COrigin, command As String, paramCount As Byte, 
     End If
 End Sub
 
-Public Sub parserBannedFromChan(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserBannedFromChan(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1049,8 +1021,7 @@ Public Sub parserBannedFromChan(origin As COrigin, command As String, paramCount
     m_statusWindowText.addEvent "ERR_BANNEDFROMCHAN", makeStringArray(params(1))
 End Sub
 
-Public Sub parserNeedReggedNick(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserNeedReggedNick(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1062,8 +1033,7 @@ Public Sub parserNeedReggedNick(origin As COrigin, command As String, paramCount
     m_statusWindowText.addEvent "ERR_NEEDREGGEDNICK", makeStringArray(params(1))
 End Sub
 
-Public Sub parserInviteOnlyChan(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserInviteOnlyChan(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1075,8 +1045,7 @@ Public Sub parserInviteOnlyChan(origin As COrigin, command As String, paramCount
     m_statusWindowText.addEvent "ERR_INVITEONLYCHAN", makeStringArray(params(1))
 End Sub
 
-Public Sub parserBadChannelKey(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserBadChannelKey(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1088,8 +1057,7 @@ Public Sub parserBadChannelKey(origin As COrigin, command As String, paramCount 
     m_statusWindowText.addEvent "ERR_BADCHANNELKEY", makeStringArray(params(1))
 End Sub
 
-Public Sub parserChannelIsFull(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserChannelIsFull(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1101,8 +1069,7 @@ Public Sub parserChannelIsFull(origin As COrigin, command As String, paramCount 
     m_statusWindowText.addEvent "ERR_CHANNELISFULL", makeStringArray(params(1))
 End Sub
 
-Public Sub parserTooManyJoins(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserTooManyJoins(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1114,39 +1081,32 @@ Public Sub parserTooManyJoins(origin As COrigin, command As String, paramCount A
     m_statusWindowText.addEvent "ERR_TOOMANYJOINS", makeStringArray(params(1))
 End Sub
 
-Public Sub parserTooManyChannels(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserTooManyChannels(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "ERR_TOOMANYCHANNELS", makeStringArray(params(1))
 End Sub
 
-Public Sub parserSecureOnlyChan(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserSecureOnlyChan(origin As COrigin, command As String, paramCount As Byte, params() As String)
 
     m_statusWindowText.addEvent "ERR_SECUREONLYCHAN", makeStringArray(params(1))
 End Sub
 
-Public Sub parserLinkChannel(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserLinkChannel(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "NUMERIC", makeStringArray(params(1))
 End Sub
 
-Public Sub parserNoPrivileges(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserNoPrivileges(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "ERR_NOPRIVILEGES", makeStringArray(params(1))
 End Sub
 
-Public Sub parserOperOnly(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserOperOnly(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "NUMERIC", makeStringArray(params(1))
 End Sub
 
-Public Sub parserUnknownCommand(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserUnknownCommand(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "NUMERIC", makeStringArray(params(1) & " " & params(2))
 End Sub
 
-Public Sub parserErroneusNickname(origin As COrigin, command As String, paramCount As Byte, _
-    params() As String)
+Public Sub parserErroneusNickname(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "NUMERIC", makeStringArray(params(1) & " " & params(2))
 End Sub
 
@@ -1168,8 +1128,7 @@ Public Sub parserMode(origin As COrigin, command As String, paramCount As Byte, 
     End If
 End Sub
 
-Public Sub parserChannelModeIs(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserChannelModeIs(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1183,8 +1142,7 @@ Public Sub parserChannelModeIs(origin As COrigin, command As String, paramCount 
     End If
 End Sub
 
-Public Sub parserTopicIs(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserTopicIs(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1194,8 +1152,7 @@ Public Sub parserTopicIs(origin As COrigin, command As String, paramCount As Byt
     End If
 End Sub
 
-Public Sub parserTopicWhoTime(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserTopicWhoTime(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1215,14 +1172,12 @@ Public Sub parserTopic(origin As COrigin, command As String, paramCount As Byte,
     End If
 End Sub
 
-Public Sub parserPrivmsg(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserPrivmsg(origin As COrigin, command As String, paramCount As Byte, params() As String)
     
     processMessage origin, False, paramCount, params
 End Sub
 
-Public Sub parserBanList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserBanList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     
     Dim channel As CChannel
     
@@ -1233,13 +1188,11 @@ Public Sub parserBanList(origin As COrigin, command As String, paramCount As Byt
     End If
     
     If Not CCOpen() Then
-        m_statusWindowText.addEvent "BAN_LIST", makeStringArray(params(1), params(2), params(3), _
-            formatTime(params(4)))
+        m_statusWindowText.addEvent "BAN_LIST", makeStringArray(params(1), params(2), params(3), formatTime(params(4)))
     End If
 End Sub
 
-Public Sub parserEndOfBanList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfBanList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1253,8 +1206,7 @@ Public Sub parserEndOfBanList(origin As COrigin, command As String, paramCount A
     End If
 End Sub
 
-Public Sub parserExList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserExList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1264,13 +1216,11 @@ Public Sub parserExList(origin As COrigin, command As String, paramCount As Byte
     End If
     
     If Not CCOpen() Then
-        m_statusWindowText.addEvent "EX_LIST", makeStringArray(params(1), params(2), params(3), _
-            formatTime(params(4)))
+        m_statusWindowText.addEvent "EX_LIST", makeStringArray(params(1), params(2), params(3), formatTime(params(4)))
     End If
 End Sub
 
-Public Sub parserEndOfExList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfExList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1284,8 +1234,7 @@ Public Sub parserEndOfExList(origin As COrigin, command As String, paramCount As
     End If
 End Sub
 
-Public Sub parserInvexList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserInvexList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1295,13 +1244,11 @@ Public Sub parserInvexList(origin As COrigin, command As String, paramCount As B
     End If
     
     If Not CCOpen() Then
-        m_statusWindowText.addEvent "INVEX_LIST", makeStringArray(params(1), params(2), params(3), _
-            formatTime(params(4)))
+        m_statusWindowText.addEvent "INVEX_LIST", makeStringArray(params(1), params(2), params(3), formatTime(params(4)))
     End If
 End Sub
 
-Public Sub parserEndOfInvexList(origin As COrigin, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub parserEndOfInvexList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1329,8 +1276,7 @@ Public Sub parserAList(origin As COrigin, command As String, paramCount As Byte,
     End If
 End Sub
 
-Public Sub parserEndOfAList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfAList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1358,8 +1304,7 @@ Public Sub parserQList(origin As COrigin, command As String, paramCount As Byte,
     End If
 End Sub
 
-Public Sub parserEndOfQList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfQList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     Set channel = findChannel(params(1))
@@ -1373,8 +1318,7 @@ Public Sub parserEndOfQList(origin As COrigin, command As String, paramCount As 
     End If
 End Sub
 
-Public Sub parserWhoList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhoList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Set m_whoisText = m_client.activeTextWindow
     
     If Not m_whoisText.session Is Me Then
@@ -1382,13 +1326,11 @@ Public Sub parserWhoList(origin As COrigin, command As String, paramCount As Byt
     End If
     
     If Not m_whoisText Is Nothing Then
-        m_whoisText.addEvent "WHO_LIST", makeStringArray(params(1), params(5), params(2), _
-            params(3), params(6), params(7))
+        m_whoisText.addEvent "WHO_LIST", makeStringArray(params(1), params(5), params(2), params(3), params(6), params(7))
     End If
 End Sub
 
-Public Sub parserEndOfWhoList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfWhoList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Set m_whoisText = m_client.activeTextWindow
     
     If Not m_whoisText.session Is Me Then
@@ -1400,8 +1342,7 @@ Public Sub parserEndOfWhoList(origin As COrigin, command As String, paramCount A
     End If
 End Sub
 
-Public Sub parserWhowasHost(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhowasHost(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Set m_whoisText = m_client.activeTextWindow
     
     If Not m_whoisText.session Is Me Then
@@ -1413,8 +1354,7 @@ Public Sub parserWhowasHost(origin As COrigin, command As String, paramCount As 
     End If
 End Sub
 
-Public Sub parserWhowasUnknown(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserWhowasUnknown(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Set m_whoisText = m_client.activeTextWindow
     
     If Not m_whoisText.session Is Me Then
@@ -1426,8 +1366,7 @@ Public Sub parserWhowasUnknown(origin As COrigin, command As String, paramCount 
     End If
 End Sub
 
-Public Sub parserEndOfWhowas(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfWhowas(origin As COrigin, command As String, paramCount As Byte, params() As String)
     Set m_whoisText = m_client.activeTextWindow
     
     If Not m_whoisText.session Is Me Then
@@ -1439,29 +1378,24 @@ Public Sub parserEndOfWhowas(origin As COrigin, command As String, paramCount As
     End If
 End Sub
 
-Public Sub parserSilenceModify(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserSilenceModify(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "SILENCE_MODIFY", makeStringArray(params(0))
 End Sub
 
-Public Sub parserInvitationReceived(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserInvitationReceived(origin As COrigin, command As String, paramCount As Byte, params() As String)
     
     If ignoreManager.isIgnored(origin.nickname & "!" & origin.username & "@" & origin.hostname, IGNORE_INVITE) Then
         Exit Sub
     End If
     
     If m_client.activeTextWindow.session Is Me Then
-        m_client.activeTextWindow.addEvent "INVITATION_RECEIVED", makeStringArray(params(1), _
-            origin.nickname, origin.username, origin.hostname)
+        m_client.activeTextWindow.addEvent "INVITATION_RECEIVED", makeStringArray(params(1), origin.nickname, origin.username, origin.hostname)
     Else
-        m_statusWindowText.addEvent "INVITATION_RECEIVED", makeStringArray(params(1), _
-            origin.nickname, origin.username, origin.hostname)
+        m_statusWindowText.addEvent "INVITATION_RECEIVED", makeStringArray(params(1), origin.nickname, origin.username, origin.hostname)
     End If
 End Sub
 
-Public Sub parserListStart(rigin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserListStart(rigin As COrigin, command As String, paramCount As Byte, params() As String)
 
     If m_channelListWindow Is Nothing Then
         showList
@@ -1471,84 +1405,71 @@ Public Sub parserListStart(rigin As COrigin, command As String, paramCount As By
     End If
 End Sub
 
-Public Sub parserList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     
     If Not m_channelListWindow Is Nothing Then
         m_channelListWindow.insertChannel params(1), Val(params(2)), params(3)
     End If
 End Sub
 
-Public Sub parserListEnd(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserListEnd(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_listSynced = True
     m_statusWindowText.addEvent "NUMERIC", makeStringArray(params(1))
 End Sub
 
-Public Sub parserSilenceList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserSilenceList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "SILENCE_LIST", makeStringArray(params(2))
 End Sub
 
-Public Sub parserEndOfSilenceList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfSilenceList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "END_OF_SILENCE_LIST", makeStringArray(params(1))
 End Sub
 
-Public Sub parserChgNickModeN(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserChgNickModeN(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "ERR_CHGNICK_MODEN", makeStringArray(params(1))
 End Sub
 
-Public Sub parserChgNickModeB(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserChgNickModeB(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "ERR_CHGNICK_MODEB", makeStringArray(params(1), params(2))
 End Sub
 
-Public Sub parserHelpopTitle(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserHelpopTitle(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "HELPOP_TITLE", makeStringArray(params(1))
 End Sub
 
-Public Sub parserHelpopText(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserHelpopText(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "HELPOP_TEXT", makeStringArray(params(1))
 End Sub
 
-Public Sub parserMarkedAway(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserMarkedAway(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "MARKED_AWAY", makeStringArray(params(1))
 End Sub
 
-Public Sub parserUnmarkedAway(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserUnmarkedAway(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "NO_LONGER_MARKED_AWAY", makeStringArray(params(1))
 End Sub
 
-Public Sub parserInviteList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserInviteList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "INVITE_LIST", makeStringArray(params(1))
 End Sub
 
-Public Sub parserEndOfInviteList(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserEndOfInviteList(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "END_OF_INVITE_LIST", makeStringArray(params(1))
 End Sub
 
-Public Sub parserInviteUser(origin As COrigin, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub parserInviteUser(origin As COrigin, command As String, paramCount As Byte, params() As String)
     m_statusWindowText.addEvent "INVITE_USER", makeStringArray(params(1), params(2))
 End Sub
 
-Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As Byte, params() As _
-    String)
+Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As Byte, params() As String)
+    
+    'TODO: Refactor
+    
     Dim channel As CChannel
     Dim query As CQuery
     Dim prefix As String
     Dim channelName As String
     Dim activeText As ITextWindow
-    
-    On Error GoTo processMessage_Error
 
     Set activeText = m_client.activeTextWindow
     
@@ -1589,26 +1510,7 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
     If ignoreManager.isIgnored(origin.nickname & "!" & origin.username & "@" & origin.hostname, IGNORE_CODES) Then
         text = stripFormattingCodes(text)
     End If
-    
-    If settings.enableHighlighting Then
-        If settings.highlightNickname Then
-            If InStr(1, text, m_currentNickname, vbTextCompare) Then
-                highlight = True
-            End If
-        End If
-        
-        If Not highlight Then
-            Dim count As Long
-            
-            For count = 1 To highlights.highlightCount
-                If InStr(1, text, highlights.highlightItem(count).text, vbTextCompare) Then
-                    highlight = True
-                    Exit For
-                End If
-            Next count
-        End If
-    End If
-    
+
     If highlight Then
         highlighted
     End If
@@ -1622,6 +1524,10 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
         If StrComp(ctcpCommand, "ACTION", vbTextCompare) = 0 Then
             If Not channel Is Nothing Then
                 channel.userEmote origin, ctcpParam, prefix, highlight
+                
+                If highlight Then
+                    m_client.logHighlight m_networkName, prefix & channel.name, origin.nickname, text
+                End If
             Else
                 If InStr(m_channelTypes, left$(channelName, 1)) <> 0 Then
                     Exit Sub
@@ -1632,6 +1538,10 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
                 End If
                 
                 query.userEmote origin, ctcpParam, highlight
+                
+                If highlight Then
+                    m_client.logHighlight m_networkName, origin.nickname, origin.nickname, text
+                End If
             End If
         Else
             If ignoreManager.isIgnored(origin.nickname & "!" & origin.username & "@" & origin.hostname, IGNORE_CTCP) Then
@@ -1653,6 +1563,10 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
     
         If Not channel Is Nothing Then
             channel.userMessage origin, text, notice, prefix, highlight
+            
+            If highlight Then
+                m_client.logHighlight m_networkName, prefix & channel.name, origin.nickname, text
+            End If
         Else
             If notice Then
                 m_statusWindowText.addEvent "NOTICE", makeStringArray(origin.nickname, text)
@@ -1666,6 +1580,10 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
                     
                     m_client.switchbar.tabActivity tabWindow.getTab, tasMessage
                 End If
+                
+                If highlight Then
+                    m_client.logHighlight m_networkName, origin.nickname, origin.nickname, text
+                End If
             Else
                 If InStr(m_channelTypes, left$(channelName, 1)) <> 0 Then
                     Exit Sub
@@ -1676,16 +1594,45 @@ Private Sub processMessage(origin As COrigin, notice As Boolean, paramCount As B
                 End If
                 
                 query.userMessage origin, text, highlight
+                
+                If highlight Then
+                    m_client.logHighlight m_networkName, origin.nickname, origin.nickname, text
+                End If
             End If
         End If
     End If
-
-   On Error GoTo 0
-   Exit Sub
-
-processMessage_Error:
-    handleError "processMessage", Err.Number, Err.Description, Erl, vbNullString
 End Sub
+
+Private Function processTextForHighlights(text As String) As String
+    Dim highlightMatches As MessageHighlightMatchData
+
+    Set highlightMatches = MessageHighlights.findHighlightMatches(m_currentNickname, text)
+    
+    Dim i As Long
+    
+    For i = 1 To highlightMatches.getHighlightMatchCount
+        Debug.Print highlightMatches.getHighlightMatchPosition(i).getMatchStart & " " & highlightMatches.getHighlightMatchPosition(i).getMatchLength
+    Next i
+    
+    If highlightMatches.getHighlightMatchCount <> 0 Then
+        text = addHighlightEmphasisToText(text)
+    End If
+End Function
+
+Private Function addHighlightEmphasisToText(text As String, highlightMatches As MessageHighlightMatchData)
+    text = stripFormattingCodes(text)
+    
+    Dim i As count
+    Dim emphasisPositions As New cArrayList
+    
+    For i = 1 To highlightMatches.getHighlightMatchCount
+        
+    Next i
+End Function
+
+Private Function isEmphasisPositionInsideAnother()
+
+End Function
 
 Private Sub highlighted()
     If settings.setting("highlightCustomSound", estBoolean) Then
@@ -1717,13 +1664,10 @@ Private Sub PlaySound(soundPath As String)
     End If
     
     If audioType <> vbNullString Then
-        command = "open """ & path & _
-            """ type " & audioType & _
-            " alias " & alias
+        command = "open """ & path & """ type " & audioType & " alias " & alias
             
         If mciSendString(command, 0, 0, 0) = 0 Then
-            command = "play " & alias & _
-            " from 0"
+            command = "play " & alias & " from 0"
             mciSendString command, 0, 0, 0
         End If
     End If
@@ -1881,8 +1825,7 @@ Private Function createChannel(name As String) As CChannel
     channel.init name, channelWindow, Me
     
     channelWindow.init Me, channel
-    channelWindow.switchbartab = m_client.switchbar.addTab(m_statusWindow, channelWindow, sboChannel, _
-        channel.name, g_iconSBChannel)
+    channelWindow.switchbartab = m_client.switchbar.addTab(m_statusWindow, channelWindow, sboChannel, channel.name, g_iconSBChannel)
     
     m_channels.Add channel, LCase$(name)
     Set createChannel = channel
@@ -2065,8 +2008,7 @@ Public Function comparePrefix(prefix1 As String, prefix2 As String) As Integer
 End Function
 
 Friend Function getUserStyle(nickname As String, prefix As String) As CUserStyle
-    If StrComp(nickname, m_currentNickname, vbTextCompare) = 0 _
-        And settings.setting("colourMyNick", estBoolean) Then
+    If StrComp(nickname, m_currentNickname, vbTextCompare) = 0 And settings.setting("colourMyNick", estBoolean) Then
         
         Dim prefixIndex As Long
         prefixIndex = getPrefixIndex(prefix)
@@ -2256,23 +2198,17 @@ End Sub
 Private Sub m_socket_connectFailed(errorCode As Long)
     Select Case errorCode
         Case 10060
-            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, _
-                textManager.getText("ERR_CONNECT_TIMEOUT"))
+            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, textManager.getText("ERR_CONNECT_TIMEOUT"))
         Case 10061
-            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, _
-                textManager.getText("ERR_CONNECT_REFUSED"))
+            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, textManager.getText("ERR_CONNECT_REFUSED"))
         Case 10053
-            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, _
-                textManager.getText("ERR_CONNECT_ABORTED"))
+            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, textManager.getText("ERR_CONNECT_ABORTED"))
         Case 10055
-            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, _
-                textManager.getText("ERR_CONNECT_BUFSPACE"))
+            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, textManager.getText("ERR_CONNECT_BUFSPACE"))
         Case 8
-            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, _
-                textManager.getText("ERR_CONNECT_MEMORY"))
+            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, textManager.getText("ERR_CONNECT_MEMORY"))
         Case Else
-            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, "Code: " _
-                & errorCode)
+            m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, "Code: " & errorCode)
     End Select
     
     connectFailed
@@ -2289,8 +2225,7 @@ End Sub
 
 Private Sub m_socket_resolveFailed(requestId As Long, errorCode As Long)
     m_resolveIdConnect = 0
-    m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, _
-        textManager.getText("ERR_CONNECT_DNS"))
+    m_statusWindowText.addEvent "ERROR_CONNECT", makeStringArray(m_serverHost, textManager.getText("ERR_CONNECT_DNS"))
         
     connectFailed
 End Sub
@@ -2331,8 +2266,7 @@ Public Sub textInput(Source As ITextWindow, line As String)
     End If
 End Sub
 
-Public Sub commandList(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandList(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     
     If paramCount = 0 Then
         sendLine "LIST"
@@ -2343,8 +2277,7 @@ Public Sub commandList(Source As ITextWindow, command As String, paramCount As B
     End If
 End Sub
 
-Public Sub commandJoin(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandJoin(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     
     Dim channelName As String
     Dim key As String
@@ -2379,8 +2312,7 @@ Public Sub commandJoin(Source As ITextWindow, command As String, paramCount As B
     End If
 End Sub
 
-Public Sub commandPart(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandPart(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     If paramCount = 0 Then
         If TypeOf Source Is ctlWindowChannel Then
             Dim windowChannel As ctlWindowChannel
@@ -2396,20 +2328,17 @@ Public Sub commandPart(Source As ITextWindow, command As String, paramCount As B
     End If
 End Sub
 
-Public Sub commandMsg(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandMsg(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     sendLine "PRIVMSG " & params(0) & " :" & params(1)
     Source.addEvent "CMD_PRIVMSG_SENT", makeStringArray(params(0), params(1))
 End Sub
 
-Public Sub commandNotice(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandNotice(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     sendLine "NOTICE " & params(0) & " :" & params(1)
     Source.addEvent "CMD_NOTICE_SENT", makeStringArray(params(0), params(1))
 End Sub
 
-Public Sub commandQuery(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandQuery(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     If paramCount = 1 Then
         query params(0)
     Else
@@ -2417,8 +2346,7 @@ Public Sub commandQuery(Source As ITextWindow, command As String, paramCount As 
     End If
 End Sub
 
-Public Sub commandMe(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandMe(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     If TypeOf Source Is ctlWindowChannel Then
         Dim windowChannel As ctlWindowChannel
         
@@ -2434,13 +2362,11 @@ Public Sub commandMe(Source As ITextWindow, command As String, paramCount As Byt
     End If
 End Sub
 
-Public Sub commandTest(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandTest(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     Source.addText params(0)
 End Sub
 
-Public Sub commandTopic(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandTopic(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     
     Dim channelWindow As ctlWindowChannel
     
@@ -2461,36 +2387,31 @@ Public Sub commandTopic(Source As ITextWindow, command As String, paramCount As 
     End If
 End Sub
 
-Public Sub commandOptions(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandOptions(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     openOptionsDialog m_client
 End Sub
 
-Public Sub commandDebug(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandDebug(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     If m_debugWindow Is Nothing Then
         Set m_debugWindow = m_client.createNewWindow("swiftirc.ctlWindowGenericText", "debug")
         Set m_debugWindowText = m_debugWindow
         
-        m_debugWindow.init Me, "Debug"
+        m_debugWindow.init m_client, Me, "Debug", True
         m_debugWindow.switchbartab = m_client.switchbar.addTab(m_statusWindow, m_debugWindow, sboGeneric, "Debug", g_iconSBGeneric)
         m_client.ShowWindow m_debugWindow
     End If
 End Sub
 
-Public Sub commandEcho(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandEcho(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     Source.addText params(0)
 End Sub
 
-Public Sub commandRaw(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandRaw(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     Source.addEvent "CMD_RAW_SENT", makeStringArray(params(0))
     sendLine params(0)
 End Sub
 
-Public Sub commandKick(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandKick(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     Dim channel As CChannel
     
     If TypeOf Source Is ctlWindowChannel And InStr(m_channelTypes, left$(params(0), 1)) = 0 Then
@@ -2517,8 +2438,7 @@ Public Sub commandKick(Source As ITextWindow, command As String, paramCount As B
     End If
 End Sub
 
-Public Sub commandSlap(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandSlap(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     Dim channelWindow As ctlWindowChannel
     
     If TypeOf Source Is ctlWindowChannel Then
@@ -2529,8 +2449,7 @@ Public Sub commandSlap(Source As ITextWindow, command As String, paramCount As B
     End If
 End Sub
 
-Public Sub commandHuggle(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandHuggle(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     Dim channelWindow As ctlWindowChannel
     
     If TypeOf Source Is ctlWindowChannel Then
@@ -2541,8 +2460,7 @@ Public Sub commandHuggle(Source As ITextWindow, command As String, paramCount As
     End If
 End Sub
 
-Public Sub commandHop(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandHop(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     
     Dim channelWindow As ctlWindowChannel
     
@@ -2575,6 +2493,10 @@ Public Sub commandHop(Source As ITextWindow, command As String, paramCount As By
 
 End Sub
 
+Public Sub commandHighlights(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
+    m_client.openHighlightsWindow
+End Sub
+
 Private Sub showList()
     Set m_channelListWindow = m_client.createNewWindow("swiftirc.ctlChannelList", "list")
     m_channelListWindow.session = Me
@@ -2590,14 +2512,12 @@ Friend Sub closeChannelList()
     End If
 End Sub
 
-Public Sub commandClear(Source As ITextWindow, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub commandClear(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     
     Source.clear
 End Sub
 
-Public Sub commandClearAll(Source As ITextWindow, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub commandClearAll(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     
     Dim textWindow As ITextWindow
     Dim channel As CChannel
@@ -2620,13 +2540,11 @@ Public Sub commandClearAll(Source As ITextWindow, command As String, paramCount 
     End If
 End Sub
 
-Public Sub commandCtcp(Source As ITextWindow, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub commandCtcp(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     sendCtcp params(0), params(1)
 End Sub
 
-Public Sub commandClose(Source As ITextWindow, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub commandClose(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     If TypeOf Source Is ctlWindowChannel Then
         Dim channelWindow As ctlWindowChannel
         
@@ -2642,8 +2560,7 @@ Public Sub commandClose(Source As ITextWindow, command As String, paramCount As 
     End If
 End Sub
 
-Public Sub commandCloseAll(Source As ITextWindow, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub commandCloseAll(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     
     If TypeOf Source Is ctlWindowChannel Then
         Dim channel As CChannel
@@ -2661,13 +2578,11 @@ Public Sub commandCloseAll(Source As ITextWindow, command As String, paramCount 
 End Sub
 
 
-Public Sub commandReconnect(Source As ITextWindow, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub commandReconnect(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     connect
 End Sub
 
-Public Sub commandQuit(Source As ITextWindow, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub commandQuit(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     
     m_expectingDisconnect = True
     
@@ -2678,8 +2593,7 @@ Public Sub commandQuit(Source As ITextWindow, command As String, paramCount As B
     End If
 End Sub
 
-Public Sub commandIgnore(Source As ITextWindow, command As String, paramCount As Byte, params() _
-    As String)
+Public Sub commandIgnore(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     
     Dim commandFlags As String
     Dim ignoreFlags As String
@@ -2786,16 +2700,14 @@ Private Sub listIgnores(window As ITextWindow)
     window.addEvent "IGNORE_LIST_START", makeStringArray("")
     
     For count = 1 To ignoreManager.ignoreCount
-        window.addEvent "IGNORE_LIST_ENTRY", _
-            makeStringArray(ignoreManager.ignore(count).mask, ignoreManager.ignore(count).flagChars)
+        window.addEvent "IGNORE_LIST_ENTRY", makeStringArray(ignoreManager.ignore(count).mask, ignoreManager.ignore(count).flagChars)
     Next count
     
     window.addEvent "IGNORE_LIST_END", makeStringArray("")
 End Sub
 
 
-Public Sub commandServer(Source As ITextWindow, command As String, paramCount As Byte, params() As _
-    String)
+Public Sub commandServer(Source As ITextWindow, command As String, paramCount As Byte, params() As String)
     Dim flags As String
     Dim server As String
     Dim port As Long
@@ -2857,8 +2769,7 @@ Public Sub commandServer(Source As ITextWindow, command As String, paramCount As
     processServerCommand Source, flags, server, port, password
 End Sub
 
-Private Sub processServerCommand(Source As ITextWindow, flags As String, server As String, port As _
-    Long, password As String)
+Private Sub processServerCommand(Source As ITextWindow, flags As String, server As String, port As Long, password As String)
     
     Dim profile As CServerProfile
     
@@ -2962,8 +2873,7 @@ Private Sub extractCommand(ByRef line As String, ByRef command As String)
     Loop
 End Sub
 
-Private Function extractCommandParams(ByRef line As String, maxParams As Byte, ByRef params() As _
-    String) As Byte
+Private Function extractCommandParams(ByRef line As String, maxParams As Byte, ByRef params() As String) As Byte
     Dim temp As String
     Dim paramCount As Byte
 
@@ -3058,6 +2968,8 @@ Private Sub initInputParsers()
     addInputParser "UNICODE", 0, 0, "commandUnicode"
     
     addInputParser "IGNORE", 0, 3, "commandIgnore"
+    
+    addInputParser "HIGHLIGHTS", 0, 0, "commandHighlights"
 End Sub
 
 Private Sub addInputParser(command As String, minParams As Byte, maxParams As Byte, func As String)
@@ -3153,8 +3065,7 @@ Private Sub m_socket_readable()
     End If
 End Sub
 
-Public Sub channelTabbing(Source As swiftIrc.ctlTextInput, text As String, start As Long, Length As _
-    Long)
+Public Sub channelTabbing(Source As swiftIrc.ctlTextInput, text As String, start As Long, Length As Long)
     Dim matchLength As Long
     Dim count As Long
     Dim channel As CChannel
@@ -3275,8 +3186,7 @@ Private Sub joinChannels()
                 Set ajChannel = m_serverProfile.autoJoinChannel(count)
             
                 If findChannel(ajChannel.channel) Is Nothing Then
-                    If Len(channels) + Len(ajChannel.channel) + 8 _
-                        >= 510 Then
+                    If Len(channels) + Len(ajChannel.channel) + 8 >= 510 Then
                         sendLine "JOIN " & channels
                         channels = vbNullString
                     End If

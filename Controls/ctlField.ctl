@@ -188,12 +188,10 @@ Private Sub UserControl_Paint()
     
     If m_captionWidth <> 0 Then
         labelSize = m_captionWidth
-        FrameRect UserControl.hdc, makeRect(labelSize, labelSize + m_BoxWidth, 0, _
-            UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
+        FrameRect UserControl.hdc, makeRect(labelSize, labelSize + m_BoxWidth, 0, UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
     Else
         labelSize = (UserControl.ScaleWidth / 2)
-        FrameRect UserControl.hdc, makeRect(labelSize, UserControl.ScaleWidth, 0, _
-            UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
+        FrameRect UserControl.hdc, makeRect(labelSize, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
     End If
     
     Dim textRect As RECT
@@ -213,16 +211,14 @@ Private Sub UserControl_Paint()
         justifyFlag = 0
     End If
     
-    swiftDrawText UserControl.hdc, m_caption, VarPtr(textRect), DT_VCENTER Or DT_SINGLELINE Or _
-        justifyFlag Or DT_END_ELLIPSIS
+    swiftDrawText UserControl.hdc, m_caption, VarPtr(textRect), DT_VCENTER Or DT_SINGLELINE Or justifyFlag Or DT_END_ELLIPSIS
 End Sub
 
 Private Sub UserControl_Resize()
     If m_captionWidth <> 0 And m_BoxWidth <> 0 Then
         m_textBox.Move m_captionWidth + 1, 1, m_BoxWidth - 2, UserControl.ScaleHeight - 2
     Else
-        m_textBox.Move (UserControl.ScaleWidth / 2) + 1, 1, (UserControl.ScaleWidth / 2) - 2, _
-            UserControl.ScaleHeight - 2
+        m_textBox.Move (UserControl.ScaleWidth / 2) + 1, 1, (UserControl.ScaleWidth / 2) - 2, UserControl.ScaleHeight - 2
     End If
 End Sub
 

@@ -90,10 +90,7 @@ Private Sub CreateDecryptionKeys(Nb As Long)
     'Apply the inverse MixColumn transform to all round keys except the first and the last
     For i = Nb To Nb * Nr - 1
         CopyMemory s(0), rkey(i), 4&
-        rkey(i) = Td0(Te4(s(0)) And &HFF&) Xor _
-                  Td1(Te4(s(1)) And &HFF&) Xor _
-                  Td2(Te4(s(2)) And &HFF&) Xor _
-                  Td3(Te4(s(3)) And &HFF&)
+        rkey(i) = Td0(Te4(s(0)) And &HFF&) Xor Td1(Te4(s(1)) And &HFF&) Xor Td2(Te4(s(2)) And &HFF&) Xor Td3(Te4(s(3)) And &HFF&)
     Next i
 End Sub
 
@@ -123,11 +120,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 9
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 3) Xor fkey(i)
             fkey(i + 2) = fkey(i - 2) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 1) Xor fkey(i + 2)
@@ -141,11 +134,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 4) Xor fkey(i)
             fkey(i + 2) = fkey(i - 3) Xor fkey(i + 1)
             If j = 8 Then Exit Do
@@ -162,11 +151,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 5) Xor fkey(i)
             fkey(i + 2) = fkey(i - 4) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 3) Xor fkey(i + 2)
@@ -183,19 +168,12 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 6
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 6) Xor fkey(i)
             fkey(i + 2) = fkey(i - 5) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 4) Xor fkey(i + 2)
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 2) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 1) Xor fkey(i + 5)
             i = i + 7
@@ -208,20 +186,13 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 7) Xor fkey(i)
             fkey(i + 2) = fkey(i - 6) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 5) Xor fkey(i + 2)
             If j = 6 Then Exit Do
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 3) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 2) Xor fkey(i + 5)
             fkey(i + 7) = fkey(i - 1) Xor fkey(i + 6)
@@ -247,11 +218,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 13
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 3) Xor fkey(i)
             fkey(i + 2) = fkey(i - 2) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 1) Xor fkey(i + 2)
@@ -263,11 +230,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 10
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 4) Xor fkey(i)
             fkey(i + 2) = fkey(i - 3) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 2) Xor fkey(i + 2)
@@ -281,11 +244,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 5) Xor fkey(i)
             fkey(i + 2) = fkey(i - 4) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 3) Xor fkey(i + 2)
@@ -301,19 +260,12 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 8
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 6) Xor fkey(i)
             fkey(i + 2) = fkey(i - 5) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 4) Xor fkey(i + 2)
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 2) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 1) Xor fkey(i + 5)
             i = i + 7
@@ -325,20 +277,13 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 7) Xor fkey(i)
             fkey(i + 2) = fkey(i - 6) Xor fkey(i + 1)
             If j = 8 Then Exit Do
             fkey(i + 3) = fkey(i - 5) Xor fkey(i + 2)
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 3) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 2) Xor fkey(i + 5)
             fkey(i + 7) = fkey(i - 1) Xor fkey(i + 6)
@@ -363,11 +308,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 3) Xor fkey(i)
             If j = 18 Then Exit Do
             fkey(i + 2) = fkey(i - 2) Xor fkey(i + 1)
@@ -383,11 +324,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 4) Xor fkey(i)
             fkey(i + 2) = fkey(i - 3) Xor fkey(i + 1)
             If j = 14 Then Exit Do
@@ -403,11 +340,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 11
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 5) Xor fkey(i)
             fkey(i + 2) = fkey(i - 4) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 3) Xor fkey(i + 2)
@@ -422,19 +355,12 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 10
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 6) Xor fkey(i)
             fkey(i + 2) = fkey(i - 5) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 4) Xor fkey(i + 2)
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 2) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 1) Xor fkey(i + 5)
             i = i + 7
@@ -447,20 +373,13 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 7) Xor fkey(i)
             If j = 10 Then Exit Do
             fkey(i + 2) = fkey(i - 6) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 5) Xor fkey(i + 2)
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 3) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 2) Xor fkey(i + 5)
             fkey(i + 7) = fkey(i - 1) Xor fkey(i + 6)
@@ -486,11 +405,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 3) Xor fkey(i)
             If j = 23 Then Exit Do
             fkey(i + 2) = fkey(i - 2) Xor fkey(i + 1)
@@ -505,11 +420,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 4) Xor fkey(i)
             fkey(i + 2) = fkey(i - 3) Xor fkey(i + 1)
             If j = 18 Then Exit Do
@@ -525,11 +436,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 5) Xor fkey(i)
             If j = 15 Then Exit Do
             fkey(i + 2) = fkey(i - 4) Xor fkey(i + 1)
@@ -545,19 +452,12 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 12
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 6) Xor fkey(i)
             fkey(i + 2) = fkey(i - 5) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 4) Xor fkey(i + 2)
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 2) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 1) Xor fkey(i + 5)
             i = i + 7
@@ -569,20 +469,13 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             If j = 12 Then Exit Do
             fkey(i + 1) = fkey(i - 7) Xor fkey(i)
             fkey(i + 2) = fkey(i - 6) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 5) Xor fkey(i + 2)
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 3) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 2) Xor fkey(i + 5)
             fkey(i + 7) = fkey(i - 1) Xor fkey(i + 6)
@@ -607,11 +500,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 28
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 4) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 3) Xor fkey(i)
             fkey(i + 2) = fkey(i - 2) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 1) Xor fkey(i + 2)
@@ -624,11 +513,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 22
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 5) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 4) Xor fkey(i)
             fkey(i + 2) = fkey(i - 3) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 2) Xor fkey(i + 2)
@@ -642,11 +527,7 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 18
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 6) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 5) Xor fkey(i)
             fkey(i + 2) = fkey(i - 4) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 3) Xor fkey(i + 2)
@@ -662,20 +543,13 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         Do
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 7) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             If j = 16 Then Exit Do
             fkey(i + 1) = fkey(i - 6) Xor fkey(i)
             fkey(i + 2) = fkey(i - 5) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 4) Xor fkey(i + 2)
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 3) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 2) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 1) Xor fkey(i + 5)
             i = i + 7
@@ -688,19 +562,12 @@ Public Function SetCipherKey(pass() As Byte, KeyBits As Long) As Long
         CopyMemory fkey(0), pass(0), 4& * i
         For j = 0 To 13
             CopyMemory s(0), fkey(i - 1), 4&
-            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) _
-                                  Xor (Te4(s(3)) And &HFF0000) _
-                                  Xor (Te4(s(2)) And &HFF00&) _
-                                  Xor (Te4(s(1)) And &HFF&) _
-                                  Xor rco(j)
+            fkey(i) = fkey(i - 8) Xor (Te4(s(0)) And &HFF000000) Xor (Te4(s(3)) And &HFF0000) Xor (Te4(s(2)) And &HFF00&) Xor (Te4(s(1)) And &HFF&) Xor rco(j)
             fkey(i + 1) = fkey(i - 7) Xor fkey(i)
             fkey(i + 2) = fkey(i - 6) Xor fkey(i + 1)
             fkey(i + 3) = fkey(i - 5) Xor fkey(i + 2)
             CopyMemory s(0), fkey(i + 3), 4&
-            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) _
-                                      Xor (Te4(s(2)) And &HFF0000) _
-                                      Xor (Te4(s(1)) And &HFF00&) _
-                                      Xor (Te4(s(0)) And &HFF&)
+            fkey(i + 4) = fkey(i - 4) Xor (Te4(s(3)) And &HFF000000) Xor (Te4(s(2)) And &HFF0000) Xor (Te4(s(1)) And &HFF00&) Xor (Te4(s(0)) And &HFF&)
             fkey(i + 5) = fkey(i - 3) Xor fkey(i + 4)
             fkey(i + 6) = fkey(i - 2) Xor fkey(i + 5)
             fkey(i + 7) = fkey(i - 1) Xor fkey(i + 6)

@@ -22,11 +22,7 @@ End Enum
 Public MsgResponse As EMsgResponse
 Attribute MsgResponse.VB_VarDescription = "Get/set how you will respond to a message.  Raised whenever a message is encountered.  Call the CurrentMessage property to determine what message you are currently responding to."
 
-Function WindowProc(ByVal hwnd As Long, _
-                    ByVal iMsg As Long, _
-                    ByVal wParam As Long, _
-                    ByVal lParam As Long) As Long
-Attribute WindowProc.VB_Description = "Raised whenever a message you have subclassed is sent."
+Function WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 End Function
 '
 

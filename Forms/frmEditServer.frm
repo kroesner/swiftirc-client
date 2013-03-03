@@ -192,17 +192,13 @@ Private Sub initControls()
     m_labelManager.addLabel "Options", ltHeading, 25, 440
     
     Set m_checkAutoJoin = addCheckBox(Controls, "Enable auto join channels", 25, 460, 200, 15)
-    Set m_checkAutoIdentify = addCheckBox(Controls, "Auto-identify with NickServ (where available)", _
-        25, 480, 300, 15)
+    Set m_checkAutoIdentify = addCheckBox(Controls, "Auto-identify with NickServ (where available)", 25, 480, 300, 15)
     
     Set m_checkReconnect = addCheckBox(Controls, "Reconnect on disconnection", 25, 500, 200, 15)
-    Set m_checkConnectRetry = addCheckBox(Controls, "Auto-Retry connecting if unsuccessful", 25, _
-        520, 300, 15)
+    Set m_checkConnectRetry = addCheckBox(Controls, "Auto-Retry connecting if unsuccessful", 25, 520, 300, 15)
     
-    Set m_buttonSave = addButton(Controls, "&Save", Me.ScaleWidth - 225, Me.ScaleHeight - 40, 100, _
-        20)
-    Set m_buttonCancel = addButton(Controls, "&Cancel", Me.ScaleWidth - 120, Me.ScaleHeight - 40, _
-        100, 20)
+    Set m_buttonSave = addButton(Controls, "&Save", Me.ScaleWidth - 225, Me.ScaleHeight - 40, 100, 20)
+    Set m_buttonCancel = addButton(Controls, "&Cancel", Me.ScaleWidth - 120, Me.ScaleHeight - 40, 100, 20)
     
     m_fieldName.required = True
     m_fieldNickname.required = True
@@ -272,8 +268,7 @@ Private Sub m_buttonEditChannel_clicked()
         Dim channelEdit As New frmEditAutoJoinChannel
         
         If Not m_editProfile Is Nothing Then
-            channelEdit.channel = m_editProfile.autoJoinChannel(m_listChannels.ListIndex + _
-                1).channel
+            channelEdit.channel = m_editProfile.autoJoinChannel(m_listChannels.ListIndex + 1).channel
             channelEdit.key = m_editProfile.autoJoinChannel(m_listChannels.ListIndex + 1).key
         Else
             channelEdit.channel = m_autoJoinChannels.item(m_listChannels.ListIndex + 1).channel
@@ -284,8 +279,7 @@ Private Sub m_buttonEditChannel_clicked()
         
         If channelEdit.success Then
             If Not m_editProfile Is Nothing Then
-                m_editProfile.autoJoinChannel(m_listChannels.ListIndex + 1).channel = _
-                    channelEdit.channel
+                m_editProfile.autoJoinChannel(m_listChannels.ListIndex + 1).channel = channelEdit.channel
                 m_editProfile.autoJoinChannel(m_listChannels.ListIndex + 1).key = channelEdit.key
             Else
                 m_autoJoinChannels.item(m_listChannels.ListIndex + 1).channel = channelEdit.channel
@@ -362,8 +356,7 @@ Private Sub m_buttonSave_clicked()
 
     If m_editProfile Is Nothing Then
         If Not serverProfiles.findProfile(m_fieldName.value) Is Nothing Then
-            MsgBox "A profile with the name """ & m_fieldName.value & """ already exists", _
-                vbCritical, "Name already in use"
+            MsgBox "A profile with the name """ & m_fieldName.value & """ already exists", vbCritical, "Name already in use"
             Exit Sub
         End If
     
@@ -374,17 +367,14 @@ Private Sub m_buttonSave_clicked()
         Dim count As Long
         
         For count = 1 To m_autoJoinChannels.count
-            profile.addAutoJoinChannel m_autoJoinChannels.item(count).channel, _
-                m_autoJoinChannels.item(count).key
+            profile.addAutoJoinChannel m_autoJoinChannels.item(count).channel, m_autoJoinChannels.item(count).key
         Next count
         
         serverProfiles.addProfile profile
     Else
-        If Not serverProfiles.findProfile(m_fieldName.value) Is Nothing And Not _
-            serverProfiles.findProfile(m_fieldName.value) Is m_editProfile Then
+        If Not serverProfiles.findProfile(m_fieldName.value) Is Nothing And Not serverProfiles.findProfile(m_fieldName.value) Is m_editProfile Then
             
-            MsgBox "A profile with the name """ & m_fieldName.value & """ already exists", _
-                vbCritical, "Name already in use"
+            MsgBox "A profile with the name """ & m_fieldName.value & """ already exists", vbCritical, "Name already in use"
             Exit Sub
         End If
     

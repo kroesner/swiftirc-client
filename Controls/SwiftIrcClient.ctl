@@ -50,6 +50,9 @@ Attribute m_startPage.VB_VarHelpID = -1
 
 Private m_appHandlesUrls As Boolean
 
+Private m_highlightsWindow As ctlWindowGenericText
+Private m_highlightsWindowText As ITextWindow
+
 Public Event visitUrl(url As String)
 
 Friend Sub showUserAgreement()
@@ -119,8 +122,7 @@ Friend Function newSession() As CSession
     m_sessions.Add session
     Set newSession = session
     
-    session.statusWindow.switchbartab = switchbar.addTab(Nothing, session.statusWindow, sboStatus, _
-        "N/A", g_iconSBStatus)
+    session.statusWindow.switchbartab = switchbar.addTab(Nothing, session.statusWindow, sboStatus, "N/A", g_iconSBStatus)
     session.init
 End Function
 
@@ -237,8 +239,6 @@ Friend Sub removeTab(aTab As CTab)
     aTab.window = Nothing
 End Sub
 
-
-
 Private Sub m_eventManager_themeUpdated()
     Dim aControl As control
     Dim textWindow As ITextWindow
@@ -284,8 +284,7 @@ Private Sub m_switchBar_changeHeight(newHeight As Long)
     If m_switchBar.position = sbpTop Then
         m_switchbarControl.Move 0, 0, UserControl.ScaleWidth, newHeight
     Else
-        m_switchbarControl.Move 0, UserControl.ScaleHeight - newHeight, UserControl.ScaleWidth, _
-            newHeight
+        m_switchbarControl.Move 0, UserControl.ScaleHeight - newHeight, UserControl.ScaleWidth, newHeight
     End If
     
     UserControl_Resize
@@ -323,9 +322,20 @@ Private Sub m_switchBar_closeRequest(aTab As CTab)
         Dim genericWindow As ctlWindowGenericText
         
         Set genericWindow = aTab.window
-        Set session = genericWindow.session
         
-        session.closeGenericWindow genericWindow
+        If Not genericWindow.session Is Nothing Then
+            Set session = genericWindow.session
+        
+            session.closeGenericWindow genericWindow
+        Else
+            If genericWindow Is m_highlightsWindow Then
+                removeTab genericWindow.switchbartab
+                destroyWindow genericWindow
+                
+                Set m_highlightsWindow = Nothing
+                Set m_highlightsWindowText = Nothing
+            End If
+        End If
     End If
 End Sub
 
@@ -358,11 +368,9 @@ Private Sub sizeActiveWindow()
         End If
     
         If m_switchBar.position = sbpTop Then
-            m_activeWindow.Move 0, m_switchbarControl.height, UserControl.ScaleWidth, _
-                UserControl.ScaleHeight - m_switchbarControl.height
+            m_activeWindow.Move 0, m_switchbarControl.height, UserControl.ScaleWidth, UserControl.ScaleHeight - m_switchbarControl.height
         ElseIf m_switchBar.position = sbpBottom Then
-            m_activeWindow.Move 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight - _
-                m_switchbarControl.height
+            m_activeWindow.Move 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight - m_switchbarControl.height
         End If
     End If
 End Sub
@@ -372,8 +380,7 @@ Private Sub UserControl_Resize()
         If m_switchBar.position = sbpTop Then
             m_switchbarControl.Move 0, 0, UserControl.ScaleWidth, m_switchbarControl.height
         ElseIf m_switchBar.position = sbpBottom Then
-            m_switchbarControl.Move 0, UserControl.ScaleHeight - m_switchbarControl.height, _
-                UserControl.ScaleWidth, m_switchbarControl.height
+            m_switchbarControl.Move 0, UserControl.ScaleHeight - m_switchbarControl.height, UserControl.ScaleWidth, m_switchbarControl.height
         End If
     End If
     
@@ -385,11 +392,9 @@ Private Sub initFonts()
         changeFont getBestDefaultFont, 9, False, False
     Else
         If settings.fontSize = 0 Then
-            changeFont settings.fontName, 9, settings.setting("fontBold", estBoolean), _
-                settings.setting("fontItalic", estBoolean)
+            changeFont settings.fontName, 9, settings.setting("fontBold", estBoolean), settings.setting("fontItalic", estBoolean)
         Else
-            changeFont settings.fontName, settings.fontSize, settings.setting("fontBold", _
-                estBoolean), settings.setting("fontItalic", estBoolean)
+            changeFont settings.fontName, settings.fontSize, settings.setting("fontBold", estBoolean), settings.setting("fontItalic", estBoolean)
         End If
     End If
 End Sub
@@ -469,29 +474,19 @@ Private Sub initEvents()
     m_eventManager.defaultTheme = classic
     
     classic.addEvent "CONNECTING", "* Connecting to $0 ($1)...", eventColours.infoText, TVE_STANDARD
-    classic.addEvent "CONNECTED", "* Connected to $0, logging in...", eventColours.infoText, _
-        TVE_STANDARD
+    classic.addEvent "CONNECTED", "* Connected to $0, logging in...", eventColours.infoText, TVE_STANDARD
     classic.addEvent "DISCONNECTED", "* Disconnected, type /reconnect to reconnect", eventColours.infoText, TVE_STANDARD
-    classic.addEvent "RECONNECTING_IN", "* Trying to reconnect in $0 second(s)", _
-        eventColours.infoText, TVE_STANDARD
+    classic.addEvent "RECONNECTING_IN", "* Trying to reconnect in $0 second(s)", eventColours.infoText, TVE_STANDARD
     
     classic.addEvent "IRC_ERROR", "* $0", eventColours.infoText, TVE_STANDARD
     
-    classic.addEvent "KILLED", _
-        "* You were disconnected from the server by operator $0 (Reason: $1)", eventColours.infoText, _
-        TVE_STANDARD
+    classic.addEvent "KILLED", "* You were disconnected from the server by operator $0 (Reason: $1)", eventColours.infoText, TVE_STANDARD
     
-    classic.addEvent "NICKNAME_IN_USE", "* The nickname $0 is already in use.", _
-        eventColours.infoText, TVE_STANDARD
-    classic.addEvent "NICKNAME_IN_USE_PREREG", _
-        "* The nickname $0 is already in use.  Trying backup nickname instead...", _
-        eventColours.infoText, TVE_STANDARD
-    classic.addEvent "NICKNAME_IN_USE_PREREG2", _
-        "* The nickname $0 is already in use.  Please enter a different nickname.", _
-        eventColours.infoText, TVE_STANDARD
+    classic.addEvent "NICKNAME_IN_USE", "* The nickname $0 is already in use.", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "NICKNAME_IN_USE_PREREG", "* The nickname $0 is already in use.  Trying backup nickname instead...", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "NICKNAME_IN_USE_PREREG2", "* The nickname $0 is already in use.  Please enter a different nickname.", eventColours.infoText, TVE_STANDARD
         
-    classic.addEvent "NO_SUCH_NICK", "* No such nickname/channel ($0)", eventColours.infoText, _
-        TVE_STANDARD
+    classic.addEvent "NO_SUCH_NICK", "* No such nickname/channel ($0)", eventColours.infoText, TVE_STANDARD
         
     classic.addEvent "WELCOME", "Logged onto $0 as $1", eventColours.infoText, TVE_STANDARD
     classic.addEvent "NUMERIC", "$0", eventColours.otherText, TVE_STANDARD
@@ -520,104 +515,67 @@ Private Sub initEvents()
     
     classic.addEvent "ME_JOIN", "* Now talking in $0", eventColours.channelJoin, TVE_STANDARD
     classic.addEvent "ME_PART", "* You have left $0", eventColours.channelPart, TVE_STANDARD
-    classic.addEvent "ME_REJOINING", "* Attempting to rejoin $0...", eventColours.infoText, _
-        TVE_STANDARD
+    classic.addEvent "ME_REJOINING", "* Attempting to rejoin $0...", eventColours.infoText, TVE_STANDARD
     classic.addEvent "ME_REJOINED", "* Rejoined channel $0", eventColours.channelJoin, TVE_STANDARD
-    classic.addEvent "ME_KICKED", "* You were kicked from $0 by $1 ($2$o)", _
-        eventColours.channelKick, TVE_USERTEXT
+    classic.addEvent "ME_KICKED", "* You were kicked from $0 by $1 ($2$o)", eventColours.channelKick, TVE_USERTEXT
         
     classic.addEvent "ME_REJOIN_DELAY", "* Attempting to rejoin $0 in $1...", eventColours.infoText, TVE_STANDARD
     
-    classic.addEvent "USER_JOIN", "* $0 ($2@$3) has joined $1", eventColours.channelJoin, _
-        TVE_STANDARD
+    classic.addEvent "USER_JOIN", "* $0 ($2@$3) has joined $1", eventColours.channelJoin, TVE_STANDARD
     classic.addEvent "USER_PART", "* $0 ($2@$3) has left $1", eventColours.channelPart, TVE_STANDARD
-    classic.addEvent "USER_PART_REASON", "* $0 ($3@$4) has left $1 ($2$o)", _
-        eventColours.channelPart, TVE_USERTEXT
+    classic.addEvent "USER_PART_REASON", "* $0 ($3@$4) has left $1 ($2$o)", eventColours.channelPart, TVE_USERTEXT
     classic.addEvent "USER_QUIT", "* $s has quit IRC", eventColours.quit, TVE_STANDARD
     classic.addEvent "USER_QUIT_EX", "* $s ($0@$1) has quit IRC", eventColours.quit, TVE_STANDARD
     classic.addEvent "USER_QUIT_REASON", "* $s has quit IRC ($0$o)", eventColours.quit, TVE_USERTEXT
-    classic.addEvent "USER_QUIT_REASON_EX", "* $s ($0@$1) has quit IRC ($2$o)", eventColours.quit, _
-        TVE_USERTEXT
-    classic.addEvent "USER_NICK_CHANGE", "* $0 is now known as $1", eventColours.nickChanges, _
-        TVE_STANDARD
-    classic.addEvent "USER_KICKED", "* $2 was kicked by $0 ($3$o)", eventColours.channelKick, _
-        TVE_USERTEXT
+    classic.addEvent "USER_QUIT_REASON_EX", "* $s ($0@$1) has quit IRC ($2$o)", eventColours.quit, TVE_USERTEXT
+    classic.addEvent "USER_NICK_CHANGE", "* $0 is now known as $1", eventColours.nickChanges, TVE_STANDARD
+    classic.addEvent "USER_KICKED", "* $2 was kicked by $0 ($3$o)", eventColours.channelKick, TVE_USERTEXT
     
-    classic.addEvent "CHANNEL_MODE_CHANGE", "* $0 set mode: $2 $3", eventColours.modeChange, _
-        TVE_STANDARD
-    'classic.addEvent "CHANNEL_MODE_OP", "$0 made $1 a channel operator", eventColours.modeChange, _
-        TVE_STANDARD
-    'classic.addEvent "CHANNEL_MODE_DEOP", "$0 took $1's operator status", eventColours.modeChange, _
-        TVE_STANDARD
+    classic.addEvent "CHANNEL_MODE_CHANGE", "* $0 set mode: $2 $3", eventColours.modeChange, TVE_STANDARD
+    'classic.addEvent "CHANNEL_MODE_OP", "$0 made $1 a channel operator", eventColours.modeChange, TVE_STANDARD
+    'classic.addEvent "CHANNEL_MODE_DEOP", "$0 took $1's operator status", eventColours.modeChange, TVE_STANDARD
     
     classic.addEvent "CHANNEL_TOPICIS", "* Topic is '$0$o'", eventColours.topicChange, TVE_USERTEXT
-    classic.addEvent "CHANNEL_TOPICWHOTIME", "* Set by $0 on $1", eventColours.topicChange, _
-        TVE_STANDARD
-    classic.addEvent "CHANNEL_TOPICCHANGE", "* $0 changed the topic to '$1$o'", _
-        eventColours.topicChange, TVE_USERTEXT
+    classic.addEvent "CHANNEL_TOPICWHOTIME", "* Set by $0 on $1", eventColours.topicChange, TVE_STANDARD
+    classic.addEvent "CHANNEL_TOPICCHANGE", "* $0 changed the topic to '$1$o'", eventColours.topicChange, TVE_USERTEXT
     
-    classic.addEvent "ERROR_CONNECT", "Error connecting to $0: $1", eventColours.infoText, _
-        TVE_STANDARD
-    classic.addEvent "ERROR_DISCONNECT", "Disconnected with error: $0", eventColours.infoText, _
-        TVE_STANDARD
+    classic.addEvent "ERROR_CONNECT", "Error connecting to $0: $1", eventColours.infoText, TVE_STANDARD
+    classic.addEvent "ERROR_DISCONNECT", "Disconnected with error: $0", eventColours.infoText, TVE_STANDARD
     
-    classic.addEvent "WHOIS_USER", "$0 is $1@$2 * $3", eventColours.whoisText, TVE_VISIBLE Or _
-        TVE_INDENTWRAP Or TVE_SEPERATE_TOP Or TVE_SEPERATE_EXPLICIT
-    classic.addEvent "WHOIS_CHANNELS", "$0 is on $1", eventColours.whoisText, TVE_VISIBLE Or _
-        TVE_INDENTWRAP
-    classic.addEvent "WHOIS_SERVER", "$0 using server $1 ($2)", eventColours.whoisText, TVE_VISIBLE _
-        Or TVE_INDENTWRAP
-    classic.addEvent "WHOIS_OPERATOR", "$0 $1", eventColours.whoisText, TVE_VISIBLE Or _
-        TVE_INDENTWRAP
-    classic.addEvent "WHOIS_IDLE", "$0 has been idle $1, signed on $2", eventColours.whoisText, _
-        TVE_VISIBLE Or TVE_INDENTWRAP
+    classic.addEvent "WHOIS_USER", "$0 is $1@$2 * $3", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP Or TVE_SEPERATE_TOP Or TVE_SEPERATE_EXPLICIT
+    classic.addEvent "WHOIS_CHANNELS", "$0 is on $1", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP
+    classic.addEvent "WHOIS_SERVER", "$0 using server $1 ($2)", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP
+    classic.addEvent "WHOIS_OPERATOR", "$0 $1", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP
+    classic.addEvent "WHOIS_IDLE", "$0 has been idle $1, signed on $2", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP
     classic.addEvent "WHOIS_REGNICK", "$0 $1", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP
     classic.addEvent "WHOIS_GENERIC", "$0 $1", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP
-    classic.addEvent "WHOIS_END", "$0 $1", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP Or _
-        TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
+    classic.addEvent "WHOIS_END", "$0 $1", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
     
     classic.addEvent "AWAY", "$0 is away: $1", eventColours.whoisText, TVE_VISIBLE Or TVE_INDENTWRAP
     
-    classic.addEvent "ERR_BANNEDFROMCHAN", "* Cannot join $0, you are banned from the channel", _
-        eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
-    classic.addEvent "ERR_INVITEONLYCHAN", "* Cannot join $0, channel is invite only", _
-        eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
-    classic.addEvent "ERR_NEEDREGGEDNICK", _
-        "* Cannot join $0, you need to be logged into a registered nickname", eventColours.infoText, _
-        TVE_VISIBLE Or TVE_SEPERATE_BOTH
-    classic.addEvent "ERR_BADCHANNELKEY", "* Cannot join $0, wrong channel key/password was given", _
-        eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
-    classic.addEvent "ERR_CHANNELISFULL", "* Cannot join $0, channel is full", _
-        eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
-    classic.addEvent "ERR_TOOMANYJOINS", _
-        "* Cannot join $0, you are trying to rejoin the channel too quickly", eventColours.infoText, _
-        TVE_VISIBLE Or TVE_SEPERATE_BOTH
-    classic.addEvent "ERR_TOOMANYCHANNELS", "* Cannot join $0, you are already in too many channels", _
-        eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
-    classic.addEvent "ERR_SECUREONLYCHAN", _
-        "* Cannot join $0, you need to be using an encrypted (SSL) connection", eventColours.infoText, _
-        TVE_VISIBLE Or TVE_SEPERATE_BOTH
-    classic.addEvent "ERR_NOPRIVILEGES", _
-        "* Permission denied, you do not have the correct IRC operator privileges to execute this action", _
-        eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "ERR_BANNEDFROMCHAN", "* Cannot join $0, you are banned from the channel", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "ERR_INVITEONLYCHAN", "* Cannot join $0, channel is invite only", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "ERR_NEEDREGGEDNICK", "* Cannot join $0, you need to be logged into a registered nickname", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "ERR_BADCHANNELKEY", "* Cannot join $0, wrong channel key/password was given", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "ERR_CHANNELISFULL", "* Cannot join $0, channel is full", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "ERR_TOOMANYJOINS", "* Cannot join $0, you are trying to rejoin the channel too quickly", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "ERR_TOOMANYCHANNELS", "* Cannot join $0, you are already in too many channels", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "ERR_SECUREONLYCHAN", "* Cannot join $0, you need to be using an encrypted (SSL) connection", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "ERR_NOPRIVILEGES", "* Permission denied, you do not have the correct IRC operator privileges to execute this action", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
     
-    classic.addEvent "CMD_INSUFFICIENT_PARAMS", "* /$0: Insufficient parameters", _
-        eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
-    classic.addEvent "CMD_INCOMPATIBLE_WINDOW", "* /$0: Can not use command $0 in this window", _
-        eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "CMD_INSUFFICIENT_PARAMS", "* /$0: Insufficient parameters", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
+    classic.addEvent "CMD_INCOMPATIBLE_WINDOW", "* /$0: Can not use command $0 in this window", eventColours.infoText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
     
     classic.addEvent "CMD_PRIVMSG_SENT", "-> *$0* $1", eventColours.otherText, TVE_USERTEXT Or TVE_SEPERATE_BOTH
     classic.addEvent "CMD_NOTICE_SENT", "-> -$0- $1", eventColours.otherText, TVE_USERTEXT Or TVE_SEPERATE_BOTH
-    classic.addEvent "CMD_RAW_SENT", "-> Server: $0", eventColours.otherText, TVE_VISIBLE Or _
-        TVE_SEPERATE_BOTH
+    classic.addEvent "CMD_RAW_SENT", "-> Server: $0", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_BOTH
         
     classic.addEvent "CMD_CTCP_SENT", "-> [$0] $1", eventColours.ctcpText, TVE_VISIBLE Or TVE_SEPERATE_BOTH Or TVE_TIMESTAMP
       
     classic.addEvent "CHANNEL_CTCP", "[$s:$0 $1] $2", eventColours.ctcpText, TVE_USERTEXT
     classic.addEvent "WALLCHOP_CTCP", "[$s:$0$1 $2] $3", eventColours.ctcpText, TVE_USERTEXT
     
-    classic.addEvent "ME_MODE_CHANGE", "$0 sets mode: $1", eventColours.modeChange, _
-        TVE_STANDARD Or TVE_SEPERATE_BOTH
+    classic.addEvent "ME_MODE_CHANGE", "$0 sets mode: $1", eventColours.modeChange, TVE_STANDARD Or TVE_SEPERATE_BOTH
         
     classic.addEvent "IGNORE_LIST_START", "- Ignore list -", eventColours.infoText, TVE_STANDARD
     classic.addEvent "IGNORE_LIST_ENTRY", "* $0 ($1)", eventColours.infoText, TVE_STANDARD
@@ -676,6 +634,8 @@ Private Sub initEvents()
     
     classic.addEvent "INVITATION_RECEIVED", "You were invited to $0 by $1 ($2@$3)", eventColours.otherText, TVE_VISIBLE Or TVE_SEPERATE_TOP Or TVE_SEPERATE_BOTTOM Or TVE_SEPERATE_EXPLICIT
 
+    classic.addEvent "HIGHLIGHT_LOG", "[$0][$1] <$s> $2", eventColours.normalText, TVE_USERTEXT
+    
     m_eventManager.loadTheme classic
 End Sub
 
@@ -987,5 +947,19 @@ Friend Sub showIgnoreList(session As CSession)
     ignoreList.Show vbModal, Me
     
     Unload ignoreList
+End Sub
+
+Friend Sub logHighlight(network As String, target As String, Source As String, text As String)
+    m_highlightsWindowText.addEvent "HIGHLIGHT_LOG", makeStringArray("t/d", network, target, Source, text)
+End Sub
+
+Friend Sub openHighlightsWindow()
+    If m_highlightsWindow Is Nothing Then
+        Set m_highlightsWindow = createNewWindow("swiftirc.ctlWindowGenericText", "Highlights")
+        Set m_highlightsWindowText = m_highlightsWindow
+        
+        m_highlightsWindow.init Me, Nothing, "Highlights", False
+        m_highlightsWindow.switchbartab = m_switchBar.addTab(Nothing, m_highlightsWindow, sboGeneric, "Highlights", g_iconSBGeneric)
+    End If
 End Sub
 

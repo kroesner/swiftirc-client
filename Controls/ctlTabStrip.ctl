@@ -62,14 +62,12 @@ Private Sub reDraw()
     Dim oldFont As Long
     
     backBuffer = CreateCompatibleDC(UserControl.hdc)
-    backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth, _
-        UserControl.ScaleHeight)
+    backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth, UserControl.ScaleHeight)
     
     oldBitmap = SelectObject(backBuffer, backBitmap)
     oldFont = SelectObject(backBuffer, GetCurrentObject(hdc, OBJ_FONT))
     
-    FillRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
-        colourManager.getBrush(SWIFTCOLOUR_WINDOW)
+    FillRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_WINDOW)
     
     y = 5
     
@@ -78,8 +76,7 @@ Private Sub reDraw()
         x = x + TAB_WIDTH + TAB_SPACING_X
     Next count
     
-    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, _
-        vbSrcCopy
+    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, vbSrcCopy
         
     SelectObject backBuffer, oldBitmap
     SelectObject backBuffer, oldFont

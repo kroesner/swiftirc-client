@@ -32,8 +32,7 @@ Friend Property Get fontStruct() As LOGFONT
     fontStruct = m_logFont
 End Property
 
-Public Sub changeFont(hdc As Long, fontName As String, fontSize As Integer, fontBold As _
-    Boolean, fontItalic As Boolean)
+Public Sub changeFont(hdc As Long, fontName As String, fontSize As Integer, fontBold As Boolean, fontItalic As Boolean)
     
     releaseFonts
     

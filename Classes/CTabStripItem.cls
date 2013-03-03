@@ -60,8 +60,7 @@ Public Sub render(hdc As Long, x As Long, y As Long, width As Long, height As Lo
     
     SetBkMode hdc, TRANSPARENT
     
-    swiftDrawText hdc, m_caption, VarPtr(makeRect(x + 2, (x - 2) + width, y, y + height)), _
-        DT_SINGLELINE Or DT_VCENTER Or DT_CENTER Or DT_END_ELLIPSIS
+    swiftDrawText hdc, m_caption, VarPtr(makeRect(x + 2, (x - 2) + width, y, y + height)), DT_SINGLELINE Or DT_VCENTER Or DT_CENTER Or DT_END_ELLIPSIS
     
     SelectObject hdc, oldBrush
     SelectObject hdc, oldPen

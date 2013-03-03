@@ -31,7 +31,10 @@ Private m_tab As CTab
 Private m_name As String
 
 Private m_session As CSession
+Private m_client As SwiftIrcClient
 Private m_realWindow As VBControlExtender
+
+Private m_hasEditBox As Boolean
 
 Private WithEvents m_textView As ctlTextView
 Attribute m_textView.VB_VarHelpID = -1
@@ -63,10 +66,12 @@ End Sub
 Private Sub m_textView_clickedUrl(url As String)
     If left$(url, 1) = "#" Then
         If InStr(url, ",0") = 0 Then
-            m_session.joinChannel url
+            If Not m_session Is Nothing Then
+                m_session.joinChannel url
+            End If
         End If
     Else
-        m_session.client.visitUrl url, True
+        m_client.visitUrl url, True
     End If
 End Sub
 
@@ -86,17 +91,27 @@ Private Sub IColourUser_coloursUpdated()
     updateColours Controls
 End Sub
 
-Public Sub init(session As CSession, name As String)
+Public Sub init(client As SwiftIrcClient, session As CSession, name As String, hasEditBox As Boolean)
+    Set m_client = client
     Set m_session = session
     m_name = name
+    m_hasEditBox = hasEditBox
         
     refreshLogging
     
     registerForOptionsChanges Me
+    
+    If Not m_hasEditBox Then
+        Dim window As IWindow
+        
+        Set window = m_textInput
+        window.realWindow.visible = False
+    End If
 End Sub
 
 Public Sub deInit()
     Set m_session = Nothing
+    Set m_client = Nothing
     Set m_realWindow = Nothing
     
     unregisterForOptionsChanges Me
@@ -141,26 +156,24 @@ End Property
 
 Private Sub ITextWindow_addEvent(eventName As String, params() As String)
     m_textView.addEvent eventName, params
-    m_session.client.switchbar.tabActivity m_tab, tasEvent
+    m_client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
-Private Sub ITextWindow_addEventEx(eventName As String, userStyle As CUserStyle, username As String, _
-    flags As Long, params() As String)
+Private Sub ITextWindow_addEventEx(eventName As String, userStyle As CUserStyle, username As String, flags As Long, params() As String)
     
     m_textView.addEventEx eventName, userStyle, username, flags, params
-    m_session.client.switchbar.tabActivity m_tab, tasEvent
+    m_client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
 Private Sub ITextWindow_addText(text As String)
     m_textView.addRawText "$0", makeStringArray(text)
-    m_session.client.switchbar.tabActivity m_tab, tasEvent
+    m_client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
-Private Sub ITextWindow_addTextEx(eventColour As CEventColour, foreColour As Byte, format As String, _
-    userStyle As CUserStyle, username As String, flags As Long, params() As String)
+Private Sub ITextWindow_addTextEx(eventColour As CEventColour, foreColour As Byte, format As String, userStyle As CUserStyle, username As String, flags As Long, params() As String)
     
     m_textView.addRawTextEx eventColour, foreColour, format, userStyle, username, flags, params
-    m_session.client.switchbar.tabActivity m_tab, tasEvent
+    m_client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
 Private Property Let ITextWindow_eventManager(RHS As CEventManager)
@@ -214,7 +227,9 @@ End Function
 
 Private Sub m_textInput_textSubmitted(text As String, ctrl As Boolean)
     If Not ctrl Then
-        m_session.textInput Me, text
+        If Not m_session Is Nothing Then
+            m_session.textInput Me, text
+        End If
     End If
 End Sub
 
@@ -240,16 +255,23 @@ End Sub
 Private Sub UserControl_Resize()
     Dim window As IWindow
     
-    If Not m_textView Is Nothing Then
-        Set window = m_textView
-        window.realWindow.Move 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight - _
-            m_textInputHeight
+    If m_hasEditBox And (UserControl.ScaleHeight <= m_textInputHeight) Then
+        Exit Sub
     End If
     
-    If Not m_textInput Is Nothing Then
+    If Not m_textView Is Nothing Then
+        Set window = m_textView
+        
+        If m_hasEditBox Then
+            window.realWindow.Move 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight - m_textInputHeight
+        Else
+            window.realWindow.Move 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight
+        End If
+    End If
+    
+    If m_hasEditBox And Not m_textInput Is Nothing Then
         Set window = m_textInput
-        window.realWindow.Move 0, UserControl.ScaleHeight - m_textInputHeight, _
-            UserControl.ScaleWidth, m_textInputHeight
+        window.realWindow.Move 0, UserControl.ScaleHeight - m_textInputHeight, UserControl.ScaleWidth, m_textInputHeight
     End If
 End Sub
 
@@ -258,7 +280,15 @@ Private Sub IOptionsChangeListener_optionsChanged()
 End Sub
 
 Private Function refreshLogging()
-    m_textView.logName = combinePath(m_session.baseLogPath, sanitizeFilename(m_name))
+    Dim basePath As String
+    
+    If Not m_session Is Nothing Then
+        basePath = m_session.baseLogPath
+    Else
+        basePath = combinePath(g_userPath, LOG_DIR)
+    End If
+    
+    m_textView.logName = combinePath(basePath, sanitizeFilename(m_name))
     m_textView.enableLogging = shouldLog
 End Function
 

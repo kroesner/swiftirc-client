@@ -102,8 +102,7 @@ Public Sub loadProfiles()
         
         If Not channelsNode Is Nothing Then
             For Each channelNode In channelsNode.childNodes
-                profile.addAutoJoinChannel xmlGetElementText(channelNode, "name"), _
-                    xmlGetElementText(channelNode, "key")
+                profile.addAutoJoinChannel xmlGetElementText(channelNode, "name"), xmlGetElementText(channelNode, "key")
             Next channelNode
         End If
         

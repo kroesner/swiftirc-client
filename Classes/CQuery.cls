@@ -84,8 +84,7 @@ End Sub
 
 Public Sub textEntered(text As String)
     m_session.sendLine "PRIVMSG " & m_name & " :" & text
-    m_windowText.addEventEx "PRIVMSG", Nothing, m_session.currentNickname, TVE_NONE, _
-        makeStringArray(text)
+    m_windowText.addEventEx "PRIVMSG", Nothing, m_session.currentNickname, TVE_NONE, makeStringArray(text)
 End Sub
 
 Public Sub sendEmote(text As String)

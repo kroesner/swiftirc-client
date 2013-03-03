@@ -115,8 +115,7 @@ Friend Sub loadThemes()
             
             For eventCount = 1 To theme.eventColourCount - 1
                 If xmlElementExists(themeNode, eventColours.getConfName(eventCount)) Then
-                    theme.eventColour(eventCount) = Val(xmlGetElementText(themeNode, _
-                        eventColours.getConfName(eventCount)))
+                    theme.eventColour(eventCount) = Val(xmlGetElementText(themeNode, eventColours.getConfName(eventCount)))
                 Else
                     theme.eventColour(eventCount) = m_defaultTheme.eventColour(eventCount)
                 End If
@@ -182,8 +181,7 @@ Friend Sub saveThemes()
         Next paletteCount
         
         For eventCount = 1 To theme.eventColourCount - 1
-                xmlAddElement xml, themeNode, eventColours.getConfName(eventCount), _
-                    CStr(theme.eventColour(eventCount))
+                xmlAddElement xml, themeNode, eventColours.getConfName(eventCount), CStr(theme.eventColour(eventCount))
         Next eventCount
         
         xmlAddElement xml, themeNode, "background", CStr(theme.backgroundColour)

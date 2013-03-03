@@ -17,8 +17,7 @@ Implements ITextRenderBlock
 
 Private m_reverse As Boolean
 
-Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, withFormatCodes As _
-    Boolean) As String
+Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, withFormatCodes As Boolean) As String
 
 End Function
 

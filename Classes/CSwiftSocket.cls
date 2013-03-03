@@ -15,27 +15,45 @@ Option Explicit
 
 Implements ISubclass
 
-Private Declare Function setsockopt Lib "ws2_32.dll" (ByVal s As Long, ByVal level As Long, ByVal optname As Long, optval As Any, ByVal optlen As Long) As Long
-Private Declare Function ioctlsocket Lib "ws2_32.dll" (ByVal s As Long, ByVal cmd As Long, ByRef argp As Long) As Long
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+Private Declare Function setsockopt Lib "ws2_32.dll" (ByVal s As Long, ByVal _
+    level As Long, ByVal optname As Long, optval As Any, ByVal optlen As Long) As _
+    Long
+Private Declare Function ioctlsocket Lib "ws2_32.dll" (ByVal s As Long, ByVal _
+    cmd As Long, ByRef argp As Long) As Long
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" _
+    (Destination As Any, Source As Any, ByVal Length As Long)
 
 Private Declare Function WSAGetLastError Lib "ws2_32.dll" () As Long
-Private Declare Function WSAStartup Lib "ws2_32.dll" (ByVal versionRequested As Integer, lpWSAData As WSAData) As Long
-Private Declare Function WSAAsyncGetHostByName Lib "ws2_32.dll" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal addr As String, hent As HostEntAsync, ByVal bufLen As Long) As Long
-Private Declare Function WSAAsyncGetHostByAddr Lib "ws2_32.dll" (ByVal hwnd As Long, ByVal wMsg As Long, addr As Long, ByVal addrLen As Long, ByVal addrType As Long, hent As HostEntAsync, ByVal bufLen As Long) As Long
-Private Declare Function WSAAsyncSelect Lib "ws2_32.dll" (ByVal socket As Long, ByVal hwnd As Long, ByVal wMsg As Long, ByVal lEvent As Long) As Long
+Private Declare Function WSAStartup Lib "ws2_32.dll" (ByVal versionRequested As _
+    Integer, lpWSAData As WSAData) As Long
+Private Declare Function WSAAsyncGetHostByName Lib "ws2_32.dll" (ByVal hwnd As _
+    Long, ByVal wMsg As Long, ByVal addr As String, hent As HostEntAsync, ByVal _
+    bufLen As Long) As Long
+Private Declare Function WSAAsyncGetHostByAddr Lib "ws2_32.dll" (ByVal hwnd As _
+    Long, ByVal wMsg As Long, addr As Long, ByVal addrLen As Long, ByVal addrType _
+    As Long, hent As HostEntAsync, ByVal bufLen As Long) As Long
+Private Declare Function WSAAsyncSelect Lib "ws2_32.dll" (ByVal socket As Long, _
+    ByVal hwnd As Long, ByVal wMsg As Long, ByVal lEvent As Long) As Long
 
-Private Declare Function APISocket Lib "ws2_32.dll" Alias "socket" (ByVal af As Long, ByVal sockType As Long, ByVal protocol As Long) As Long
-Private Declare Function APICloseSocket Lib "ws2_32.dll" Alias "closesocket" (ByVal socket As Long) As Long
-Private Declare Function APIConnect Lib "ws2_32.dll" Alias "connect" (ByVal s As Long, name As sockaddr_in, ByVal namelen As Long) As Long
-Private Declare Function APIRecv Lib "ws2_32.dll" Alias "recv" (ByVal s As Long, ByVal buf As Long, ByVal bufLen As Long, ByVal flags As Long) As Long
-Private Declare Function APISend Lib "ws2_32.dll" Alias "send" (ByVal s As Long, ByVal buf As String, ByVal bufLen As Long, ByVal flags As Long) As Long
+Private Declare Function APISocket Lib "ws2_32.dll" Alias "socket" (ByVal af As _
+    Long, ByVal sockType As Long, ByVal protocol As Long) As Long
+Private Declare Function APICloseSocket Lib "ws2_32.dll" Alias "closesocket" _
+    (ByVal socket As Long) As Long
+Private Declare Function APIConnect Lib "ws2_32.dll" Alias "connect" (ByVal s _
+    As Long, name As sockaddr_in, ByVal namelen As Long) As Long
+Private Declare Function APIRecv Lib "ws2_32.dll" Alias "recv" (ByVal s As Long, _
+    ByVal buf As Long, ByVal bufLen As Long, ByVal flags As Long) As Long
+Private Declare Function APISend Lib "ws2_32.dll" Alias "send" (ByVal s As Long, _
+    ByVal buf As String, ByVal bufLen As Long, ByVal flags As Long) As Long
 
-Private Declare Function WSANtohl Lib "ws2_32.dll" (ByVal socket As Long, ByVal netlong As Long, iphostlong As Long) As Long
+Private Declare Function WSANtohl Lib "ws2_32.dll" (ByVal socket As Long, ByVal _
+    netlong As Long, iphostlong As Long) As Long
 Private Declare Function ntohl Lib "ws2_32.dll" (ByVal netlong As Long) As Long
-Private Declare Function htons Lib "ws2_32.dll" (ByVal hostshort As Long) As Integer
+Private Declare Function htons Lib "ws2_32.dll" (ByVal hostshort As Long) As _
+    Integer
 
-Private Declare Function strLen Lib "kernel32" Alias "lstrlenA" (lpString As Any) As Long
+Private Declare Function strLen Lib "kernel32" Alias "lstrlenA" (lpString As _
+    Any) As Long
 
 Private Declare Function inet_addr Lib "ws2_32.dll" (ByVal cp As String) As Long
 

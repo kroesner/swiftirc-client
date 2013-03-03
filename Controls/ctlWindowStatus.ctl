@@ -75,8 +75,7 @@ Private Sub ITextWindow_addEvent(eventName As String, params() As String)
     m_session.client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
-Private Sub ITextWindow_addEventEx(eventName As String, userStyle As CUserStyle, username As String, _
-    flags As Long, params() As String)
+Private Sub ITextWindow_addEventEx(eventName As String, userStyle As CUserStyle, username As String, flags As Long, params() As String)
     
     m_textView.addEventEx eventName, userStyle, username, flags, params
     m_session.client.switchbar.tabActivity m_tab, tasEvent
@@ -87,8 +86,7 @@ Private Sub ITextWindow_addText(text As String)
     m_session.client.switchbar.tabActivity m_tab, tasEvent
 End Sub
 
-Private Sub ITextWindow_addTextEx(eventColour As CEventColour, foreColour As Byte, format As String, _
-    userStyle As CUserStyle, username As String, flags As Long, params() As String)
+Private Sub ITextWindow_addTextEx(eventColour As CEventColour, foreColour As Byte, format As String, userStyle As CUserStyle, username As String, flags As Long, params() As String)
     
     m_textView.addRawTextEx eventColour, foreColour, format, userStyle, username, flags, params
     m_session.client.switchbar.tabActivity m_tab, tasEvent
@@ -268,14 +266,12 @@ Private Sub UserControl_Resize()
     
     If Not m_textView Is Nothing Then
         Set window = m_textView
-        window.realWindow.Move 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight - _
-            m_textInputHeight
+        window.realWindow.Move 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight - m_textInputHeight
     End If
     
     If Not m_textInput Is Nothing Then
         Set window = m_textInput
-        window.realWindow.Move 0, UserControl.ScaleHeight - m_textInputHeight, _
-            UserControl.ScaleWidth, m_textInputHeight
+        window.realWindow.Move 0, UserControl.ScaleHeight - m_textInputHeight, UserControl.ScaleWidth, m_textInputHeight
     End If
 End Sub
 

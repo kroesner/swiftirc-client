@@ -54,8 +54,7 @@ Private m_toggleItalic As Boolean
 Private m_toggleReverse As Boolean
 Private m_toggleUnderline As Boolean
 
-Public Sub init(aEvent As CEvent, flags As Long, userStyle As CUserStyle, username As String, _
-    params() As String)
+Public Sub init(aEvent As CEvent, flags As Long, userStyle As CUserStyle, username As String, params() As String)
     Set m_eventDef = aEvent
     m_flags = flags
     Set m_userStyle = userStyle
@@ -63,8 +62,7 @@ Public Sub init(aEvent As CEvent, flags As Long, userStyle As CUserStyle, userna
     m_params = params
 End Sub
 
-Public Sub initEx(eventColour As CEventColour, foreColour As Byte, format As String, userStyle As _
-    CUserStyle, username As String, flags As Long, params() As String)
+Public Sub initEx(eventColour As CEventColour, foreColour As Byte, format As String, userStyle As CUserStyle, username As String, flags As Long, params() As String)
 
     Set m_eventColour = eventColour
     m_foreColour = foreColour
@@ -209,8 +207,7 @@ Private Property Get lineSeperateType() As eLineSep
     End If
 End Property
 
-Public Sub setSelection(top As Integer, bottom As Integer, left As Integer, right As Integer, _
-    clickX As Integer, clickY As Integer, moveX As Integer)
+Public Sub setSelection(top As Integer, bottom As Integer, left As Integer, right As Integer, clickX As Integer, clickY As Integer, moveX As Integer)
     
     Dim count As Integer
     Dim line As CPhysLine
@@ -470,8 +467,7 @@ getText_Error:
     handleError "getText", Err.Number, Err.Description, Erl, "Format: " & format & " Text: " & text
 End Function
 
-Private Sub parseIrcFormatting(text As String, allowPlaceHolders As Boolean, ByRef blocks As _
-    cArrayList, Optional allowArtifacts As Boolean = True)
+Private Sub parseIrcFormatting(text As String, allowPlaceHolders As Boolean, ByRef blocks As cArrayList, Optional allowArtifacts As Boolean = True)
     
     Dim count As Long
     Dim wChar As Integer
@@ -715,8 +711,7 @@ Private Function parseLink(ByRef text As String, index As Long, blocks As cArray
     parseLink = Len(url)
 End Function
 
-Private Function parseColourCode(text As String, start As Integer, ByRef fore As Byte, ByRef back _
-    As Byte) As Integer
+Private Function parseColourCode(text As String, start As Integer, ByRef fore As Byte, ByRef back As Byte) As Integer
     
     Dim colourCount As Integer
     Dim digits As Byte
@@ -911,8 +906,7 @@ Public Function wordWrap(drawingData As CDrawingData) As Long
                         
                         textBlock.left = x
                         
-                        swiftGetTextExtentPoint32 drawingData.Dc, textBlock.text, _
-                            textSize
+                        swiftGetTextExtentPoint32 drawingData.Dc, textBlock.text, textSize
                         textBlock.width = textSize.cx
                         
                         physLine.addBlock textBlock

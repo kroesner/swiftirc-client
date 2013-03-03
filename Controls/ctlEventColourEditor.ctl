@@ -104,8 +104,7 @@ Public Sub reDraw()
     Dim coordY As Long
     
     backBuffer = CreateCompatibleDC(UserControl.hdc)
-    backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth, _
-        UserControl.ScaleHeight)
+    backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth, UserControl.ScaleHeight)
     
     oldBitmap = SelectObject(backBuffer, backBitmap)
     
@@ -174,8 +173,7 @@ Public Sub reDraw()
         DrawFocusRect backBuffer, makeRect(3, UserControl.ScaleWidth - 3, 3, UserControl.ScaleHeight - 3)
     End If
     
-    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, _
-        vbSrcCopy
+    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, vbSrcCopy
     
     SelectObject backBuffer, oldBitmap
     

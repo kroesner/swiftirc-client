@@ -16,15 +16,13 @@ Option Explicit
 Public Sub addEvent(eventName As String, params() As String)
 End Sub
 
-Public Sub addEventEx(eventName As String, userStyle As CUserStyle, username As String, flags As _
-    Long, params() As String)
+Public Sub addEventEx(eventName As String, userStyle As CUserStyle, username As String, flags As Long, params() As String)
 End Sub
 
 Public Sub addText(text As String)
 End Sub
 
-Public Sub addTextEx(eventColour As CEventColour, foreColour As Byte, format As String, userStyle _
-    As CUserStyle, username As String, flags As Long, params() As String)
+Public Sub addTextEx(eventColour As CEventColour, foreColour As Byte, format As String, userStyle As CUserStyle, username As String, flags As Long, params() As String)
     
 End Sub
 

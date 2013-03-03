@@ -236,8 +236,7 @@ Private Sub UserControl_Paint()
         SetTextColor UserControl.hdc, colourManager.getColour(SWIFTCOLOUR_CONTROLFOREOVER)
     End If
     
-    swiftDrawText UserControl.hdc, m_caption, VarPtr(textRect), DT_SINGLELINE Or DT_VCENTER Or _
-        DT_CENTER Or DT_END_ELLIPSIS
+    swiftDrawText UserControl.hdc, m_caption, VarPtr(textRect), DT_SINGLELINE Or DT_VCENTER Or DT_CENTER Or DT_END_ELLIPSIS
         
     SelectObject UserControl.hdc, oldBrush
     SelectObject UserControl.hdc, oldPen

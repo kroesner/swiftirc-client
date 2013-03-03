@@ -4,8 +4,7 @@ Option Explicit
 Public g_hook As Long
 Public m_oldWndProc As Long
 
-Public Function listBoxHook(ByVal lHookID As Long, ByVal wParam As Long, ByVal lParam As Long) As _
-    Long
+Public Function listBoxHook(ByVal lHookID As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
     Dim CWP As CWPSTRUCT
     Dim className As String
     Dim Length As Long
@@ -25,8 +24,7 @@ Public Function listBoxHook(ByVal lHookID As Long, ByVal wParam As Long, ByVal l
     listBoxHook = CallNextHookEx(g_hook, lHookID, wParam, ByVal lParam)
 End Function
 
-Public Function listBoxStyleHook(ByVal hwnd As Long, ByVal Msg As Long, ByVal wParam As Long, ByVal _
-    lParam As Long) As Long
+Public Function listBoxStyleHook(ByVal hwnd As Long, ByVal Msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
     Dim cStruct As CREATESTRUCT
     
     If Msg = WM_CREATE Then
@@ -38,8 +36,7 @@ Public Function listBoxStyleHook(ByVal hwnd As Long, ByVal Msg As Long, ByVal wP
             style = style - WS_BORDER
         End If
         
-        style = style Or LBS_HASSTRINGS Or LBS_OWNERDRAWFIXED Or LBS_NOINTEGRALHEIGHT Or _
-            LBS_EXTENDEDSEL
+        style = style Or LBS_HASSTRINGS Or LBS_OWNERDRAWFIXED Or LBS_NOINTEGRALHEIGHT Or LBS_EXTENDEDSEL
         
         CopyMemory cStruct, ByVal lParam, Len(cStruct)
         cStruct.style = style

@@ -41,8 +41,7 @@ Public Function load(path As String) As Boolean
     load = True
 End Function
 
-Public Sub draw(hdc As Long, ByVal x As Long, ByVal y As Long, ByVal width As Long, ByVal height As _
-    Long)
+Public Sub draw(hdc As Long, ByVal x As Long, ByVal y As Long, ByVal width As Long, ByVal height As Long)
     Dim tempDc As Long
     Dim tempDc2 As Long
     Dim tempBitmap As Long
@@ -67,8 +66,7 @@ Public Sub draw(hdc As Long, ByVal x As Long, ByVal y As Long, ByVal width As Lo
     DeleteObject tempBitmap
 End Sub
 
-Public Sub drawInverted(hdc As Long, ByVal x As Long, ByVal y As Long, ByVal width As Long, ByVal height As _
-    Long)
+Public Sub drawInverted(hdc As Long, ByVal x As Long, ByVal y As Long, ByVal width As Long, ByVal height As Long)
     Dim tempDc As Long
     Dim tempDc2 As Long
     Dim tempBitmap As Long

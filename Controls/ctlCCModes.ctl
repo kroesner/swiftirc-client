@@ -79,18 +79,13 @@ Private Property Get IWindow_realWindow() As Object
 End Property
 
 Private Sub initControls()
-    Set m_checkOnlyOpsSetTopic = addCheckBox(Controls, "Only Ops can set topic (+t)", 10, 10, 200, _
-        15)
-    Set m_checkNoExternalMessages = addCheckBox(Controls, "No messages from outside channel (+n)", _
-        10, 30, 250, 15)
+    Set m_checkOnlyOpsSetTopic = addCheckBox(Controls, "Only Ops can set topic (+t)", 10, 10, 200, 15)
+    Set m_checkNoExternalMessages = addCheckBox(Controls, "No messages from outside channel (+n)", 10, 30, 250, 15)
     Set m_checkInviteOnly = addCheckBox(Controls, "Invite only (+i)", 10, 50, 200, 15)
-    Set m_checkModerated = addCheckBox(Controls, "Only voices+ can send messages (+m)", 10, 70, 250, _
-        15)
-    Set m_checkSecret = addCheckBox(Controls, _
-        "Channel will not appear in channel list or WHOIS (+s)", 10, 90, 350, 15)
+    Set m_checkModerated = addCheckBox(Controls, "Only voices+ can send messages (+m)", 10, 70, 250, 15)
+    Set m_checkSecret = addCheckBox(Controls, "Channel will not appear in channel list or WHOIS (+s)", 10, 90, 350, 15)
     Set m_checkNoColours = addCheckBox(Controls, "Block colour codes (+c)", 10, 110, 300, 15)
-    Set m_checkNoNickChanges = addCheckBox(Controls, "Disallow nickname changes (+N)", 10, 130, 300, _
-        15)
+    Set m_checkNoNickChanges = addCheckBox(Controls, "Disallow nickname changes (+N)", 10, 130, 300, 15)
     Set m_checkNoEmotes = addCheckBox(Controls, "Disallow emotes/actions (+E)", 10, 150, 300, 15)
     
     Set m_checkKey = addCheckBox(Controls, "Set channel key/password:", 10, 190, 180, 15)

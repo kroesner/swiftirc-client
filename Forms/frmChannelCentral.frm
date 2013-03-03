@@ -25,7 +25,7 @@ Option Explicit
 
 Implements IFontUser
 
-Private m_fontManager As CFontManager
+Private m_fontmanager As CFontManager
 
 Private WithEvents m_buttonOk As ctlButton
 Attribute m_buttonOk.VB_VarHelpID = -1
@@ -57,10 +57,8 @@ End Property
 
 Private Sub initControls()
     Set m_buttonOk = addButton(Controls, "Ok", Me.ScaleWidth - 170, Me.ScaleHeight - 30, 50, 20)
-    Set m_buttonCancel = addButton(Controls, "Cancel", Me.ScaleWidth - 115, Me.ScaleHeight - 30, 50, _
-        20)
-    Set m_buttonApply = addButton(Controls, "Apply", Me.ScaleWidth - 60, Me.ScaleHeight - 30, 50, _
-        20)
+    Set m_buttonCancel = addButton(Controls, "Cancel", Me.ScaleWidth - 115, Me.ScaleHeight - 30, 50, 20)
+    Set m_buttonApply = addButton(Controls, "Apply", Me.ScaleWidth - 60, Me.ScaleHeight - 30, 50, 20)
     
     Set m_tabStrip = createControl(Controls, "swiftIrc.ctlTabStrip", "tabStrip")
     getRealWindow(m_tabStrip).Move 10, 0, Me.ScaleWidth - 20, 30
@@ -92,12 +90,12 @@ Private Sub Form_Initialize()
 End Sub
 
 Private Property Let IFontUser_fontManager(RHS As CFontManager)
-    Set m_fontManager = RHS
+    Set m_fontmanager = RHS
     
     Dim fontUser As IFontUser
     
     Set fontUser = m_ctlTopic
-    fontUser.fontManager = m_fontManager
+    fontUser.fontManager = m_fontmanager
     fontUser.fontsUpdated
 End Property
 

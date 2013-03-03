@@ -221,8 +221,7 @@ Public Sub saveSettings()
     xmlAddElement xml, xml.documentElement, "quickConnectChannel", m_quickConnectChannel
     
     If LenB(m_quickConnectPassword) <> 0 Then
-        xmlAddElement xml, xml.documentElement, "quickConnectPassword", encrypt(g_cryptKey, _
-            m_quickConnectPassword)
+        xmlAddElement xml, xml.documentElement, "quickConnectPassword", encrypt(g_cryptKey, m_quickConnectPassword)
     End If
     
     xmlAddElement xml, xml.documentElement, "fontName", m_fontName

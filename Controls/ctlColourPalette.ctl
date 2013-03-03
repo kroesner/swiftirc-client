@@ -84,8 +84,7 @@ Private Function getIndexByCoords(x As Single, y As Single) As Integer
     Dim edgeX As Integer
     Dim edgeY As Integer
     
-    edgeX = MARGIN_X + ((ITEM_SIZE + SPACING_X) * ((buttonIndex + 1) - (rowIndex * buttonsPerRow))) _
-        - SPACING_X
+    edgeX = MARGIN_X + ((ITEM_SIZE + SPACING_X) * ((buttonIndex + 1) - (rowIndex * buttonsPerRow))) - SPACING_X
     edgeY = MARGIN_Y + ((ITEM_SIZE + SPACING_Y) * (rowIndex + 1)) - SPACING_Y
     
     If x > edgeX Or y > edgeY Then
@@ -121,13 +120,11 @@ Private Sub UserControl_Paint()
     Dim oldBitmap As Long
     
     backBuffer = CreateCompatibleDC(UserControl.hdc)
-    backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth, _
-        UserControl.ScaleHeight)
+    backBitmap = CreateCompatibleBitmap(UserControl.hdc, UserControl.ScaleWidth, UserControl.ScaleHeight)
     
     oldBitmap = SelectObject(backBuffer, backBitmap)
     
-    FillRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
-        colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
+    FillRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
     
     Dim itemRect As RECT
     Dim colourBrush As Long
@@ -169,8 +166,7 @@ Private Sub UserControl_Paint()
         End If
     Next count
     
-    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, _
-        vbSrcCopy
+    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, vbSrcCopy
         
     SelectObject backBuffer, oldBitmap
         

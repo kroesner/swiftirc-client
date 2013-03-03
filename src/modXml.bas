@@ -1,8 +1,7 @@
 Attribute VB_Name = "modXml"
 Option Explicit
 
-Public Function xmlAddElement(xml As DOMDocument30, parent As IXMLDOMNode, name As String, text As _
-    String) As IXMLDOMNode
+Public Function xmlAddElement(xml As DOMDocument30, parent As IXMLDOMNode, name As String, text As String) As IXMLDOMNode
     Dim newNode As IXMLDOMNode
     
     Set newNode = xml.createNode(NODE_ELEMENT, prepareXmlString(name), "")

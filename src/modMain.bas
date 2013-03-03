@@ -144,9 +144,7 @@ End Function
 Public Sub handleError(context As String, errorCode As Long, errorText As String, ByVal line As Long, detailText As String)
     Dim errorReport As String
     
-    errorReport = String(10, "-") & vbCrLf & "Error occured on " & formatTime(getSystemTime()) _
-        & vbCrLf & "SwiftIRC version: " & App.Major & "." & App.Minor & "." & App.Revision & vbCrLf _
-        & vbCrLf & "Error: " & errorText & " (code: " & errorCode & ") in " & context & " on line " & line
+    errorReport = String(10, "-") & vbCrLf & "Error occured on " & formatTime(getSystemTime()) & vbCrLf & "SwiftIRC version: " & App.Major & "." & App.Minor & "." & App.Revision & vbCrLf & vbCrLf & "Error: " & errorText & " (code: " & errorCode & ") in " & context & " on line " & line
 
     If LenB(detailText) Then
         errorReport = errorReport & vbCrLf & "Details: " & vbCrLf & vbCrLf & detailText
@@ -238,8 +236,7 @@ Public Sub openOptions(client As swiftIrc.SwiftIrcClient, Optional session As CS
     Unload options
 End Sub
 
-Public Function makeRect(ByVal left As Long, ByVal right As Long, ByVal top As Long, ByVal bottom _
-    As Long) As RECT
+Public Function makeRect(ByVal left As Long, ByVal right As Long, ByVal top As Long, ByVal bottom As Long) As RECT
     makeRect.left = left
     makeRect.right = right
     makeRect.top = top
@@ -420,8 +417,7 @@ Private Function launchDefaultBrowserLegacy(url As String)
     ShellExecute 0, "open", path, args, 0, SW_SHOWNORMAL
 End Function
 
-Private Function parseBrowserCommand(ByVal command As String, ByRef path As String, _
-    ByRef args As String, url As String)
+Private Function parseBrowserCommand(ByVal command As String, ByRef path As String, ByRef args As String, url As String)
     
     Dim pos As Long
 

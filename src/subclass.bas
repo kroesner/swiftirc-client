@@ -44,8 +44,7 @@ Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVa
 Private Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hwnd As Long, ByVal Msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Private Declare Function GetWindowThreadProcessId Lib "user32" (ByVal hwnd As Long, lpdwProcessId As Long) As Long
 Private Declare Function GetCurrentProcessId Lib "kernel32" () As Long
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
-    lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 Private Const GWL_WNDPROC = (-4)
 Private Const WM_DESTROY = &H2
 
@@ -152,11 +151,7 @@ Dim sName As String
    logMessage "Changed message class for " & Hex(hwnd) & " Message " & iMsg & " Index " & index & " to " & Hex(classPtr)
 End Property
 
-Sub AttachMessage( _
-      iwp As ISubclass, _
-      ByVal hwnd As Long, _
-      ByVal iMsg As Long _
-   )
+Sub AttachMessage(iwp As ISubclass, ByVal hwnd As Long, ByVal iMsg As Long)
 Dim procOld As Long
 Dim msgCount As Long
 Dim msgClassCount As Long
@@ -274,11 +269,7 @@ Dim msgClass As Long
        
 End Sub
 
-Sub DetachMessage( _
-      iwp As ISubclass, _
-      ByVal hwnd As Long, _
-      ByVal iMsg As Long _
-   )
+Sub DetachMessage(iwp As ISubclass, ByVal hwnd As Long, ByVal iMsg As Long)
 Dim msgClassCount As Long
 Dim msgClass As Long
 Dim msgClassIndex As Long
@@ -356,12 +347,7 @@ Dim procOld As Long
    
 End Sub
 
-Private Function WindowProc( _
-      ByVal hwnd As Long, _
-      ByVal iMsg As Long, _
-      ByVal wParam As Long, _
-      ByVal lParam As Long _
-   ) As Long
+Private Function WindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
    
 Dim procOld As Long
 Dim msgClassCount As Long
@@ -413,8 +399,7 @@ Dim bDestroy As Boolean
                If (iIndex = 1) Then
                   If (.MsgResponse = emrPreprocess) Then
                      If Not (bCalled) Then
-                        WindowProc = CallWindowProc(procOld, hwnd, iMsg, _
-                                                  wParam, ByVal lParam)
+                        WindowProc = CallWindowProc(procOld, hwnd, iMsg, wParam, ByVal lParam)
                         bCalled = True
                      End If
                   End If
@@ -433,8 +418,7 @@ Dim bDestroy As Boolean
       If Not (iwp Is Nothing) And Not (procOld = 0) Then
           If iwp.MsgResponse = emrPostProcess Then
              If Not (bCalled) Then
-                WindowProc = CallWindowProc(procOld, hwnd, iMsg, _
-                                          wParam, ByVal lParam)
+                WindowProc = CallWindowProc(procOld, hwnd, iMsg, wParam, ByVal lParam)
                 bCalled = True
              End If
           End If
@@ -446,22 +430,15 @@ Dim bDestroy As Boolean
          ' If WM_DESTROY isn't handled already, we should
          ' clear up any subclass
          pClearUp hwnd
-         WindowProc = CallWindowProc(procOld, hwnd, iMsg, _
-                                    wParam, ByVal lParam)
+         WindowProc = CallWindowProc(procOld, hwnd, iMsg, wParam, ByVal lParam)
          
       Else
-         WindowProc = CallWindowProc(procOld, hwnd, iMsg, _
-                                    wParam, ByVal lParam)
+         WindowProc = CallWindowProc(procOld, hwnd, iMsg, wParam, ByVal lParam)
       End If
    End If
     
 End Function
-Public Function CallOldWindowProc( _
-      ByVal hwnd As Long, _
-      ByVal iMsg As Long, _
-      ByVal wParam As Long, _
-      ByVal lParam As Long _
-   ) As Long
+Public Function CallOldWindowProc(ByVal hwnd As Long, ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Dim iProcOld As Long
    iProcOld = OldWindowProc(hwnd)
    If Not (iProcOld = 0) Then

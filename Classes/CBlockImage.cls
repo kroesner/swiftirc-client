@@ -29,8 +29,7 @@ Public Property Let caption(newValue As String)
     m_caption = newValue
 End Property
 
-Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, withFormatCodes As _
-    Boolean) As String
+Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, withFormatCodes As Boolean) As String
     
     If m_selected Then
         ITextRenderBlock_getSelectedText = m_caption
@@ -79,8 +78,7 @@ Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
         m_image.draw tempDc, 0, 0, drawingData.fontHeight, drawingData.fontHeight
     End If
     
-    BitBlt drawingData.Dc, m_left, drawingData.y, drawingData.fontHeight, drawingData.fontHeight, _
-            tempDc, 0, 0, vbSrcCopy
+    BitBlt drawingData.Dc, m_left, drawingData.y, drawingData.fontHeight, drawingData.fontHeight, tempDc, 0, 0, vbSrcCopy
     
     SelectObject tempDc, oldBitmap
     

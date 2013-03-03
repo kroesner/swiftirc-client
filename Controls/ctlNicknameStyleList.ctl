@@ -166,11 +166,9 @@ Private Function drawItem(item As DRAWITEMSTRUCT) As Long
     If Not icon Is Nothing And m_drawIcons Then
         icon.draw item.hdc, item.rcItem.left, item.rcItem.top, m_itemHeight, m_itemHeight
         textRect.left = textRect.left + m_itemHeight + 1
-        swiftTextOut item.hdc, textRect.left, textRect.top, ETO_OPAQUE, VarPtr(textRect), _
-            text
+        swiftTextOut item.hdc, textRect.left, textRect.top, ETO_OPAQUE, VarPtr(textRect), text
     Else
-        swiftTextOut item.hdc, textRect.left + 5, textRect.top, ETO_OPAQUE, VarPtr(textRect), _
-            text
+        swiftTextOut item.hdc, textRect.left + 5, textRect.top, ETO_OPAQUE, VarPtr(textRect), text
     End If
     
     SelectObject item.hdc, oldFont
@@ -198,11 +196,7 @@ Private Sub initControls()
     Set m_colourPalette = createControl(Controls, "swiftIrc.ctlColourPalette", "palette")
     m_colourPalette.setPalette colourThemes.currentSettingsTheme.getPalette
     
-    m_listbox = CreateWindowEx(0, "LISTBOX", 0&, WS_CHILD Or _
-        WS_VISIBLE Or WS_VSCROLL Or WS_HSCROLL Or LBS_HASSTRINGS _
-        Or LBS_OWNERDRAWFIXED Or LBS_NOINTEGRALHEIGHT, _
-        0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, _
-        UserControl.hwnd, 0&, App.hInstance, 0&)
+    m_listbox = CreateWindowEx(0, "LISTBOX", 0&, WS_CHILD Or WS_VISIBLE Or WS_VSCROLL Or WS_HSCROLL Or LBS_HASSTRINGS Or LBS_OWNERDRAWFIXED Or LBS_NOINTEGRALHEIGHT, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, UserControl.hwnd, 0&, App.hInstance, 0&)
     
     m_itemOps = SendMessage(m_listbox, LB_ADDSTRING, 0, ByVal "Ops")
     m_itemHalfOps = SendMessage(m_listbox, LB_ADDSTRING, 0, ByVal "Halfops")
@@ -270,16 +264,13 @@ Private Sub UserControl_Paint()
 
     SetBkColor backBuffer, colourManager.getColour(SWIFTCOLOUR_FRAMEBACK)
 
-    FillRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
-        colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
+    FillRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_FRAMEBACK)
     
     m_labelManager.renderLabels backBuffer
     
-    FrameRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), _
-        colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
+    FrameRect backBuffer, makeRect(0, UserControl.ScaleWidth, 0, UserControl.ScaleHeight), colourManager.getBrush(SWIFTCOLOUR_CONTROLBORDER)
         
-    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, _
-        0, 0, vbSrcCopy
+    BitBlt UserControl.hdc, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, backBuffer, 0, 0, vbSrcCopy
     
     SelectObject backBuffer, oldBitmap
     SelectObject backBuffer, oldFont

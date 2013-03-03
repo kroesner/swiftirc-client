@@ -162,8 +162,7 @@ Private Sub m_buttonEdit_clicked()
     editAddress.Show vbModal, Me
 
     If editAddress.success Then
-        m_channel.session.sendModeChange m_channel.name, "-" & m_currentMode & "+" & m_currentMode, _
-            listBans.list(listBans.ListIndex) & " " & editAddress.address
+        m_channel.session.sendModeChange m_channel.name, "-" & m_currentMode & "+" & m_currentMode, listBans.list(listBans.ListIndex) & " " & editAddress.address
             
         listBans.removeItem listBans.ListIndex
         listBans.addItem editAddress.address

@@ -146,8 +146,7 @@ Private Sub updateServerProfileList()
     
     For count = 1 To serverProfiles.profileCount
         Set serverProfile = serverProfiles.profileItem(count)
-        m_listServerProfiles.addItem serverProfile.name & " (" & serverProfile.hostname & ":" & _
-            serverProfile.port & ")"
+        m_listServerProfiles.addItem serverProfile.name & " (" & serverProfile.hostname & ":" & serverProfile.port & ")"
     Next count
 End Sub
 

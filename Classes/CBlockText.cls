@@ -69,8 +69,7 @@ Public Property Let width(newValue As Long)
     m_width = newValue
 End Property
 
-Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, withFormatCodes As _
-    Boolean) As String
+Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, withFormatCodes As Boolean) As String
     
     Dim selectedAmount As Long
     
@@ -91,8 +90,7 @@ Private Function ITextRenderBlock_getSelectedText(drawingData As CDrawingData, w
             selStart = maxFit + 1
             
             If m_selectRight < m_width Then
-                swiftGetTextExtentExPoint drawingData.Dc, StrReverse(m_text), m_width - _
-                    m_selectRight, maxFit, textSize
+                swiftGetTextExtentExPoint drawingData.Dc, StrReverse(m_text), m_width - m_selectRight, maxFit, textSize
                     
                 selEnd = (Len(m_text) - (maxFit) + 1)
                 
@@ -146,8 +144,7 @@ Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
     If m_selected Then
         If m_allSelected Or (m_selectLeft < 1 And m_selectRight >= m_width) Then
             drawingData.reverse = Not drawingData.reverse
-            swiftTextOut drawingData.Dc, m_left, drawingData.y, ETO_CLIPPED, VarPtr(textRect), _
-                m_text
+            swiftTextOut drawingData.Dc, m_left, drawingData.y, ETO_CLIPPED, VarPtr(textRect), m_text
             drawingData.reverse = Not drawingData.reverse
         Else
             Dim maxFit As Long
@@ -159,22 +156,19 @@ Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
             Dim selectEnd As Long
             
             If m_selectLeft > 0 Then
-                ret = swiftGetTextExtentExPoint(drawingData.Dc, m_text, m_selectLeft, maxFit, _
-                    textSize)
+                ret = swiftGetTextExtentExPoint(drawingData.Dc, m_text, m_selectLeft, maxFit, textSize)
                 selectStart = maxFit + 1
                 
                 If selectStart > 1 Then
                     text = Mid$(m_text, 1, maxFit)
-                    swiftTextOut drawingData.Dc, m_left, drawingData.y, ETO_CLIPPED, _
-                        VarPtr(textRect), text
+                    swiftTextOut drawingData.Dc, m_left, drawingData.y, ETO_CLIPPED, VarPtr(textRect), text
                     
                     swiftGetTextExtentPoint32 drawingData.Dc, text, textSize
                     drawnWidth = textSize.cx
                 End If
                 
                 If m_selectRight < m_width Then
-                    swiftGetTextExtentExPoint drawingData.Dc, StrReverse(m_text), m_width - _
-                        m_selectRight, maxFit, textSize
+                    swiftGetTextExtentExPoint drawingData.Dc, StrReverse(m_text), m_width - m_selectRight, maxFit, textSize
             
                     selectEnd = Len(m_text) - (maxFit - 1)
                     
@@ -189,8 +183,7 @@ Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
                 
                 If LenB(text) <> 0 Then
                     drawingData.reverse = Not drawingData.reverse
-                    swiftTextOut drawingData.Dc, m_left + drawnWidth, drawingData.y, ETO_CLIPPED, _
-                        VarPtr(textRect), text
+                    swiftTextOut drawingData.Dc, m_left + drawnWidth, drawingData.y, ETO_CLIPPED, VarPtr(textRect), text
                     drawingData.reverse = Not drawingData.reverse
                     
                     swiftGetTextExtentPoint32 drawingData.Dc, text, textSize
@@ -199,21 +192,18 @@ Private Sub ITextRenderBlock_render(drawingData As CDrawingData)
                 
                 If selectEnd Then
                     text = Mid$(m_text, selectEnd)
-                    swiftTextOut drawingData.Dc, m_left + drawnWidth, drawingData.y, ETO_CLIPPED, 0, _
-                        text
+                    swiftTextOut drawingData.Dc, m_left + drawnWidth, drawingData.y, ETO_CLIPPED, 0, text
                 End If
             Else
                 drawingData.reverse = Not drawingData.reverse
                 swiftGetTextExtentExPoint drawingData.Dc, m_text, m_selectRight, maxFit, textSize
                 text = Mid$(m_text, 1, maxFit + 1)
-                swiftTextOut drawingData.Dc, m_left, drawingData.y, ETO_CLIPPED, VarPtr(textRect), _
-                    text
+                swiftTextOut drawingData.Dc, m_left, drawingData.y, ETO_CLIPPED, VarPtr(textRect), text
                 drawingData.reverse = Not drawingData.reverse
                 
                 swiftGetTextExtentPoint32 drawingData.Dc, text, textSize
                 text = Mid$(m_text, maxFit + 2)
-                swiftTextOut drawingData.Dc, m_left + textSize.cx, drawingData.y, ETO_CLIPPED, _
-                    VarPtr(textRect), text
+                swiftTextOut drawingData.Dc, m_left + textSize.cx, drawingData.y, ETO_CLIPPED, VarPtr(textRect), text
             End If
         End If
     Else

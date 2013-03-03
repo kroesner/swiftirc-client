@@ -204,6 +204,8 @@ Private Sub initEvents()
     
     defEvent "SILENCE_MODIFY"
     defEvent "INVITATION_RECEIVED"
+    
+    defEvent "HIGHLIGHT_LOG"
 End Sub
 
 Private Sub loadThemes()

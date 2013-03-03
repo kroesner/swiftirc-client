@@ -235,8 +235,7 @@ Public Sub render(hdc As Long, x As Long, y As Long, width As Long, height As Lo
         textRect.left = textRect.left + iconSize + TAB_ICON_PADDING
     End If
     
-    swiftDrawText hdc, m_caption, VarPtr(textRect), DT_VCENTER Or DT_SINGLELINE Or DT_NOPREFIX _
-        Or DT_END_ELLIPSIS
+    swiftDrawText hdc, m_caption, VarPtr(textRect), DT_VCENTER Or DT_SINGLELINE Or DT_NOPREFIX Or DT_END_ELLIPSIS
 End Sub
 
 Private Sub Class_Initialize()
