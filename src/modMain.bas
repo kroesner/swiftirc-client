@@ -200,13 +200,10 @@ Public Sub Main()
     #If debugmode Then
         Dim count As Long
         Dim testContainer As frmTestContainer
-        Dim testContainer2 As frmTestContainer
         
         Set testContainer = New frmTestContainer
-        Set testContainer2 = New frmTestContainer
         
         testContainer.Show
-        testContainer2.Show
     #End If
 End Sub
 

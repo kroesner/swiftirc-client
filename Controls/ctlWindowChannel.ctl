@@ -287,7 +287,7 @@ Private Sub m_nicklist_rightClicked(item As CNicklistItem)
     PopupMenu menuNicklist
 End Sub
 
-Private Sub m_textInput_tabbed(text As String, start As Long, Length As Long)
+Private Sub m_textInput_tabbed(text As String, start As Long, length As Long)
     Dim count As Long
     Dim matchLength As Long
 
@@ -300,7 +300,7 @@ Private Sub m_textInput_tabbed(text As String, start As Long, Length As Long)
                     m_lastTabIndex = count
                     m_lastTab = m_nicklist.item(count).text
                     
-                    m_textInput.replaceText start, Length, m_lastTab
+                    m_textInput.replaceText start, length, m_lastTab
                     Exit Sub
                  End If
             Next count
@@ -311,7 +311,7 @@ Private Sub m_textInput_tabbed(text As String, start As Long, Length As Long)
                         m_lastTabIndex = count
                         m_lastTab = m_nicklist.item(count).text
                         
-                        m_textInput.replaceText start, Length, m_lastTab
+                        m_textInput.replaceText start, length, m_lastTab
                         Exit Sub
                     End If
                 Next count
@@ -323,9 +323,9 @@ Private Sub m_textInput_tabbed(text As String, start As Long, Length As Long)
 
     If left$(text, 1) = "#" Then
         If Len(text) > 1 Then
-            m_session.channelTabbing m_textInput, text, start, Length
+            m_session.channelTabbing m_textInput, text, start, length
         Else
-            m_textInput.replaceText start, Length, m_channel.name
+            m_textInput.replaceText start, length, m_channel.name
         End If
         
         Exit Sub
@@ -339,7 +339,7 @@ Private Sub m_textInput_tabbed(text As String, start As Long, Length As Long)
             m_lastTabIndex = count
             m_lastTab = m_nicklist.item(count).text
             
-            m_textInput.replaceText start, Length, m_lastTab
+            m_textInput.replaceText start, length, m_lastTab
             
             Exit For
         End If

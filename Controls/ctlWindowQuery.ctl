@@ -252,9 +252,9 @@ Private Sub UserControl_Resize()
     End If
 End Sub
 
-Private Sub m_textInput_tabbed(text As String, start As Long, Length As Long)
+Private Sub m_textInput_tabbed(text As String, start As Long, length As Long)
     If left$(text, 1) = "#" Then
-        m_session.channelTabbing m_textInput, text, start, Length
+        m_session.channelTabbing m_textInput, text, start, length
         Exit Sub
     End If
 End Sub

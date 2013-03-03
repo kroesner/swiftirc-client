@@ -1615,14 +1615,14 @@ Private Function processTextForHighlights(text As String) As String
     Next i
     
     If highlightMatches.getHighlightMatchCount <> 0 Then
-        text = addHighlightEmphasisToText(text)
+    '    text = addHighlightEmphasisToText(text)
     End If
 End Function
 
 Private Function addHighlightEmphasisToText(text As String, highlightMatches As MessageHighlightMatchData)
     text = stripFormattingCodes(text)
     
-    Dim i As count
+    Dim i As Long
     Dim emphasisPositions As New cArrayList
     
     For i = 1 To highlightMatches.getHighlightMatchCount
@@ -3065,7 +3065,7 @@ Private Sub m_socket_readable()
     End If
 End Sub
 
-Public Sub channelTabbing(Source As swiftIrc.ctlTextInput, text As String, start As Long, Length As Long)
+Public Sub channelTabbing(Source As swiftIrc.ctlTextInput, text As String, start As Long, length As Long)
     Dim matchLength As Long
     Dim count As Long
     Dim channel As CChannel
@@ -3081,7 +3081,7 @@ Public Sub channelTabbing(Source As swiftIrc.ctlTextInput, text As String, start
                     m_lastChannelTab = channel.name
                     m_lastChannelTabIndex = count
                     
-                    Source.replaceText start, Length, channel.name
+                    Source.replaceText start, length, channel.name
                     Exit Sub
                 End If
             Next count
@@ -3094,7 +3094,7 @@ Public Sub channelTabbing(Source As swiftIrc.ctlTextInput, text As String, start
                         m_lastChannelTab = channel.name
                         m_lastChannelTabIndex = count
                         
-                        Source.replaceText start, Length, channel.name
+                        Source.replaceText start, length, channel.name
                         Exit Sub
                     End If
                 Next count
@@ -3114,7 +3114,7 @@ Public Sub channelTabbing(Source As swiftIrc.ctlTextInput, text As String, start
             m_lastChannelTab = channel.name
             m_lastChannelTabIndex = count
             
-            Source.replaceText start, Length, channel.name
+            Source.replaceText start, length, channel.name
             Exit For
         End If
     Next count

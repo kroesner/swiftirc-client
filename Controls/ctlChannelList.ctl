@@ -461,7 +461,7 @@ Private Sub parseIrcFormatting(text As String, ByRef blocks As cArrayList)
     Dim count As Integer
     Dim wChar As Integer
     Dim last As Integer
-    Dim Length As Integer
+    Dim length As Integer
     
     Dim blockText As CBlockText
     Dim blockBold As CBlockBold
@@ -482,12 +482,12 @@ Private Sub parseIrcFormatting(text As String, ByRef blocks As cArrayList)
         wChar = AscW(Mid$(text, count, 1))
         
         If isFormatCode(wChar) Then
-            Length = count - last
+            length = count - last
             
-            If Length > 0 Then
+            If length > 0 Then
                 Set blockText = New CBlockText
                 
-                blockText.text = Mid$(text, last, Length)
+                blockText.text = Mid$(text, last, length)
                 blocks.Add blockText
             End If
             

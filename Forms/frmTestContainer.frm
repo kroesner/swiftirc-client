@@ -31,8 +31,8 @@ Private Sub Form_Load()
     
     m_irc.debugEx = True
     m_ircControl.visible = True
-    m_irc.userPath = "SwiftIRC User Data\"
-    m_irc.assetPath = "assets\"
+    m_irc.userPath = App.path & "\SwiftIRC User Data\"
+    m_irc.assetPath = App.path & "\assets\"
     m_irc.init
     
     Set m_newClient = Controls.Add("VB.CommandButton", "newclient")
@@ -40,7 +40,7 @@ Private Sub Form_Load()
     m_newClient.Move 0, 0, 75, 20
 End Sub
 
-Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+Private Sub Form_QueryUnload(cancel As Integer, UnloadMode As Integer)
     m_irc.deInit
 End Sub
 

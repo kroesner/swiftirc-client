@@ -18,7 +18,7 @@ Private emphasisPositions As cArrayList
 Public Function processTextForHighlights(text As String) As String
     Dim highlightMatches As MessageHighlightMatchData
 
-    Set highlightMatches = MessageHighlights.findHighlightMatches(m_currentNickname, text)
+    'Set highlightMatches = MessageHighlights.findHighlightMatches(m_currentNickname, text)
     
     Dim i As Long
     
@@ -27,14 +27,14 @@ Public Function processTextForHighlights(text As String) As String
     Next i
     
     If highlightMatches.getHighlightMatchCount <> 0 Then
-        text = addHighlightEmphasisToText(text)
+        'text = addHighlightEmphasisToText(text)
     End If
 End Function
 
 Private Function addHighlightEmphasisToText(text As String, highlightMatches As MessageHighlightMatchData)
     text = stripFormattingCodes(text)
     
-    Dim i As count
+    Dim i As Long
     
     
     For i = 1 To highlightMatches.getHighlightMatchCount

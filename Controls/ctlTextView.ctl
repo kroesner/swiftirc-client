@@ -7,7 +7,7 @@ Begin VB.UserControl ctlTextView
    ClientTop       =   0
    ClientWidth     =   10620
    BeginProperty Font 
-      Name            =   "Segoe UI"
+      Name            =   "Arial"
       Size            =   12
       Charset         =   0
       Weight          =   400

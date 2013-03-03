@@ -1,10 +1,10 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Reference=*\G{F5078F18-C551-11D3-89B9-0000F81FE221}#3.0#0#..\..\..\..\..\..\Windows\System32\msxml3.dll#Microsoft XML, v3.0
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#stdole2.tlb#OLE Automation
+Reference=*\G{F5078F18-C551-11D3-89B9-0000F81FE221}#3.0#0#msxml3.dll#Microsoft XML, v3.0
 Reference=*\G{B96BCBE1-F886-11D0-9C63-A06801C10627}#1.2#0#ISHF_Ex.tlb#IShellFolder Extended Type Library v1.2
-Reference=*\G{0C0FF45D-87C8-4333-9075-3D9B4D64F9FC}#6.0#0#E:\Users\karl\Documents\Projects\Repos\swiftirc-client-1.x\msado60_Backcompat_i386.tlb#Microsoft ActiveX Data Objects 6.0 BackCompat Library
-Reference=*\G{00995812-9105-11D0-A754-00A0C91110C3}#1.0#0#E:\Users\karl\Documents\Projects\Repos\swiftirc-client-1.x\OLEGUIDS.TLB#Ole Guid and interface definitions
-Object={F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0; comdlg32.ocx
+Reference=*\G{0C0FF45D-87C8-4333-9075-3D9B4D64F9FC}#6.0#0#msado60_Backcompat_i386.tlb#Microsoft ActiveX Data Objects 6.0 BackCompat Library
+Reference=*\G{00995812-9105-11D0-A754-00A0C91110C3}#1.0#0#OLEGUIDS.TLB#Ole Guid and interface definitions
+Object={F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0; COMDLG32.OCX
 UserControl=Controls\SwiftIrcClient.ctl
 Class=IWindow; Classes\IWindow.cls
 UserControl=Controls\ctlWindowChannel.ctl
@@ -151,7 +151,6 @@ Command32=""
 Name="swiftIrc"
 HelpContextID="0"
 CompatibleMode="0"
-CompatibleEXE32="..\..\SwiftIRC Client\swiftirc_base.ocx"
 MajorVer=1
 MinorVer=9
 RevisionVer=1
@@ -178,3 +177,6 @@ MaxNumberOfThreads=1
 RemoveUnusedControlInfo=0
 DebugStartupOption=0
 UseExistingBrowser=0
+
+[MS Transaction Server]
+AutoRefresh=1

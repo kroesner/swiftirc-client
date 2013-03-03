@@ -35,7 +35,7 @@ Private m_fontmanager As CFontManager
 Private m_inputHistory As New Collection
 Private m_inputHistoryIndex As Long
 
-Public Event tabbed(text As String, start As Long, Length As Long)
+Public Event tabbed(text As String, start As Long, length As Long)
 Public Event textSubmitted(text As String, ctrl As Boolean)
 Public Event mouseWheel(delta As Long)
 Public Event pageUp()
@@ -292,11 +292,11 @@ Private Sub m_textBox_KeyDown(KeyCode As Integer, Shift As Integer)
     End Select
 End Sub
 
-Public Sub replaceText(ByVal start As Long, ByVal Length As Long, newText As String)
+Public Sub replaceText(ByVal start As Long, ByVal length As Long, newText As String)
     LockWindowUpdate m_textBox.hwnd
 
     m_textBox.selStart = start
-    m_textBox.SelLength = Length
+    m_textBox.SelLength = length
     m_textBox.SelText = newText
     m_textBox.SelLength = 0
     m_textBox.selStart = start + Len(newText)
